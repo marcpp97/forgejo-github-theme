@@ -179,14 +179,24 @@
 				</script>
 				<script>
 					// Open like the Forgejo dropdowns next to it ("Add file"). A closed <details> keeps its content hidden with
-					// content-visibility, so a CSS animation plays only on the first open; run it on every toggle instead.
-					document.querySelector('.repo-code-dropdown')?.addEventListener('toggle', (event) => {
-						if (!event.target.open || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-						event.target.querySelector(':scope > .content')?.animate(
-							[{opacity: 0, transform: 'translateY(-8px)'}, {opacity: 1, transform: 'translateY(0)'}],
-							{duration: 200, easing: 'cubic-bezier(0.33, 1, 0.68, 1)'},
-						);
-					});
+					// content-visibility, so a CSS animation plays only on the first open. The toggle event comes a frame late
+					// (the menu showed in place, then jumped up to animate), so start from the summary click, in the frame that
+					// first paints the open menu.
+					(() => {
+						const dropdown = document.querySelector('.repo-code-dropdown');
+						const content = dropdown?.querySelector(':scope > .content');
+						if (!content) return;
+						dropdown.querySelector(':scope > summary').addEventListener('click', () => {
+							if (dropdown.open || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+							requestAnimationFrame(() => {
+								if (!dropdown.open) return;
+								content.animate(
+									[{opacity: 0, transform: 'translateY(-8px)'}, {opacity: 1, transform: 'translateY(0)'}],
+									{duration: 200, easing: 'cubic-bezier(0.33, 1, 0.68, 1)'},
+								);
+							});
+						});
+					})();
 				</script>
 			</details>
 		{{end}}
