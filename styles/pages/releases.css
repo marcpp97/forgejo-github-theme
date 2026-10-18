@@ -834,3 +834,10 @@
     margin-left: 8px;
   }
 }
+
+/* Forgejo gives the new release tag/target block a 500px minimum, which scrolls a phone screen sideways. */
+@media (max-width: 767.98px) {
+  .repository.new.release .target {
+    min-width: 0;
+  }
+}

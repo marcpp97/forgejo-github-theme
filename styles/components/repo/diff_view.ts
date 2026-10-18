@@ -81,7 +81,10 @@ export default css`
     color: ${themeVars.color.text.light.num1};
     font-size: 12px;
     white-space: nowrap;
-    & > progress {
+    position: relative;
+    /* Forgejo sizes the progress by id (width: 100%); the id outranks a plain class rule and the hidden bar, absolutely
+       placed, stretched the page sideways. */
+    & > #viewed-files-summary {
       position: absolute;
       width: 1px;
       height: 1px;
