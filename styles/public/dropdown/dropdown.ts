@@ -25,6 +25,9 @@ const dropdown = css`
   .ui.menu .ui.dropdown {
     .menu {
       ${animationDown};
+      /* Fomantic keeps will-change: transform on every menu, which leaves it on its own GPU layer; at a fractional
+         position (centred or right-aligned menus) the text renders blurry. The animation does not need the hint. */
+      will-change: auto;
       /* 统一所有下拉菜单的样式 */
       background-color: ${themeVars.color.menu};
       border: none !important;

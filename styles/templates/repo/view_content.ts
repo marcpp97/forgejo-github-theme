@@ -18,6 +18,7 @@
  */
 
 import { css, cssCombine, otherThemeVars, themeVars } from "@lutinglt/gitea-github-theme/core";
+import { animationDown } from "@lutinglt/gitea-github-theme/styles/common";
 
 const repoButtonRow = css`
   .gitea-github-theme-templates {
@@ -113,6 +114,8 @@ const repoToolbarDetails = css`
     }
 
     & .repo-code-dropdown > .content {
+      /* Opens like the Forgejo dropdowns next to it ("Add file"). */
+      ${animationDown};
       background: ${themeVars.color.menu};
       border: 0;
       border-radius: 12px;
