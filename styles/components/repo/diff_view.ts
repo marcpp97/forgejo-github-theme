@@ -125,6 +125,14 @@ export default css`
     left: 0 !important;
     right: auto !important;
   }
+  /* The shared dropdown style pins items to 32px with !important; commit entries have a summary and an
+     author line. */
+  #diff-commit-selector-menu > .vertical.item {
+    height: auto !important;
+    min-height: 32px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
   .diff-code-search {
     display: flex;
     gap: 8px;
