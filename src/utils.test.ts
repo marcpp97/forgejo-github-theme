@@ -130,11 +130,15 @@ describe("getCallerInfo", () => {
   });
 
   it("skipFrames=1 跳过一个调用帧", () => {
+    // Not tail calls: Bun's JavaScriptCore drops the frame of a function that ends in `return f()`, which left
+    // vitest's runner as the frame skipFrames=1 points at.
     function outer() {
-      return inner();
+      const info = inner();
+      return info;
     }
     function inner() {
-      return getCallerInfo(1);
+      const info = getCallerInfo(1);
+      return info;
     }
     const info = outer();
     // inner 被跳过，返回 outer 的调用者（即测试函数本身的位置）
