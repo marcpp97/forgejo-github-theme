@@ -47,12 +47,36 @@ export default css`
       width: 100% !important;
       max-width: none !important;
     }
+    /* GitHub's files tab is full width: title, tabs and diff share a 24px side margin. */
     &.files > .ui.container > .issue-title-header,
-    &.files > .ui.container > .pull.tabs {
-      width: calc(100% - 64px);
-      max-width: 1216px;
-      margin-left: auto;
-      margin-right: auto;
+    &.files > .ui.container > .pull.tabs,
+    &.files #diff-container {
+      width: auto;
+      max-width: none;
+      margin-left: 24px;
+      margin-right: 24px;
+    }
+    &.files #diff-container > .diff-content-controls {
+      padding-inline: 0;
+    }
+    &.files #diff-container .diff-file-tree-scroll {
+      padding-left: 0;
+      padding-right: 16px;
+    }
+    &.files #diff-container > #diff-content-container {
+      padding-right: 0;
+    }
+    &.files #diff-container.diff-file-tree-hidden > #diff-content-container {
+      padding-left: 0;
+    }
+    /* GitHub's pencil next to the pull request number. */
+    & .issue-title h1 .issue-title-edit-pencil {
+      display: inline-flex;
+      vertical-align: middle;
+      padding: 6px;
+      margin-left: 4px;
+      border-radius: ${otherThemeVars.border.radius};
+      color: ${themeVars.color.text.light.num1};
     }
     /* The same header box on every tab, so switching tabs does not move the page. */
     & .issue-title-header {
@@ -159,6 +183,7 @@ export default css`
       margin-left: auto;
       display: flex;
       align-items: center;
+      align-self: center;
       padding-left: 16px;
     }
     &.files .pull.tabs.container {
@@ -545,7 +570,18 @@ export default css`
       }
       &.files > .ui.container > .issue-title-header,
       &.files > .ui.container > .pull.tabs {
-        width: calc(100% - 32px);
+        margin-left: 16px;
+        margin-right: 16px;
+      }
+      &.files #diff-container {
+        margin-left: 0;
+        margin-right: 0;
+      }
+      &.files #diff-container > .diff-content-controls {
+        padding-inline: 16px;
+      }
+      &.files #diff-container > #diff-content-container {
+        padding: 16px;
       }
       & .issue-title h1 {
         font-size: 24px;

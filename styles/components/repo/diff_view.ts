@@ -93,7 +93,8 @@ export default css`
     mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
   }
   /* GitHub's toolbar buttons are 28px, like the review button next to the gear. */
-  .diff-content-controls .diff-view-settings > .theme-icon-button {
+  .diff-content-controls .diff-view-settings > .theme-icon-button,
+  .diff-content-controls .diff-toggle-file-tree-button {
     width: 28px;
     height: 28px;
   }
