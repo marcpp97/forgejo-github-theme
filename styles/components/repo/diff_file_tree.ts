@@ -1,8 +1,16 @@
 import { css, themeVars } from "@lutinglt/gitea-github-theme/core";
 
 // Shared by commit and pull-request diffs; Forgejo still owns the Vue tree.
+// #diff-container wraps every diff line, so a :has() on it restyles the whole diff on each DOM change;
+// box.tmpl sets these classes instead.
 export default css`
-  .repository #diff-container:has(> .diff-file-tree-panel) {
+  /* resizable-divider.js writes this on #diff-container. Inherited, every diff line would be restyled. */
+  @property --diff-file-tree-width {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 296px;
+  }
+  .repository #diff-container.diff-has-file-tree {
     display: grid;
     grid-template-columns: var(--diff-file-tree-width, 296px) 1px minmax(0, 1fr);
     position: relative;
@@ -10,11 +18,11 @@ export default css`
     align-items: start;
     gap: 0;
   }
-  .repository #diff-container:has(#diff-file-tree.tw-hidden) {
+  .repository #diff-container.diff-file-tree-hidden {
     grid-template-columns: minmax(0, 1fr);
   }
-  .repository #diff-container:has(#diff-file-tree.tw-hidden) > .diff-file-tree-panel,
-  .repository #diff-container:has(#diff-file-tree.tw-hidden) > .resizable-divider {
+  .repository #diff-container.diff-file-tree-hidden > .diff-file-tree-panel,
+  .repository #diff-container.diff-file-tree-hidden > .resizable-divider {
     display: none;
   }
   .repository .diff-file-tree-panel {
@@ -126,7 +134,7 @@ export default css`
     .repository #diff-container.diff-mobile-tree-open .diff-code-search {
       display: none;
     }
-    .repository #diff-container:has(> .diff-file-tree-panel) {
+    .repository #diff-container.diff-has-file-tree {
       display: block;
     }
     .repository #diff-container.diff-mobile-tree-open {

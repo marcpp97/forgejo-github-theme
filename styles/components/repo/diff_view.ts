@@ -61,11 +61,8 @@ export default css`
     flex: 0 0 16px;
     margin-left: 4px;
   }
-  .repository #diff-container .diff-content-controls {
-    justify-content: flex-start;
-  }
   .diff-content-controls-right {
-    margin-left: 0;
+    margin-left: auto;
   }
   .diff-code-search {
     display: flex;

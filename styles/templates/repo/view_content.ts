@@ -412,33 +412,12 @@ const repoToolbarDetails = css`
     line-height: 21px;
   }
 
-  .page-content.repository.file.list .repo-about-modal-body input:is([name="description"], [name="website"]) {
+  .page-content.repository.file.list .repo-about-modal-body input:is([name="description"], [name="website"], [name="topics"]) {
     box-sizing: border-box;
     font-size: 14px;
     height: 32px;
     line-height: 20px;
     padding: 5px 12px;
-  }
-
-  .page-content.repository.file.list .repo-about-topics-input {
-    align-content: flex-start;
-    align-items: center;
-    box-sizing: border-box;
-    font-size: 12px;
-    line-height: 20px;
-    min-height: 34px;
-    padding: 6px 0 6px 12px;
-  }
-
-  .page-content.repository.file.list .repo-about-topics-input > input.search {
-    flex: 1 1 120px;
-    font-size: 12px;
-    height: 20px;
-    line-height: 20px;
-    margin: 0 12px 0 0;
-    min-width: 120px;
-    padding: 0;
-    width: auto !important;
   }
 
   .page-content.repository.file.list .repo-about-error {

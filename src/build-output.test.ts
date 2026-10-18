@@ -437,8 +437,8 @@ describe("Forgejo 15 native integration", () => {
     expect(repoContentStyle).toContain(".repo-about-block > .repo-about-heading");
     expect(repoContentStyle).toContain("> .repo-description.no-description");
     expect(repoContentStyle).toContain("font-style: italic;");
-    expect(repoContentStyle).toContain("min-height: 34px;");
-    expect(repoContentStyle).toContain("flex: 1 1 120px;");
+    expect(sidebarTemplate).toContain('name="topics" type="text" value="{{StringUtils.Join .Topics ","}}"');
+    expect(repoContentStyle).toContain('input:is([name="description"], [name="website"], [name="topics"])');
     expect(repoContentStyle).toContain("> .ui.dropdown.selection");
     expect(repoContentStyle).toContain("border-radius: 0 !important;");
   });

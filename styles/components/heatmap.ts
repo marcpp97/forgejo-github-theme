@@ -81,8 +81,9 @@ const heatmap = css`
       }
     }
   }
-  /* Forgejo's heatmap tooltip is unthemed; scope the GitHub treatment to the heatmap page. */
-  body:has(#user-heatmap) .tippy-box:not([data-theme]) {
+  /* Forgejo's own tooltips always carry data-theme, so an unthemed box is the heatmap's. A body:has() guard here
+     would restyle the whole document on every DOM change. */
+  .tippy-box:not([data-theme]) {
     background-color: ${themeVars.color.tooltip.bg};
     color: ${themeVars.color.tooltip.text};
     border: 0;

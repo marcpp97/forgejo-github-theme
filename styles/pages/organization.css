@@ -1,5 +1,5 @@
 /* Organization templates retain Forgejo's routes, permissions, and form handlers. */
-body:has(.organization-global-header) .page-content:is(.organization, .packages) {
+.organization-global-header ~ .page-content:is(.organization, .packages) {
   padding-top: 24px;
 }
 
@@ -7,7 +7,7 @@ body:has(.organization-global-header) .page-content:is(.organization, .packages)
   margin-left: 0 !important;
 }
 
-body:has(.organization-global-header) .page-content:is(.organization, .packages) > .ui.container {
+.organization-global-header ~ .page-content:is(.organization, .packages) > .ui.container {
   width: calc(100% - 64px) !important;
   max-width: 1248px !important;
   margin-top: 0;
@@ -358,7 +358,7 @@ body:has(.organization-global-header) .page-content:is(.organization, .packages)
 }
 
 @media (max-width: 767px) {
-  body:has(.organization-global-header) .page-content:is(.organization, .packages) > .ui.container {
+  .organization-global-header ~ .page-content:is(.organization, .packages) > .ui.container {
     width: calc(100% - 32px) !important;
   }
 
@@ -438,7 +438,7 @@ body:has(.organization-global-header) .page-content:is(.organization, .packages)
   line-height: 32px;
 }
 
-body:has(.organization-global-header) .page-content.organization.new.team > .ui.container {
+.organization-global-header ~ .page-content.organization.new.team > .ui.container {
   max-width: 768px !important;
 }
 

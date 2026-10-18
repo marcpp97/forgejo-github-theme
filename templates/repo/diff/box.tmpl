@@ -1,4 +1,4 @@
-{{$showFileTree := (and (not .DiffNotAvailable) (gt .Diff.NumFiles 0))}}
+{{$showFileTree := (and (not .DiffNotAvailable) (gt .DiffMetadata.TotalNumberOfFiles 0))}}
 <div>
 	{{if not .DiffNotAvailable}}
 		{{if and .IsShowingOnlySingleCommit .PageIsPullFiles}}
@@ -11,14 +11,13 @@
 			</div>
 		{{end}}
 		<script id="diff-data-script" type="module">
-			const diffDataFiles = [{{range $i, $file := .Diff.Files}}{Name:"{{$file.Name}}",NameHash:"{{$file.NameHash}}",Type:{{$file.Type}},IsBin:{{$file.IsBin}},Addition:{{$file.Addition}},Deletion:{{$file.Deletion}},IsViewed:{{$file.IsViewed}}},{{end}}];
+			const diffDataFiles = [{{range $i, $file := .DiffFileMetadata}}{Name:"{{$file.Name}}",NameHash:"{{$file.NameHash}}",Type:{{$file.Type}},OnPage:{{$file.OnPage}},IsViewed:{{$file.IsViewed}}},{{end}}];
 			const diffData = {
-				isIncomplete: {{.Diff.IsIncomplete}},
 				tooManyFilesMessage: "{{ctx.Locale.Tr "repo.diff.too_many_files"}}",
 				binaryFileMessage: "{{ctx.Locale.Tr "repo.diff.bin"}}",
 				showMoreMessage: "{{ctx.Locale.Tr "repo.diff.show_more"}}",
 				statisticsMessage: "{{ctx.Locale.Tr "repo.diff.stats_desc_file"}}",
-				linkLoadMore: "?skip-to={{.Diff.End}}&file-only=true",
+				currentPage: {{.DiffMetadata.CurrentPage}},
 			};
 
 			// for first time loading, the diffFileInfo is a plain object
@@ -42,7 +41,7 @@
 				const diffTreeVisible = localStorage?.getItem('diff_file_tree_visible') !== 'false';
 			</script>
 		{{end}}
-		<div id="diff-container">
+		<div id="diff-container"{{if $showFileTree}} class="diff-has-file-tree"{{end}}>
 			{{if $showFileTree}}
 				<div class="diff-file-tree-panel not-mobile">
 					<div class="diff-file-tree-scroll">
@@ -63,6 +62,7 @@
 				</div>
 				<script>
 					if (diffTreeVisible) document.getElementById('diff-file-tree').classList.remove('tw-hidden');
+					else document.getElementById('diff-container').classList.add('diff-file-tree-hidden');
 				</script>
 				<div class="resizable-divider not-mobile" role="separator" aria-label="Resize file tree" aria-orientation="vertical" aria-valuemin="200" aria-valuenow="296" aria-valuemax="480" data-resize-container="#diff-container" data-resize-content-minimum-width="320" data-resize-default-width="296" data-resize-maximum-width="480" data-resize-minimum-width="200" data-resize-storage-key="diff_file_tree_width" data-resize-variable="--diff-file-tree-width" tabindex="0"></div>
 			{{end}}
@@ -81,7 +81,11 @@
 								diffTreeBtn.querySelector(diffTreeIcon).classList.remove('tw-hidden');
 								diffTreeBtn.classList.toggle('active', diffTreeVisible);
 								diffTreeBtn.setAttribute('data-tooltip-content', diffTreeBtn.getAttribute(diffTreeVisible ? 'data-hide-text' : 'data-show-text'));
-								new MutationObserver(() => diffTreeBtn.classList.toggle('active', !document.getElementById('diff-file-tree').classList.contains('tw-hidden'))).observe(document.getElementById('diff-file-tree'), {attributes: true, attributeFilter: ['class']});
+								new MutationObserver(() => {
+									const treeHidden = document.getElementById('diff-file-tree').classList.contains('tw-hidden');
+									diffTreeBtn.classList.toggle('active', !treeHidden);
+									document.getElementById('diff-container').classList.toggle('diff-file-tree-hidden', treeHidden);
+								}).observe(document.getElementById('diff-file-tree'), {attributes: true, attributeFilter: ['class']});
 							</script>
 						{{end}}
                         <div class="diff-code-search">
@@ -93,9 +97,9 @@
 						{{if and .PageIsPullFiles $.SignedUserID (not .IsArchived) (not .DiffNotAvailable)}}
 							<div class="not-mobile tw-flex tw-items-center tw-flex-col tw-whitespace-nowrap tw-mr-1">
 								<label for="viewed-files-summary" id="viewed-files-summary-label" data-text-changed-template="{{ctx.Locale.Tr "repo.pulls.viewed_files_label"}}">
-									{{ctx.Locale.Tr "repo.pulls.viewed_files_label" .Diff.NumViewedFiles .Diff.NumFiles}}
+									{{ctx.Locale.Tr "repo.pulls.viewed_files_label" .DiffMetadata.NumberOfViewedFiles .DiffMetadata.TotalNumberOfFiles}}
 								</label>
-								<progress id="viewed-files-summary" value="{{.Diff.NumViewedFiles}}" max="{{.Diff.NumFiles}}"></progress>
+								<progress id="viewed-files-summary" value="{{.DiffMetadata.NumberOfViewedFiles}}" max="{{.DiffMetadata.TotalNumberOfFiles}}"></progress>
 							</div>
 						{{end}}
 						{{template "repo/diff/view_settings" .}}
@@ -186,15 +190,15 @@
 					</div>
 				{{end}}
 
-				{{if .Diff.IsIncomplete}}
-					<div class="diff-file-box diff-box file-content tw-mt-2" id="diff-incomplete">
-						<h4 class="ui top attached header tw-font-normal tw-flex tw-items-center tw-justify-between">
-							{{ctx.Locale.Tr "repo.diff.too_many_files"}}
-							<a class="ui basic tiny button" id="diff-show-more-files" data-href="?skip-to={{.Diff.End}}&file-only=true">{{ctx.Locale.Tr "repo.diff.show_more"}}</a>
-						</h4>
-					</div>
-				{{end}}
 			</div>
+			{{if .DiffMetadata.HasNext}}
+				<div class="diff-file-box diff-box file-content tw-mt-2" id="diff-incomplete">
+					<h4 class="ui top attached header tw-font-normal tw-flex tw-items-center tw-justify-between">
+						{{ctx.Locale.Tr "repo.diff.too_many_files"}}
+						<a class="ui basic tiny button" id="diff-show-more-files" data-href="?{{range $i, $f := .FileSelection}}{{if $i}}&{{end}}files={{$f}}{{end}}&diff-page={{len (printf "a%*s" .DiffMetadata.CurrentPage "")}}&file-only=true">{{ctx.Locale.Tr "repo.diff.show_more"}}</a>
+					</h4>
+				</div>
+			{{end}}
 		{{end}}
 		</div>
 			</div>

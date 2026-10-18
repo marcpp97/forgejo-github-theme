@@ -1,6 +1,6 @@
 /* Releases, tags and the release form. Kept as a page stylesheet, outside the size-limited theme files. */
 
-body:has(.page-content.repository.github-releases) .repository-content-header {
+.page-content.repository.github-releases .repository-content-header {
   display: none;
 }
 .page-content.repository.github-releases > .ui.container {
@@ -635,7 +635,7 @@ body:has(.page-content.repository.github-releases) .repository-content-header {
   }
 }
 /* New and edit release: GitHub's form page, on Forgejo's own template. */
-body:has(.page-content.repository.new.release) .repository-content-header {
+.page-content.repository.new.release .repository-content-header {
   display: none;
 }
 .page-content.repository.new.release {
@@ -711,7 +711,7 @@ body:has(.page-content.repository.new.release) .repository-content-header {
     font-weight: 500;
   }
 }
-body:has(.page-content.repository.github-tags) .repository-content-header {
+.page-content.repository.github-tags .repository-content-header {
   display: none;
 }
 .page-content.repository.github-tags > .ui.container {

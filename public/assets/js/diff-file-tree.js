@@ -54,6 +54,7 @@
     const data = files();
     const matching = data.filter(matches);
     const byHash = new Map(data.map(file => [`#diff-${file.NameHash}`, file]));
+    const byName = new Map(data.map(file => [file.Name, file]));
     const counts = new Map();
     for (const file of data) counts.set(extension(file.Name), (counts.get(extension(file.Name)) || 0) + 1);
     const key = JSON.stringify([...counts]);
@@ -105,7 +106,9 @@
           // Reveal matching descendants when searching, including Vue's lazy subtrees.
           if (revealMatches && visible && row.getAttribute("aria-expanded") === "false") row.click();
         } else if (row.matches(".item-file")) {
-          const file = byHash.get(row.getAttribute("href"));
+          // Forgejo 17 tree items have no href; remember the path before the title below replaces the name.
+          row.dataset.diffPath ||= prefix + (row.querySelector("span")?.textContent.trim() || row.title);
+          const file = byName.get(row.dataset.diffPath);
           row.toggleAttribute("data-tree-filtered", file ? !matches(file) : false);
           row.setAttribute("role", "treeitem");
           row.setAttribute("aria-level", level);

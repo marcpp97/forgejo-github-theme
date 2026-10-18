@@ -177,7 +177,7 @@
 				</div>
 				{{if not .DiffNotAvailable}}
 					<div class="commit-stats-row">
-						<div class="commit-files-changed">{{.Diff.NumFiles}} {{if eq .Diff.NumFiles 1}}file{{else}}files{{end}} changed</div>
+						<div class="commit-files-changed">{{.DiffMetadata.TotalNumberOfFiles}} {{if eq .DiffMetadata.TotalNumberOfFiles 1}}file{{else}}files{{end}} changed</div>
 						{{template "repo/diff/change_summary" dict "Addition" .Diff.TotalAddition "Deletion" .Diff.TotalDeletion}}
 					</div>
 				{{end}}

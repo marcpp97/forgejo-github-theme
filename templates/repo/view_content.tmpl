@@ -47,15 +47,15 @@
 
 		{{if and .CanWriteCode .IsViewBranch (not .Repository.IsMirror) (not .Repository.IsArchived) (not .IsViewFile)}}
 			<button class="ui dropdown basic compact jump button repo-add-file"{{if not .Repository.CanEnableEditor}} disabled{{end}}>
-				{{ctx.Locale.Tr "repo.editor.add_file"}}
+				{{ctx.Locale.Tr "file_editor.add_file"}}
 				{{svg "octicon-triangle-down" 14 "dropdown icon"}}
 				<div class="menu">
 					<a class="item" href="{{.RepoLink}}/_new/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">
-						{{svg "octicon-plus" 16}}{{ctx.Locale.Tr "repo.editor.new_file"}}
+						{{svg "octicon-plus" 16}}{{ctx.Locale.Tr "file_editor.new_file"}}
 					</a>
 					{{if .RepositoryUploadEnabled}}
 					<a class="item" href="{{.RepoLink}}/_upload/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">
-						{{svg "octicon-upload" 16}}{{ctx.Locale.Tr "repo.editor.upload_file"}}
+						{{svg "octicon-upload" 16}}{{ctx.Locale.Tr "file_editor.upload_file"}}
 					</a>
 					{{end}}
 					<a class="item" href="{{.RepoLink}}/_diffpatch/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">
@@ -70,8 +70,8 @@
             <div class="theme-menu-popover">
                 <a href="{{.Repository.Link}}/find/{{.BranchNameSubURL}}">{{svg "octicon-search" 16}}Go to file</a>
                 {{if and .CanWriteCode .IsViewBranch (not .Repository.IsMirror) (not .Repository.IsArchived) (not .IsViewFile)}}
-                    <a href="{{.RepoLink}}/_new/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">{{svg "octicon-plus" 16}}{{ctx.Locale.Tr "repo.editor.new_file"}}</a>
-                    {{if .RepositoryUploadEnabled}}<a href="{{.RepoLink}}/_upload/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">{{svg "octicon-upload" 16}}{{ctx.Locale.Tr "repo.editor.upload_file"}}</a>{{end}}
+                    <a href="{{.RepoLink}}/_new/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">{{svg "octicon-plus" 16}}{{ctx.Locale.Tr "file_editor.new_file"}}</a>
+                    {{if .RepositoryUploadEnabled}}<a href="{{.RepoLink}}/_upload/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">{{svg "octicon-upload" 16}}{{ctx.Locale.Tr "file_editor.upload_file"}}</a>{{end}}
                     <a href="{{.RepoLink}}/_diffpatch/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">{{svg "octicon-diff" 16}}{{ctx.Locale.Tr "repo.editor.patch"}}</a>
                 {{end}}
             </div>
