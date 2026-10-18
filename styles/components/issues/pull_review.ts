@@ -189,9 +189,6 @@ export default css`
     &.files .pull.tabs.container {
       margin-bottom: 0;
     }
-    &.files #diff-container {
-      border-top: 1px solid ${themeVars.color.light.border};
-    }
     &.github-conversation .issue-content {
       grid-template-columns: minmax(0, 1fr) 320px;
       gap: 24px;

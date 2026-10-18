@@ -57,9 +57,17 @@
 				{{if .HeadBranchLink}}
 					{{$headHref = HTMLFormat `<a href="%s">%s</a>` .HeadBranchLink $headHref}}
 				{{end}}
+				{{/* GitHub's English sentence reads "into <base> from <head>", with the copy button outside the branch label.
+					Other languages keep Forgejo's translated sentence, which needs the button inside the head argument. */}}
+				{{$githubOrder := eq (slice ctx.Locale.Lang 0 2) "en"}}
+				{{$copyBranch := ""}}
 				{{if not .MadeUsingAGit}}
-					{{$headHref = HTMLFormat `%s <button class="btn interact-fg" data-tooltip-content="%s" data-clipboard-text="%s">%s</button>` $headHref (ctx.Locale.Tr "copy_branch") .HeadTarget (svg "octicon-copy" 14)}}
+					{{$copyBranch = HTMLFormat `<button class="btn interact-fg" data-tooltip-content="%s" data-clipboard-text="%s">%s</button>` (ctx.Locale.Tr "copy_branch") .HeadTarget (svg "octicon-copy" 14)}}
+					{{if not $githubOrder}}
+						{{$headHref = HTMLFormat `%s %s` $headHref $copyBranch}}
+					{{end}}
 				{{end}}
+				{{$commitsWord := "commits"}}{{if eq .NumCommits 1}}{{$commitsWord = "commit"}}{{end}}
 				{{$baseHref := .BaseTarget}}
 				{{if .BaseBranchLink}}
 					{{$baseHref = HTMLFormat `<a href="%s">%s</a>` .BaseBranchLink $baseHref}}
@@ -68,10 +76,10 @@
 					{{$mergedStr:= DateUtils.TimeSince .Issue.PullRequest.MergedUnix}}
 					{{if .Issue.OriginalAuthor}}
 						{{.Issue.OriginalAuthor}}
-						<span class="pull-desc">{{ctx.Locale.TrPluralString .NumCommits "repo.pulls.merged_title_desc" .NumCommits $headHref $baseHref $mergedStr}}</span>
+						<span class="pull-desc">{{if $githubOrder}}merged {{.NumCommits}} {{$commitsWord}} into <code>{{$baseHref}}</code> from <code>{{$headHref}}</code>{{$copyBranch}} {{$mergedStr}}{{else}}{{ctx.Locale.TrPluralString .NumCommits "repo.pulls.merged_title_desc" .NumCommits $headHref $baseHref $mergedStr}}{{end}}</span>
 					{{else}}
 						<a {{if gt .Issue.PullRequest.Merger.ID 0}}href="{{.Issue.PullRequest.Merger.HomeLink}}"{{end}}>{{.Issue.PullRequest.Merger.GetDisplayName}}</a>
-						<span class="pull-desc">{{ctx.Locale.TrPluralString .NumCommits "repo.pulls.merged_title_desc" .NumCommits $headHref $baseHref $mergedStr}}</span>
+						<span class="pull-desc">{{if $githubOrder}}merged {{.NumCommits}} {{$commitsWord}} into <code>{{$baseHref}}</code> from <code>{{$headHref}}</code>{{$copyBranch}} {{$mergedStr}}{{else}}{{ctx.Locale.TrPluralString .NumCommits "repo.pulls.merged_title_desc" .NumCommits $headHref $baseHref $mergedStr}}{{end}}</span>
 					{{end}}
 					{{if .MadeUsingAGit}}
 						{{/* TODO: Move documentation link to the instructions at the bottom of the PR, show instructions when clicking label */}}
@@ -84,11 +92,11 @@
 					{{end}}
 				{{else}}
 					{{if .Issue.OriginalAuthor}}
-						<span id="pull-desc-display" class="pull-desc">{{.Issue.OriginalAuthor}} {{ctx.Locale.TrPluralString .NumCommits "repo.pulls.title_desc" .NumCommits $headHref $baseHref "branch_target"}}</span>
+						<span id="pull-desc-display" class="pull-desc">{{.Issue.OriginalAuthor}} {{if $githubOrder}}wants to merge {{.NumCommits}} {{$commitsWord}} into <code id="branch_target">{{$baseHref}}</code> from <code>{{$headHref}}</code>{{$copyBranch}}{{else}}{{ctx.Locale.TrPluralString .NumCommits "repo.pulls.title_desc" .NumCommits $headHref $baseHref "branch_target"}}{{end}}</span>
 					{{else}}
 						<span id="pull-desc-display" class="pull-desc">
 							<a {{if gt .Issue.Poster.ID 0}}href="{{.Issue.Poster.HomeLink}}"{{end}}>{{.Issue.Poster.GetDisplayName}}</a>
-							{{ctx.Locale.TrPluralString .NumCommits "repo.pulls.title_desc" .NumCommits $headHref $baseHref "branch_target"}}
+							{{if $githubOrder}}wants to merge {{.NumCommits}} {{$commitsWord}} into <code id="branch_target">{{$baseHref}}</code> from <code>{{$headHref}}</code>{{$copyBranch}}{{else}}{{ctx.Locale.TrPluralString .NumCommits "repo.pulls.title_desc" .NumCommits $headHref $baseHref "branch_target"}}{{end}}
 						</span>
 					{{end}}
 					{{if .MadeUsingAGit}}

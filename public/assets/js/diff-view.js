@@ -104,11 +104,50 @@
   document
     .getElementById("diff-minimize-comments")
     ?.addEventListener("change", event => container.classList.toggle("diff-minimize-comments", event.target.checked));
+  function setContextExpanded(box, expanded) {
+    const button = box.querySelector(".diff-expand-file");
+    box.toggleAttribute("data-context-expanded", expanded);
+    if (!button) return;
+    const label = button.dataset[expanded ? "collapseLabel" : "expandLabel"];
+    // Forgejo moves title into its own tooltip attribute, so keep both in sync.
+    button.title = label;
+    if (button.hasAttribute("data-tooltip-content")) button.setAttribute("data-tooltip-content", label);
+    button.setAttribute("aria-label", `${label}: ${box.dataset.newFilename}`);
+    if (expanded) button.hidden = false;
+  }
+  // GitHub's "Collapse non-diff lines": reload the file's original diff through Forgejo's own "Load diff"
+  // handler, which also re-enables htmx on the restored expander buttons.
+  function collapseContext(box, button) {
+    const source = box.querySelector(".diff-file-body > .file-body");
+    if (!source) return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("file-only", "true");
+    params.delete("files");
+    params.append("files", box.dataset.newFilename);
+    if (box.dataset.oldFilename && box.dataset.oldFilename !== box.dataset.newFilename)
+      params.append("files", box.dataset.oldFilename);
+    const holder = document.createElement("div");
+    holder.className = "diff-file-body binary";
+    holder.textContent = "Loading…";
+    const link = document.createElement("a");
+    link.className = "diff-load-button tw-hidden";
+    link.dataset.href = `?${params}`;
+    holder.append(link);
+    source.replaceChildren(holder);
+    setContextExpanded(box, false);
+    box.setAttribute("data-context-reloading", "");
+    button.disabled = true;
+    link.click();
+  }
   container.addEventListener("click", async event => {
     const button = event.target.closest(".diff-expand-file");
     if (!button) return;
     const box = button.closest(".diff-file-box");
     if (box.dataset.folded === "true") box.querySelector(".fold-file").click();
+    if (box.hasAttribute("data-context-expanded")) {
+      collapseContext(box, button);
+      return;
+    }
     button.disabled = true;
     const requested = new Set();
     try {
@@ -132,6 +171,7 @@
         });
         if (!success) break;
       }
+      if (requested.size) setContextExpanded(box, true);
     } finally {
       button.disabled = false;
     }
@@ -144,7 +184,15 @@
     }
     for (const box of boxes?.querySelectorAll(".diff-file-box") || []) {
       const expand = box.querySelector(".diff-expand-file");
-      if (expand) expand.hidden = !box.querySelector(".code-expander-button");
+      if (expand) {
+        const expanders = Boolean(box.querySelector(".code-expander-button"));
+        expand.hidden = !expanders && !box.hasAttribute("data-context-expanded");
+        // Re-enabled once Forgejo has restored the collapsed diff.
+        if (expanders && box.hasAttribute("data-context-reloading")) {
+          box.removeAttribute("data-context-reloading");
+          expand.disabled = false;
+        }
+      }
       const button = box.querySelector(".fold-file");
       if (!button) continue;
       const expanded = box.dataset.folded !== "true";

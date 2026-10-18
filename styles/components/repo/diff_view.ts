@@ -57,6 +57,14 @@ export default css`
   .diff-expand-file[hidden] {
     display: none;
   }
+  /* Once every line is expanded the button becomes GitHub's "Collapse non-diff lines". */
+  .diff-expand-file > .diff-collapse-icon,
+  .diff-file-box[data-context-expanded] .diff-expand-file > .diff-expand-icon {
+    display: none;
+  }
+  .diff-file-box[data-context-expanded] .diff-expand-file > .diff-collapse-icon {
+    display: inline-block;
+  }
   .diff-file-status {
     flex: 0 0 16px;
     margin-left: 4px;
@@ -111,6 +119,11 @@ export default css`
     &::after {
       content: var(--diff-commit-label, "");
     }
+  }
+  /* Forgejo opens the commit menu to the left, as its button sat on the right; it now sits on the left. */
+  #diff-commit-select #diff-commit-selector-menu {
+    left: 0 !important;
+    right: auto !important;
   }
   .diff-code-search {
     display: flex;
