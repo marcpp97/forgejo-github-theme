@@ -23,6 +23,9 @@ import { animationDown } from "@lutinglt/gitea-github-theme/styles/common";
 const modal = css`
   .ui.ui.modal {
     ${animationDown};
+    /* Fomantic's will-change keeps the modal on its own GPU layer; centred at a fractional position, its text
+       renders blurry. */
+    will-change: auto;
     border: 1.5px solid ${themeVars.color.light.border};
     border-radius: 12px;
 

@@ -195,6 +195,13 @@ it("defines the colour variables Forgejo 17 only sets in its own themes", () => 
   }
 });
 
+it("resets Fomantic's will-change on dropdown menus and modals", () => {
+  // will-change keeps the element on its own GPU layer; at a fractional position its text renders blurry.
+  for (const file of ["styles/public/dropdown/dropdown.ts", "styles/public/modal.ts"]) {
+    expect(fs.readFileSync(path.join(ROOT_DIR, file), "utf-8"), file).toContain("will-change: auto;");
+  }
+});
+
 it("keeps :has() off elements that wrap a whole page", () => {
   // Chrome re-evaluates a :has() whenever its subtree changes. On an element that wraps the page, a folded diff file,
   // an opened comment editor or a selected line in a large file restyles every element on the page.

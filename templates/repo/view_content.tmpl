@@ -177,6 +177,17 @@
 						window.updateCloneStates();
 					})();
 				</script>
+				<script>
+					// Open like the Forgejo dropdowns next to it ("Add file"). A closed <details> keeps its content hidden with
+					// content-visibility, so a CSS animation plays only on the first open; run it on every toggle instead.
+					document.querySelector('.repo-code-dropdown')?.addEventListener('toggle', (event) => {
+						if (!event.target.open || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+						event.target.querySelector(':scope > .content')?.animate(
+							[{opacity: 0, transform: 'translateY(-8px)'}, {opacity: 1, transform: 'translateY(0)'}],
+							{duration: 200, easing: 'cubic-bezier(0.33, 1, 0.68, 1)'},
+						);
+					});
+				</script>
 			</details>
 		{{end}}
 	</div>
