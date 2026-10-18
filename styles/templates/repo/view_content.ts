@@ -179,7 +179,7 @@ const repoToolbarDetails = css`
       column-gap: 0;
       display: grid;
       grid-template-columns: max-content max-content max-content minmax(0, 1fr) 36px;
-      grid-template-rows: 32px 32px;
+      grid-template-rows: 32px 32px auto;
       height: auto !important;
       min-height: 72px;
       row-gap: 8px;
@@ -215,6 +215,20 @@ const repoToolbarDetails = css`
 
     & .repo-code-dropdown .clone-panel > #repo-clone-fj {
       grid-column: 3;
+    }
+
+    /* GitHub explains its CLI under the field: "Work fast with our official CLI. Learn more". */
+    & .repo-code-dropdown .clone-panel > .repo-clone-hint {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      margin: 0;
+      color: ${themeVars.color.text.light.num1};
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    & .repo-code-dropdown .clone-panel > .repo-clone-hint[hidden] {
+      display: none;
     }
 
     & .repo-code-dropdown .clone-panel > .primary:is(#repo-clone-https, #repo-clone-ssh, #repo-clone-fj) {

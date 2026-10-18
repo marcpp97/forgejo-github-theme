@@ -455,7 +455,7 @@ describe("Forgejo 15 native integration", () => {
     expect(repoContentTemplate).toContain('svg "octicon-terminal" 16');
     expect(repoContentStyle).toContain("border-radius: 12px;");
     expect(repoContentStyle).toContain("width: min(400px, calc(100vw - 32px));");
-    expect(repoContentStyle).toContain("grid-template-rows: 32px 32px;");
+    expect(repoContentStyle).toContain("grid-template-rows: 32px 32px auto;");
     expect(repoContentStyle).toContain("border-radius: ${otherThemeVars.border.radius} !important;");
     expect(repoContentStyle).toContain("font-size: 14px;");
     expect(repoContentStyle).toContain("padding: 0 !important;");

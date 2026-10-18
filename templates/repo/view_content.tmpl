@@ -101,7 +101,8 @@
 							</div>
 							<div class="clone-panel ui action tiny input">
 								{{template "repo/clone_buttons" .}}
-								<button class="ui small basic button" id="repo-clone-fj" type="button" data-fj-repo="{{.Repository.OwnerName}}/{{.Repository.Name}}">fj CLI</button>
+								<button class="ui small basic button" id="repo-clone-fj" type="button" data-fj-repo="{{.Repository.OwnerName}}/{{.Repository.Name}}">Forgejo CLI</button>
+								<p class="repo-clone-hint" id="repo-clone-fj-hint" hidden>Work fast with the Forgejo CLI. <a href="https://codeberg.org/forgejo-contrib/forgejo-cli" target="_blank" rel="noopener noreferrer">Learn more</a></p>
 							</div>
 						</div>
                         {{if and (not (StringUtils.HasPrefix .BranchNameSubURL "commit")) (or .CodeIndexerDisabled (and (not .TagName) (eq .Repository.DefaultBranch .BranchName)))}}
@@ -159,6 +160,8 @@
 							const fj = chosen();
 							fjButton.classList.toggle('primary', fj);
 							fjButton.classList.toggle('basic', !fj);
+							const hint = document.getElementById('repo-clone-fj-hint');
+							if (hint) hint.hidden = !fj;
 							if (!fj) return;
 							for (const button of document.querySelectorAll('#repo-clone-https, #repo-clone-ssh')) {
 								button.classList.replace('primary', 'basic');
