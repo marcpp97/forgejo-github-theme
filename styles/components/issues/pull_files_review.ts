@@ -24,12 +24,12 @@ export default css`
     height: 28px;
     min-height: 28px;
   }
-  /* "Viewed" is a small bordered button on GitHub. */
+  /* "Viewed" is a small bordered button on GitHub: the whole box toggles, and it turns blue once checked. */
   .diff-file-header .viewed-file-form {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    height: 28px;
+    gap: 6px;
+    height: 26px;
     padding: 0 8px;
     border: 1px solid ${themeVars.color.light.border};
     border-radius: ${otherThemeVars.border.radius};
@@ -37,6 +37,22 @@ export default css`
     color: ${themeVars.color.text.self};
     font-size: 12px;
     font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    & > input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      cursor: pointer;
+    }
+    &:hover {
+      background: ${themeVars.github.control.transparent.bgColor.hover};
+    }
+    &.viewed-file-checked-form {
+      border-color: ${themeVars.color.info.border};
+      background: ${themeVars.color.info.bg};
+      color: ${themeVars.color.info.text};
+    }
   }
   .review-box-panel {
     display: block;

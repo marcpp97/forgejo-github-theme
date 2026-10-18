@@ -96,8 +96,12 @@ export default css`
   .theme-menu-popover a > input {
     pointer-events: none;
   }
+  /* Forgejo spaces the boxes with an 8px flex gap; GitHub leaves 16px between files. */
+  .repository #diff-file-boxes {
+    gap: 16px;
+  }
   .repository #diff-file-boxes .diff-file-box {
-    margin: 0 0 16px !important;
+    margin: 0 !important;
     scroll-margin-top: 84px;
   }
   .repository #diff-file-boxes .diff-file-header {
@@ -105,9 +109,9 @@ export default css`
     border: 1px solid ${themeVars.color.light.border};
     border-radius: ${otherThemeVars.border.radius} ${otherThemeVars.border.radius} 0 0;
     box-sizing: border-box;
-    min-height: 46px;
+    min-height: 40px;
     margin: 0;
-    padding: 6px 8px;
+    padding: 4px 8px;
     gap: 8px;
     flex-wrap: nowrap;
     top: calc(var(--sticky-top-offset, 0px) + 66px);
@@ -141,6 +145,11 @@ export default css`
   .repository #diff-file-boxes .diff-file-header-actions {
     flex-wrap: nowrap;
     gap: 8px;
+  }
+  /* GitHub's file header buttons are 28px, which keeps the header at 40px. */
+  .repository #diff-file-boxes .diff-file-menu > .theme-icon-button {
+    width: 28px;
+    height: 28px;
   }
   .repository #diff-file-boxes .fold-file {
     display: inline-flex;

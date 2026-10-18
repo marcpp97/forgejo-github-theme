@@ -559,7 +559,7 @@ describe("Forgejo 15 native integration", () => {
     );
     expect(commitPageStyle).toContain("> .repository-content-header");
     const diffViewStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "components", "repo", "diff_view.ts"), "utf8");
-    expect(diffViewStyle).toContain("min-height: 46px;");
+    expect(diffViewStyle).toContain("min-height: 40px;");
     expect(diffBoxTemplate).toContain('template "repo/diff/file_header"');
     expect(commitPageTemplate).toContain('template "repo/diff/change_summary"');
   });

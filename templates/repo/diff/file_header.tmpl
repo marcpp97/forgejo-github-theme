@@ -41,6 +41,12 @@
 								{{if and $isReviewFile $file.HasChangedSinceLastReview}}
 									<span class="changed-since-last-review unselectable not-mobile">{{ctx.Locale.Tr "repo.pulls.has_changed_since_last_review"}}</span>
 								{{end}}
+								{{if $isReviewFile}}
+									<label data-link="{{$.Issue.Link}}/viewed-files" data-headcommit="{{$.AfterCommitID}}" class="viewed-file-form unselectable{{if $file.IsViewed}} viewed-file-checked-form{{end}}">
+										<input type="checkbox" name="{{$file.GetDiffFileName}}" autocomplete="off"{{if $file.IsViewed}} checked{{end}}> {{ctx.Locale.Tr "repo.pulls.has_viewed_file"}}
+									</label>
+								{{end}}
+                                {{/* GitHub keeps the file menu last, after Viewed. */}}
                                 <details class="theme-menu diff-file-menu">
                                     <summary class="theme-icon-button" aria-label="More options">{{svg "octicon-kebab-horizontal" 16}}</summary>
                                     <div class="theme-menu-popover">
@@ -61,10 +67,5 @@
 								{{end}}
                                     </div>
                                 </details>
-								{{if $isReviewFile}}
-									<label data-link="{{$.Issue.Link}}/viewed-files" data-headcommit="{{$.AfterCommitID}}" class="viewed-file-form unselectable{{if $file.IsViewed}} viewed-file-checked-form{{end}}">
-										<input type="checkbox" name="{{$file.GetDiffFileName}}" autocomplete="off"{{if $file.IsViewed}} checked{{end}}> {{ctx.Locale.Tr "repo.pulls.has_viewed_file"}}
-									</label>
-								{{end}}
 							</div>
 						</div>
