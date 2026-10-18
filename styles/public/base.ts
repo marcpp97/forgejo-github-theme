@@ -28,6 +28,29 @@ const body = css`
   :root {
     --color-selection-bg: ${themeVars.color.primary.light.num1};
     --color-selection-fg: ${themeVars.color.white};
+    /*
+     * Forgejo 17 colours .text.green/.red/.purple/.orange, markdown alerts and more with --color-thin-*, which it
+     * derives from Forgejo-theme-only inputs and no longer falls back from. Undefined, every such icon turned white.
+     * Forgejo 16 fell back to the plain colours, so use those.
+     */
+    --color-thin-green: var(--color-green);
+    --color-thin-red: var(--color-red);
+    --color-thin-purple: var(--color-purple);
+    --color-thin-violet: var(--color-violet);
+    --color-thin-orange: var(--color-orange);
+    --color-thin-blue: var(--color-blue);
+    /* Other variables only Forgejo's own themes define. */
+    --color-indicator-offline: var(--color-text-light-2);
+    --color-indicator-offline-20: color-mix(in srgb, var(--color-indicator-offline) 10%, transparent);
+    --color-indicator-idle: var(--color-green);
+    --color-indicator-idle-20: color-mix(in srgb, var(--color-indicator-idle) 10%, transparent);
+    --color-indicator-active: var(--color-blue);
+    --color-indicator-active-20: color-mix(in srgb, var(--color-indicator-active) 20%, transparent);
+    --checkerboard-color-1: var(--color-box-body);
+    --checkerboard-color-2: var(--color-secondary);
+    --fancy-card-bg: var(--color-box-body);
+    --fancy-card-border: var(--color-light-border);
+    --color-light-mimic-enabled: var(--color-button);
     --fonts-proportional:
       "Mona Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
     --fonts-monospace:

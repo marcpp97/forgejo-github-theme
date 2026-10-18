@@ -168,6 +168,33 @@ it("stamps every template asset link with the hash of the shipped file", async (
   }
 });
 
+it("defines the colour variables Forgejo 17 only sets in its own themes", () => {
+  // Forgejo 17 reads these without a fallback (.text.green, Actions runner status, image diffs...). Undefined, the
+  // coloured status icons all turned white.
+  const required = [
+    "--color-thin-green",
+    "--color-thin-red",
+    "--color-thin-purple",
+    "--color-thin-violet",
+    "--color-thin-orange",
+    "--color-thin-blue",
+    "--color-indicator-offline",
+    "--color-indicator-idle",
+    "--color-indicator-active",
+    "--checkerboard-color-1",
+    "--checkerboard-color-2",
+    "--fancy-card-bg",
+    "--color-light-mimic-enabled",
+  ];
+  // Auto themes only import a light and a dark file.
+  const themes = fs.readdirSync(DIST_DIR).filter(name => /^theme-.+\.css$/.test(name) && !name.endsWith("-auto.css"));
+  expect(themes.length).toBeGreaterThan(0);
+  for (const theme of themes) {
+    const css = fs.readFileSync(path.join(DIST_DIR, theme), "utf-8");
+    for (const variable of required) expect(css, `${theme} defines ${variable}`).toContain(`${variable}:`);
+  }
+});
+
 it("keeps :has() off elements that wrap a whole page", () => {
   // Chrome re-evaluates a :has() whenever its subtree changes. On an element that wraps the page, a folded diff file,
   // an opened comment editor or a selected line in a large file restyles every element on the page.

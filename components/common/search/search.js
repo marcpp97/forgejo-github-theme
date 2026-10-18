@@ -57,7 +57,8 @@
       const text = currentToken().text.toLowerCase();
       let any = false;
       for (const item of items) {
-        item.hidden = !item.dataset.insert.toLowerCase().startsWith(text);
+        const name = item.textContent.trim().toLowerCase();
+        item.hidden = !(item.dataset.insert.toLowerCase().startsWith(text) || name.startsWith(text));
         any ||= !item.hidden;
       }
       popup.hidden = document.activeElement !== input || text.includes(":") || !any;
