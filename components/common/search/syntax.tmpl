@@ -1,0 +1,15 @@
+{{/* GitHub lists the search qualifiers when the field gets focus; these are the ones Forgejo's issue search understands
+     (the entries of Forgejo's shared/search/issue/syntax dialog). search.js inserts data-insert at the caret. */}}
+<div class="theme-search-syntax" role="listbox" aria-label="{{ctx.Locale.Tr "search.syntax"}}" hidden>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="is:open ">{{svg "octicon-issue-opened" 16}}<code>is:open</code><span>{{ctx.Locale.Tr "repo.issues.open_title"}}</span></button>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="is:closed ">{{svg "octicon-issue-closed" 16}}<code>is:closed</code><span>{{ctx.Locale.Tr "repo.issues.closed_title"}}</span></button>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="is:all ">{{svg "octicon-tasklist" 16}}<code>is:all</code><span>{{ctx.Locale.Tr "repo.issues.all_title"}}</span></button>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="author:">{{svg "octicon-person" 16}}<code>author:</code><span>{{ctx.Locale.Tr "repo.issues.filter_poster.hint"}}</span></button>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="assignee:">{{svg "octicon-people" 16}}<code>assignee:</code><span>{{ctx.Locale.Tr "repo.issues.filter_assignee.hint"}}</span></button>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="review:">{{svg "octicon-eye" 16}}<code>review:</code><span>{{ctx.Locale.Tr "repo.issues.filter_reviewers.hint"}}</span></button>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="mentions:">{{svg "octicon-mention" 16}}<code>mentions:</code><span>{{ctx.Locale.Tr "repo.issues.filter_mention.hint"}}</span></button>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="sort:">{{svg "octicon-sort-desc" 16}}<code>sort:</code><span>{{ctx.Locale.Tr "repo.issues.filter_sort.hint_with_placeholder" (HTMLFormat "<code>created|comments|updated|deadline</code>")}}</span></button>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="modified:">{{svg "octicon-calendar" 16}}<code>modified:</code><span>{{ctx.Locale.Tr "repo.issues.filter_modified.hint"}}</span></button>
+	<button type="button" class="theme-search-syntax-item" role="option" data-insert="&quot;">{{svg "octicon-quote" 16}}<code>"…"</code><span>{{ctx.Locale.Tr "search.match_inside_quotes"}}</span></button>
+	<a class="theme-search-syntax-docs" href="{{AppDocsURL "user/search/issue-search/"}}" target="_blank" rel="noopener noreferrer">{{svg "octicon-question" 16}}{{ctx.Locale.Tr "search.syntax"}}</a>
+</div>

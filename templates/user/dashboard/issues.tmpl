@@ -35,11 +35,10 @@
 			<input type="hidden" name="project" value={{$.ProjectID}}>
 			<input type="hidden" name="state" value="{{$.State}}">
 			{{if .PageIsPulls}}
-				{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.pull_kind") "Tooltip" (ctx.Locale.Tr "search.verb")}}
+				{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.pull_kind") "Tooltip" (ctx.Locale.Tr "search.verb") "Syntax" true}}
 			{{else}}
-				{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.issue_kind") "Tooltip" (ctx.Locale.Tr "search.verb")}}
+				{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.issue_kind") "Tooltip" (ctx.Locale.Tr "search.verb") "Syntax" true}}
 			{{end}}
-			{{template "shared/search/issue/syntax"}}
 		</form>
 		<div id="issue-filters" class="issue-list-toolbar">
 			<div class="issue-list-toolbar-left">
