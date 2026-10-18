@@ -1,4 +1,6 @@
-{{$showFileTree := (and (not .DiffNotAvailable) (gt .DiffMetadata.TotalNumberOfFiles 0))}}
+{{/* Only the compare route sets CompareSeparator; GitHub's compare view has no file tree and a "Showing..." summary. */}}
+{{$isCompare := .CompareSeparator}}
+{{$showFileTree := (and (not .DiffNotAvailable) (gt .DiffMetadata.TotalNumberOfFiles 0) (not $isCompare))}}
 <div>
 	{{if not .DiffNotAvailable}}
 		{{if and .IsShowingOnlySingleCommit .PageIsPullFiles}}
@@ -40,6 +42,15 @@
 				// Default to true if unset. The tree and its toggle use this initial state.
 				const diffTreeVisible = localStorage?.getItem('diff_file_tree_visible') !== 'false';
 			</script>
+		{{end}}
+		{{if and $isCompare (not .DiffNotAvailable)}}
+			<div class="diff-compare-stats">
+				<span>{{svg "octicon-file-diff" 16}}Showing {{ctx.Locale.Tr "repo.diff.stats_desc" .DiffMetadata.TotalNumberOfFiles .Diff.TotalAddition .Diff.TotalDeletion}}.</span>
+				<div class="diff-compare-style">
+					<a class="{{if .IsSplitStyle}}active{{end}}" href="?style=split&amp;whitespace={{.WhitespaceBehavior}}">Split</a>
+					<a class="{{if not .IsSplitStyle}}active{{end}}" href="?style=unified&amp;whitespace={{.WhitespaceBehavior}}">Unified</a>
+				</div>
+			</div>
 		{{end}}
 		<div id="diff-container"{{if $showFileTree}} class="diff-has-file-tree"{{end}}>
 			{{/* GitHub's toolbar spans the tree and the files, in the first row of the #diff-container grid. */}}

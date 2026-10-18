@@ -169,3 +169,77 @@
 .page-content.github-pull-review #status-button[value="close"] > svg > * {
   visibility: hidden;
 }
+
+/* "base:" and "compare:" are muted in GitHub's branch buttons. */
+.page-content.github-compare .compare-ref-label {
+  color: var(--color-text-light-1);
+}
+
+/* "N commits · N files changed · N contributors" over the commits. */
+.page-content.github-compare .github-compare-summary {
+  display: flex;
+  justify-content: space-around;
+  gap: 16px;
+  margin: 0 0 16px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-light-border);
+  border-radius: var(--border-radius);
+  color: var(--color-text-light-1);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.page-content.github-compare .github-compare-summary > span > svg,
+.page-content.github-compare .diff-compare-stats > span > svg {
+  margin-right: 6px;
+  vertical-align: text-bottom;
+}
+
+.page-content.github-compare .github-compare-summary strong {
+  color: var(--color-text);
+}
+
+/* The diff: GitHub's "Showing N changed files..." row with Split/Unified, no review toolbar or file tree. The toolbar
+   stays in the page, hidden, as diff-view.js reads its search field and settings. */
+.page-content.github-compare #diff-container > .diff-content-controls {
+  display: none;
+}
+
+.page-content.github-compare #diff-container > #diff-content-container {
+  padding: 0;
+}
+
+.page-content.github-compare .diff-compare-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 8px 0 16px;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.page-content.github-compare .diff-compare-stats > span > strong:first-of-type {
+  color: var(--color-primary);
+}
+
+.page-content.github-compare .diff-compare-style {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: var(--border-radius);
+  background: var(--color-box-header);
+}
+
+.page-content.github-compare .diff-compare-style > a {
+  padding: 2px 8px;
+  border-radius: calc(var(--border-radius) - 2px);
+  color: var(--color-text);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.page-content.github-compare .diff-compare-style > a.active {
+  background: var(--color-body);
+  box-shadow: 0 0 0 1px var(--color-light-border);
+  font-weight: 600;
+}
