@@ -101,6 +101,7 @@
 							</div>
 							<div class="clone-panel ui action tiny input">
 								{{template "repo/clone_buttons" .}}
+								<button class="ui small basic button" id="repo-clone-fj" type="button" data-fj-repo="{{.Repository.OwnerName}}/{{.Repository.Name}}">fj CLI</button>
 							</div>
 						</div>
                         {{if and (not (StringUtils.HasPrefix .BranchNameSubURL "commit")) (or .CodeIndexerDisabled (and (not .TagName) (eq .Repository.DefaultBranch .BranchName)))}}
@@ -138,6 +139,41 @@
 					</div>
 				</div>
 				{{template "repo/clone_script" .}}{{/* Updates .js-clone-url and related elements. */}}
+				<script>
+					// GitHub offers its CLI next to HTTPS and SSH; Forgejo's is fj (forgejo-cli). Forgejo keeps the choice in
+					// localStorage and repaints through window.updateCloneStates, so wrap it to show the fj command instead.
+					(() => {
+						const fjButton = document.getElementById('repo-clone-fj');
+						if (!fjButton || !window.updateCloneStates) return;
+						const update = window.updateCloneStates;
+						const command = `fj repo clone ${window.location.host}/${fjButton.getAttribute('data-fj-repo')}`;
+						const chosen = () => {
+							try {
+								return localStorage.getItem('repo-clone-protocol') === 'fj';
+							} catch {
+								return false;
+							}
+						};
+						window.updateCloneStates = () => {
+							update();
+							const fj = chosen();
+							fjButton.classList.toggle('primary', fj);
+							fjButton.classList.toggle('basic', !fj);
+							if (!fj) return;
+							for (const button of document.querySelectorAll('#repo-clone-https, #repo-clone-ssh')) {
+								button.classList.replace('primary', 'basic');
+							}
+							document.getElementById('repo-clone-url').value = command;
+						};
+						fjButton.addEventListener('click', () => {
+							try {
+								localStorage.setItem('repo-clone-protocol', 'fj');
+							} catch {}
+							window.updateCloneStates();
+						});
+						window.updateCloneStates();
+					})();
+				</script>
 			</details>
 		{{end}}
 	</div>

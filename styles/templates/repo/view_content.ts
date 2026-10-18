@@ -178,7 +178,7 @@ const repoToolbarDetails = css`
       align-items: center;
       column-gap: 0;
       display: grid;
-      grid-template-columns: max-content max-content minmax(0, 1fr) 36px;
+      grid-template-columns: max-content max-content max-content minmax(0, 1fr) 36px;
       grid-template-rows: 32px 32px;
       height: auto !important;
       min-height: 72px;
@@ -187,7 +187,8 @@ const repoToolbarDetails = css`
     }
 
     & .repo-code-dropdown .clone-panel > #repo-clone-https,
-    & .repo-code-dropdown .clone-panel > #repo-clone-ssh {
+    & .repo-code-dropdown .clone-panel > #repo-clone-ssh,
+    & .repo-code-dropdown .clone-panel > #repo-clone-fj {
       background: transparent !important;
       border: 1px solid #0000 !important;
       border-radius: ${otherThemeVars.border.radius} !important;
@@ -212,13 +213,17 @@ const repoToolbarDetails = css`
       grid-column: 2;
     }
 
-    & .repo-code-dropdown .clone-panel > .primary:is(#repo-clone-https, #repo-clone-ssh) {
+    & .repo-code-dropdown .clone-panel > #repo-clone-fj {
+      grid-column: 3;
+    }
+
+    & .repo-code-dropdown .clone-panel > .primary:is(#repo-clone-https, #repo-clone-ssh, #repo-clone-fj) {
       background: light-dark(${themeVars.github.controlKnob.bgColor.rest}, ${themeVars.color.hover.self}) !important;
       border-color: ${themeVars.color.secondary.self} !important;
       font-weight: 600;
     }
 
-    & .repo-code-dropdown .clone-panel > .basic:is(#repo-clone-https, #repo-clone-ssh):hover {
+    & .repo-code-dropdown .clone-panel > .basic:is(#repo-clone-https, #repo-clone-ssh, #repo-clone-fj):hover {
       background: ${themeVars.github.control.transparent.bgColor.hover} !important;
     }
 
@@ -226,9 +231,9 @@ const repoToolbarDetails = css`
       background: ${themeVars.color.box.header};
       border: 1px solid ${themeVars.color.light.border};
       border-radius: ${otherThemeVars.border.radius};
-      font-family: var(--font-monospace);
+      font-family: var(--fonts-monospace);
       font-size: 12px;
-      grid-column: 1 / 4;
+      grid-column: 1 / 5;
       grid-row: 2;
       height: 32px;
       min-width: 0;
@@ -249,7 +254,7 @@ const repoToolbarDetails = css`
       display: grid;
       font-size: 14px;
       gap: 0;
-      grid-column: 4;
+      grid-column: 5;
       grid-row: 2;
       height: 32px;
       justify-content: center;
