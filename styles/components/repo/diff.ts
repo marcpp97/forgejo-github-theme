@@ -124,6 +124,23 @@ const diffFileBoxHeader = css`
 const diffFileBoxCodeDiff = css`
   /* 差异对比文件盒子 */
   .repository .diff-file-box {
+    /* GitHub's line comment button is a small blue square, not the theme's 30px green primary button. */
+    .code-diff .ui.primary.button.add-code-comment {
+      min-height: 0;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      color: ${themeVars.github.fgColor.onEmphasis};
+      background-color: ${themeVars.github.bgColor.accent.emphasis};
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
     .code-diff {
       /* 隐藏多余的空白 */
       /* 合并视图的第三列 */

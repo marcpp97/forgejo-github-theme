@@ -168,6 +168,22 @@ it("stamps every template asset link with the hash of the shipped file", async (
   }
 });
 
+it("keeps :has() off elements that wrap a whole page", () => {
+  // Chrome re-evaluates a :has() whenever its subtree changes. On an element that wraps the page, a folded diff file,
+  // an opened comment editor or a selected line in a large file restyles every element on the page.
+  const output = path.join(DIST_DIR, "forgejo", "public", "assets", "css");
+  const pageWrapper = /(?:^|[\s,{}>~+(])(?:body|html|:root|\.page-content|\.ui\.container|#diff-container)(?:[.#[:][^\s,{}>~+]*)?:has\(/m;
+  const files = fs
+    .readdirSync(output, { recursive: true })
+    .map(String)
+    .filter(file => file.endsWith(".css"));
+  expect(files.length).toBeGreaterThan(0);
+  for (const file of files) {
+    const match = fs.readFileSync(path.join(output, file), "utf-8").match(pageWrapper);
+    expect(match?.[0], `${file} puts :has() on a page wrapper`).toBeUndefined();
+  }
+});
+
 it("versions the theme stylesheet link and the auto themes' imports", async () => {
   const { createHash } = await import("node:crypto");
   const version = (...files: string[]) => {
@@ -379,9 +395,8 @@ describe("Forgejo 15 native integration", () => {
     const compactMenu = fs.readFileSync(path.join(ROOT_DIR, "styles", "public", "menu", "compact_menu.ts"), "utf-8");
     const notification = fs.readFileSync(path.join(ROOT_DIR, "styles", "components", "notification.ts"), "utf-8");
 
-    expect(compactMenu).toContain(
-      ".page-content.user.notification > .ui.container:has(> .ui.bottom.active.tab.segment)"
-    );
+    expect(compactMenu).toContain(".page-content.user.notification:not(#notification_div) > .ui.container,");
+    expect(compactMenu).not.toContain(".ui.container:has(");
     expect(compactMenu).not.toContain(".page-content.user.notification > .ui.container,");
     expect(notification).toContain("--switch-item-min-height: 32px;");
     expect(notification).toContain("background: light-dark(");
