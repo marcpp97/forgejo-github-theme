@@ -13,6 +13,8 @@ export default css`
   .repository #diff-container.diff-has-file-tree {
     display: grid;
     grid-template-columns: var(--diff-file-tree-width, 296px) 1px minmax(0, 1fr);
+    /* Row 1 is the toolbar spanning every column, row 2 the tree, divider and files. */
+    grid-template-rows: auto 1fr;
     position: relative;
     min-height: 100dvh;
     align-items: start;
@@ -30,15 +32,15 @@ export default css`
     position: sticky;
     height: 100dvh;
     z-index: 20;
-    top: var(--sticky-top-offset, 0px);
-    max-height: calc(100dvh - var(--sticky-top-offset, 0px));
+    top: calc(var(--sticky-top-offset, 0px) + var(--diff-toolbar-height));
+    max-height: calc(100dvh - var(--sticky-top-offset, 0px) - var(--diff-toolbar-height));
   }
   .repository .diff-file-tree-scroll {
     overflow: auto;
     scrollbar-gutter: stable;
     height: 100dvh;
-    max-height: calc(100dvh - var(--sticky-top-offset, 0px));
-    padding: 24px;
+    max-height: calc(100dvh - var(--sticky-top-offset, 0px) - var(--diff-toolbar-height));
+    padding: 16px 24px 24px;
   }
   .repository .diff-file-tree-controls {
     display: flex;
@@ -68,37 +70,36 @@ export default css`
   }
   .repository #diff-container > #diff-content-container {
     min-width: 0;
-    padding: 24px;
+    padding: 16px 24px 24px;
   }
-  .repository #diff-container .diff-content-controls {
+  /* The toolbar height is fixed so the sticky tree and file headers can sit right below it. */
+  .repository #diff-container {
+    --diff-toolbar-height: 56px;
+  }
+  .repository #diff-container > .diff-content-controls {
+    grid-column: 1 / -1;
+    box-sizing: border-box;
     background: ${themeVars.color.body};
     border: 0;
+    border-bottom: 1px solid ${themeVars.color.light.border};
     border-radius: 0;
     box-shadow: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    min-height: 34px;
-    height: auto;
-    padding: 0;
-    margin: 0 0 8px;
+    height: var(--diff-toolbar-height);
+    padding: 0 24px;
+    margin: 0;
     position: sticky;
-    top: calc(var(--sticky-top-offset, 0px) + 24px);
-    z-index: 8;
+    top: var(--sticky-top-offset, 0px);
+    z-index: 21;
   }
   .diff-content-controls-left {
     display: flex;
     align-items: center;
     gap: 8px;
     min-width: 0;
-  }
-  .repository #diff-container .diff-content-controls::before {
-    content: "";
-    position: absolute;
-    inset: -24px -1px -8px;
-    background: ${themeVars.color.body};
-    z-index: -1;
   }
   .diff-toggle-file-tree-button > svg.tw-hidden {
     display: none;
@@ -128,7 +129,16 @@ export default css`
     }
     .repository #diff-container.diff-mobile-tree-open .diff-content-controls {
       order: -1;
-      margin: 16px;
+    }
+    /* On phones the controls wrap, so the toolbar grows and scrolls away; file headers stick to the top. */
+    .repository #diff-container {
+      --diff-toolbar-height: 0px;
+    }
+    .repository #diff-container > .diff-content-controls {
+      position: static;
+      height: auto;
+      flex-wrap: wrap;
+      padding: 8px 16px;
     }
     .repository #diff-container.diff-mobile-tree-open .diff-content-body,
     .repository #diff-container.diff-mobile-tree-open .diff-code-search {

@@ -64,6 +64,53 @@ export default css`
   .diff-content-controls-right {
     margin-left: auto;
   }
+  /* GitHub's "n / m viewed": a small progress ring and muted text; Forgejo's <progress> stays, hidden. */
+  .diff-viewed-summary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 4px;
+    color: ${themeVars.color.text.light.num1};
+    font-size: 12px;
+    white-space: nowrap;
+    & > progress {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+  }
+  .diff-viewed-ring {
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: conic-gradient(
+      ${themeVars.github.fgColor.done} calc(var(--viewed-ratio, 0) * 360deg),
+      ${themeVars.color.light.border} 0
+    );
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+  }
+  /* GitHub's toolbar buttons are 28px, like the review button next to the gear. */
+  .diff-content-controls .diff-view-settings > .theme-icon-button {
+    width: 28px;
+    height: 28px;
+  }
+  /* The commit filter is an icon-only Vue button; GitHub labels it ("All commits"). */
+  #diff-commit-select :is(#diff-commit-list-expand, .ui.jump.dropdown.button) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    min-height: 0;
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 500;
+    &::after {
+      content: var(--diff-commit-label, "");
+    }
+  }
   .diff-code-search {
     display: flex;
     gap: 8px;
@@ -102,7 +149,7 @@ export default css`
   }
   .repository #diff-file-boxes .diff-file-box {
     margin: 0 !important;
-    scroll-margin-top: 84px;
+    scroll-margin-top: calc(var(--diff-toolbar-height, 0px) + 16px);
   }
   .repository #diff-file-boxes .diff-file-header {
     background: ${themeVars.color.box.header};
@@ -114,7 +161,7 @@ export default css`
     padding: 4px 8px;
     gap: 8px;
     flex-wrap: nowrap;
-    top: calc(var(--sticky-top-offset, 0px) + 66px);
+    top: calc(var(--sticky-top-offset, 0px) + var(--diff-toolbar-height, 0px));
     z-index: 7;
   }
   .repository #diff-file-boxes .diff-file-name {

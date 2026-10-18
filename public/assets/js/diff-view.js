@@ -167,6 +167,19 @@
       attributeFilter: ["data-folded", "data-tree-filtered"],
     });
   updateFoldLabels();
+  // Forgejo writes the viewed count into a hidden <progress>; draw it as GitHub's progress ring.
+  const viewedProgress = document.getElementById("viewed-files-summary");
+  const viewedRing = document.querySelector(".diff-viewed-ring");
+  if (viewedProgress && viewedRing) {
+    const updateRing = () => {
+      const max = Number(viewedProgress.getAttribute("max")) || 0;
+      const value = Number(viewedProgress.getAttribute("value")) || 0;
+      viewedRing.style.setProperty("--viewed-ratio", max ? String(Math.min(value / max, 1)) : "0");
+      viewedRing.classList.toggle("is-complete", max > 0 && value >= max);
+    };
+    new MutationObserver(updateRing).observe(viewedProgress, { attributes: true, attributeFilter: ["value", "max"] });
+    updateRing();
+  }
   // Let Forgejo load the actual referencing branches using its existing handler.
   window.addEventListener("load", () => document.querySelector(".commit-card .load-branches-and-tags")?.click(), {
     once: true,
