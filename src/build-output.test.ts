@@ -206,7 +206,8 @@ it("keeps :has() off elements that wrap a whole page", () => {
   // Chrome re-evaluates a :has() whenever its subtree changes. On an element that wraps the page, a folded diff file,
   // an opened comment editor or a selected line in a large file restyles every element on the page.
   const output = path.join(DIST_DIR, "forgejo", "public", "assets", "css");
-  const pageWrapper = /(?:^|[\s,{}>~+(])(?:body|html|:root|\.page-content|\.ui\.container|#diff-container)(?:[.#[:][^\s,{}>~+]*)?:has\(/m;
+  const pageWrapper =
+    /(?:^|[\s,{}>~+(])(?:body|html|:root|\.page-content|\.ui\.container|#diff-container)(?:[.#[:][^\s,{}>~+]*)?:has\(/m;
   const files = fs
     .readdirSync(output, { recursive: true })
     .map(String)

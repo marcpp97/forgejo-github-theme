@@ -93,7 +93,8 @@
   color: var(--color-text);
 }
 
-.theme-search-field:has(> input:placeholder-shown, > .theme-search-input-wrap > input:placeholder-shown) > .theme-search-clear {
+.theme-search-field:has(> input:placeholder-shown, > .theme-search-input-wrap > input:placeholder-shown)
+  > .theme-search-clear {
   display: none;
 }
 

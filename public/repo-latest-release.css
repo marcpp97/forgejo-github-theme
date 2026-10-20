@@ -50,9 +50,15 @@
   font-size: 12px;
   padding: 3px 0 10px;
 }
-.page-content.repository.file.list .repo-release-heading { margin-bottom: 0; }
-.page-content.repository.file.list .repo-latest-release { padding-top: 0; }
-.page-content.repository.file.list .repo-release-heading + .repo-latest-release { margin-top: -8px; }
+.page-content.repository.file.list .repo-release-heading {
+  margin-bottom: 0;
+}
+.page-content.repository.file.list .repo-latest-release {
+  padding-top: 0;
+}
+.page-content.repository.file.list .repo-release-heading + .repo-latest-release {
+  margin-top: -8px;
+}
 .page-content.repository.file.list .repo-release-count {
   color: var(--color-primary);
   text-decoration: none;
@@ -83,8 +89,12 @@
   text-decoration: underline !important;
 }
 /* GitHub leaves a compact gap below the release-count link before the divider. */
-.page-content.repository.file.list .repo-release-count { margin-bottom: -8px; }
-.page-content.repository.file.list .repo-release-count { margin-bottom: 10px; }
+.page-content.repository.file.list .repo-release-count {
+  margin-bottom: -8px;
+}
+.page-content.repository.file.list .repo-release-count {
+  margin-bottom: 10px;
+}
 
 /* GitHub's empty Releases/Packages states: a muted line and a first-step link. */
 .repo-home-sidebar-empty {

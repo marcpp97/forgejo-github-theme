@@ -431,7 +431,9 @@ const repoToolbarDetails = css`
     line-height: 21px;
   }
 
-  .page-content.repository.file.list .repo-about-modal-body input:is([name="description"], [name="website"], [name="topics"]) {
+  .page-content.repository.file.list
+    .repo-about-modal-body
+    input:is([name="description"], [name="website"], [name="topics"]) {
     box-sizing: border-box;
     font-size: 14px;
     height: 32px;

@@ -378,7 +378,12 @@
 
 /* A page opened inside the side panel drops the site chrome. */
 /* Plain selectors: a :is() list on the right would be tested against every element of every page. */
-.github-embedded #navbar, .github-embedded #navbar-drawer, .github-embedded .repository-tab-nav, .github-embedded .secondary-nav, .github-embedded .repository-content-header, .github-embedded .page-footer {
+.github-embedded #navbar,
+.github-embedded #navbar-drawer,
+.github-embedded .repository-tab-nav,
+.github-embedded .secondary-nav,
+.github-embedded .repository-content-header,
+.github-embedded .page-footer {
   display: none !important;
 }
 .github-embedded .page-content {
