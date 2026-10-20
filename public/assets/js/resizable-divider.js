@@ -22,7 +22,9 @@
         return;
 
       this.divider.dataset.initialized = CONFIGURATION.initializedValue;
-      this.setWidth(this.storedWidth());
+      // Reading the container width here would force a style and layout pass while a large page is still loading.
+      // The ResizeObserver below fires after the first layout and fits the width to the container.
+      this.setWidth(this.storedWidth(), this.maximumWidth);
       this.divider.addEventListener("pointerdown", event => this.startResize(event));
       this.divider.addEventListener("pointermove", event => this.resize(event));
       this.divider.addEventListener("pointerup", event => this.stopResize(event));
@@ -60,11 +62,11 @@
       );
     }
 
-    setWidth(width) {
-      const limitedWidth = Math.min(Math.max(width, this.minimumWidth), this.widthLimit());
+    setWidth(width, limit = this.widthLimit()) {
+      const limitedWidth = Math.min(Math.max(width, this.minimumWidth), limit);
       this.container.style.setProperty(this.variable, `${limitedWidth}px`);
       this.divider.setAttribute("aria-valuenow", limitedWidth.toString());
-      this.divider.setAttribute("aria-valuemax", this.widthLimit().toString());
+      this.divider.setAttribute("aria-valuemax", limit.toString());
       return limitedWidth;
     }
 
