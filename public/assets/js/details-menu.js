@@ -25,7 +25,8 @@
   document.addEventListener("click", event => {
     for (const menu of document.querySelectorAll("details.theme-menu[open]")) {
       if (!menu.contains(event.target)) menu.open = false;
-      else if (event.target.closest("a, button")) menu.open = false;
+      // Clearing a search field inside the menu keeps it open.
+      else if (event.target.closest("a, button:not(.theme-search-clear)")) menu.open = false;
     }
   });
   document.addEventListener("keydown", event => {

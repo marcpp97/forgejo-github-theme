@@ -47,6 +47,7 @@ for (const file of [
   "dashboard-lists.css",
   "organization.css",
   "profile-subpages.css",
+  "projects.css",
   "pull-request.css",
   "releases.css",
   "user-profile.css",

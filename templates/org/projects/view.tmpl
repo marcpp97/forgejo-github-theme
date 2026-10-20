@@ -1,0 +1,15 @@
+{{/*
+	GitHub-style project board for organization and user projects, at full width like the repository one. The owner's
+	tabs already sit in the global header (base/head_navbar), so the user avatar and tab block Forgejo repeats here
+	is left out.
+*/}}
+{{template "base/head" .}}
+<div role="main" aria-label="{{.Title}}" class="page-content organization repository projects view-project github-project-page">
+	{{if .ContextUser.IsOrganization}}
+		{{template "org/header" .}}
+	{{end}}
+	<div class="github-project-container">
+		{{template "projects/view" .}}
+	</div>
+</div>
+{{template "base/footer" .}}
