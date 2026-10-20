@@ -200,8 +200,34 @@
       button.setAttribute("aria-label", expanded ? "Collapse file" : "Expand file");
     }
   }
+  // Forgejo hides a folded file body at once. Keep it shown while its height slides to or from zero; past the
+  // viewport the motion is not visible, so long diffs only animate their first screen.
+  function animateFold(box) {
+    const body = box.querySelector(":scope > .diff-file-body");
+    if (!body || box.hasAttribute("data-deleted-diff-hidden") || matchMedia("(prefers-reduced-motion: reduce)").matches)
+      return;
+    for (const animation of body.getAnimations()) animation.cancel();
+    box.setAttribute("data-folding", "");
+    const height = `${Math.min(body.scrollHeight, window.innerHeight)}px`;
+    const frames = [
+      { height, opacity: 1 },
+      { height: "0px", opacity: 0 },
+    ];
+    const animation = body.animate(box.dataset.folded === "true" ? frames : frames.reverse(), {
+      duration: 150,
+      easing: "ease-out",
+    });
+    animation.onfinish = () => box.removeAttribute("data-folding");
+  }
   if (boxes)
     new MutationObserver(mutations => {
+      for (const mutation of mutations)
+        if (
+          mutation.attributeName === "data-folded" &&
+          mutation.target.matches(".diff-file-box") &&
+          mutation.oldValue !== mutation.target.dataset.folded
+        )
+          animateFold(mutation.target);
       updateFoldLabels();
       if (
         search.value &&
@@ -212,6 +238,7 @@
       subtree: true,
       childList: true,
       attributes: true,
+      attributeOldValue: true,
       attributeFilter: ["data-folded", "data-tree-filtered"],
     });
   updateFoldLabels();

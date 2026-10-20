@@ -288,6 +288,17 @@ export default css`
   .repository #diff-file-boxes .diff-deleted-placeholder[hidden] {
     display: none;
   }
+  /* While a file folds, skip painting the files below it that are off screen. Large pull requests otherwise
+     repaint all of them on each animation frame. Only for that moment: estimated sizes above the viewport
+     would break jumps to a file. */
+  .repository #diff-file-boxes > .diff-file-box[data-folding] ~ .diff-file-box {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 400px;
+  }
+  .repository #diff-file-boxes .diff-file-box[data-folding] > .diff-file-body {
+    display: block;
+    overflow: hidden;
+  }
   .repository #diff-file-boxes .diff-file-body {
     border-color: ${themeVars.color.light.border};
   }
