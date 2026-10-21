@@ -166,13 +166,16 @@
 						<div class="diff-file-body ui attached unstackable table segment" {{if and $file.IsViewed $.IsShowingAllCommits}}data-folded="true"{{end}}>
 							<div id="diff-source-{{$file.NameHash}}" class="file-body file-code unicode-escaped code-diff{{if $.IsSplitStyle}} code-diff-split{{else}} code-diff-unified{{end}}{{if $showFileViewToggle}} tw-hidden{{end}}">
 								{{if or $file.IsIncomplete $file.IsBin}}
-									<div class="diff-file-body binary">
+									<div class="diff-file-body binary{{if $file.IsIncomplete}} diff-suppressed-placeholder{{end}}">
 										{{if $file.IsIncomplete}}
+											{{/* GitHub's large diff placeholder. Forgejo replaces the parent of a.diff-load-button with the loaded
+												diff and reads data-href from the clicked element, so the link stays a direct child holding text only. */}}
+											<div class="diff-deleted-skeleton" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 											{{if $file.IsIncompleteLineTooLong}}
-												{{ctx.Locale.Tr "repo.diff.file_suppressed_line_too_long"}}
+												<span>{{ctx.Locale.Tr "repo.diff.file_suppressed_line_too_long"}}</span>
 											{{else}}
-												{{ctx.Locale.Tr "repo.diff.file_suppressed"}}
-												<a class="ui basic tiny button diff-load-button" data-href="?file-only=true&files={{$file.Name}}&files={{$file.OldName}}">{{ctx.Locale.Tr "repo.diff.load"}}</a>
+												<a class="diff-load-button" role="button" href="#" data-href="?file-only=true&files={{$file.Name}}&files={{$file.OldName}}">{{ctx.Locale.Tr "repo.diff.load"}}</a>
+												<span>Large diffs are not rendered by default.</span>
 											{{end}}
 										{{else}}
 											{{ctx.Locale.Tr "repo.diff.bin_not_shown"}}

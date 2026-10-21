@@ -283,6 +283,38 @@ export default css`
   .diff-deleted-placeholder > :not(.diff-deleted-skeleton) {
     position: relative;
   }
+  /* Large diffs Forgejo does not render: GitHub's "Load diff" over a skeleton, inside the file body. */
+  .repository #diff-file-boxes .diff-suppressed-placeholder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+    padding: 0;
+    color: ${themeVars.color.text.light.num1};
+    font-size: 12px;
+  }
+  .diff-suppressed-placeholder > .diff-deleted-skeleton {
+    top: 16px;
+  }
+  .diff-suppressed-placeholder > :not(.diff-deleted-skeleton) {
+    position: relative;
+  }
+  .diff-suppressed-placeholder > .diff-load-button {
+    color: ${themeVars.github.fgColor.accent};
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .diff-suppressed-placeholder > .diff-load-button:hover {
+    text-decoration: underline;
+  }
+  /* Forgejo marks the link while it fetches the diff. */
+  .diff-suppressed-placeholder > .diff-load-button.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
   .repository #diff-file-boxes [data-deleted-diff-hidden] > .diff-file-body,
   .repository #diff-file-boxes [data-folded="true"] > .diff-deleted-placeholder,
   .repository #diff-file-boxes .diff-deleted-placeholder[hidden] {
