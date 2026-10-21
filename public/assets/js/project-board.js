@@ -153,6 +153,9 @@
     returnFocus = from;
     loads = 0;
     openLink.href = url;
+    // The frame still holds the blank page it was closed on, which paints white over the panel until the issue
+    // replaces it. Show the panel's own background and a loader until then.
+    panel.toggleAttribute("data-loading", true);
     frame.src = url;
     panel.hidden = false;
     panel.classList.add("is-opening");
@@ -175,6 +178,7 @@
       if (closing) finishClosing();
       return;
     }
+    panel.removeAttribute("data-loading");
     loads++;
     try {
       // Forgejo returns to the project once an issue is created from it: show the new card on the board.
