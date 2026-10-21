@@ -327,6 +327,18 @@ export default css`
     content-visibility: auto;
     contain-intrinsic-size: auto 400px;
   }
+  /* Forgejo hides a folded file with display: none, which throws away the styles of every row: unfolding a large
+     file then restyled all of them in one long frame. content-visibility: hidden skips its layout and paint the
+     same way but keeps that work, so unfolding again is cheap. */
+  .repository #diff-file-boxes .diff-file-box[data-folded="true"] > .diff-file-body {
+    display: block;
+  }
+  .repository #diff-file-boxes .diff-file-box[data-folded="true"]:not([data-folding]) > .diff-file-body {
+    content-visibility: hidden;
+    height: 0;
+    padding: 0;
+    border-width: 0;
+  }
   .repository #diff-file-boxes .diff-file-box[data-folding] > .diff-file-body {
     display: block;
     overflow: hidden;
