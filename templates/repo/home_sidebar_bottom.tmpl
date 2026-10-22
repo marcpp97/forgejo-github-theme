@@ -1,12 +1,12 @@
 {{/* Repository-root metadata sections: releases, packages and languages, like GitHub's sidebar. */}}
 <link rel="stylesheet" href="{{AssetUrlPrefix}}/css/repo-latest-release.css">
 <aside class="repo-home-sidebar-bottom flex-relaxed-list">
-	{{/* GitHub always shows Releases and Packages, with an empty state and a first step. */}}
+	{{/* GitHub always shows Releases and Packages, with an empty state and, for people who can publish, a first step. */}}
 	{{if and (.Permission.CanRead $.UnitTypeReleases) (not .IsEmptyRepo)}}
 		<div class="divider"></div>
 		<div class="repo-home-sidebar-header repo-release-heading">
 			<a class="muted" href="{{.RepoLink}}/releases">{{ctx.Locale.Tr "repo.releases"}}</a>
-			{{if .NumReleases}}<span class="ui small label">{{CountFmt .NumReleases}}</span>{{end}}
+			{{if .NumReleases}}<span class="theme-counter theme-counter-tab">{{CountFmt .NumReleases}}</span>{{end}}
 		</div>
 		{{if .NumReleases}}
 			<a class="repo-latest-release" data-repo-latest-release data-api-url="{{AppSubUrl}}/api/v1/repos/{{.Repository.OwnerName}}/{{.Repository.Name}}/releases/latest" href="{{.RepoLink}}/releases">
@@ -17,7 +17,6 @@
 				</div>
 				<span class="repo-latest-release-date" data-release-date><relative-time tense="past"></relative-time></span>
 			</a>
-			<a class="repo-release-count" data-release-count="{{.NumReleases}}" href="{{.RepoLink}}/releases">+ {{CountFmt .NumReleases}} releases</a>
 			<script>
 				(() => {
 					const card = document.querySelector('[data-repo-latest-release]');
@@ -26,9 +25,6 @@
 						.then(response => response.ok ? response.json() : Promise.reject())
 						.then(release => {
 							card.querySelector('[data-release-title]').textContent = release.name || release.tag_name;
-							const count = Number(card.parentElement.querySelector('[data-release-count]')?.dataset.releaseCount || 0);
-							const countLink = card.parentElement.querySelector('[data-release-count]');
-							if (countLink) countLink.textContent = `+ ${Math.max(0, count - 1)} releases`;
 							if (release.published_at) card.querySelector('[data-release-date] relative-time').setAttribute('datetime', release.published_at);
 						})
 						.catch(() => {
@@ -52,7 +48,7 @@
 		<div class="divider"></div>
 		<div class="repo-home-sidebar-header repo-packages-heading">
 			<a class="muted" href="{{.RepoLink}}/packages">{{ctx.Locale.Tr "packages.title"}}</a>
-			{{if .NumPackages}}<span class="ui small label">{{CountFmt .NumPackages}}</span>{{end}}
+			{{if .NumPackages}}<span class="theme-counter theme-counter-tab">{{CountFmt .NumPackages}}</span>{{end}}
 		</div>
 		{{if .NumPackages}}
 			{{/* The home page only knows the count; the owner's package API says which ones belong to this repository. */}}
@@ -86,14 +82,16 @@
 		{{else}}
 			<div class="repo-home-sidebar-empty">
 				<span>{{ctx.Locale.Tr "packages.empty"}}</span>
-				<a href="{{AppDocsURL "user/packages/"}}" target="_blank" rel="noopener noreferrer">Publish your first package</a>
+				{{if and (.Permission.CanWrite $.UnitTypePackages) (not .Repository.IsArchived)}}
+					<a href="{{.RepoLink}}/packages">Publish your first package</a>
+				{{end}}
 			</div>
 		{{end}}
 	{{end}}
 
 	{{if and (.Permission.CanRead $.UnitTypeCode) (not .IsEmptyRepo) .LanguageStats}}
 		<div class="divider"></div>
-		<div class="repo-home-sidebar-header repo-language-heading">Languages</div>
+		<h2 class="repo-home-sidebar-header repo-language-heading tw-sr-only">Languages</h2>
 		<div class="repo-language-content">
 			<div class="language-stats">
 				{{range .LanguageStats}}

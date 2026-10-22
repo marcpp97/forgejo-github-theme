@@ -4,7 +4,7 @@
 		<div class="repo-home-sidebar-header repo-about-heading">
 			<span>About</span>
 			{{if and .Permission.IsAdmin (not .Repository.IsArchived)}}
-				<button id="github_theme_repo_about_manage" type="button" class="btn interact-fg repo-about-settings" aria-label="Edit repository metadata" data-tooltip-content="Edit repository metadata">
+				<button id="github_theme_repo_about_manage" type="button" class="btn repo-about-settings" aria-label="Edit repository metadata" data-tooltip-content="Edit repository metadata">
 					{{svg "octicon-gear" 16}}
 				</button>
 			{{end}}
@@ -23,19 +23,15 @@
 			</a>
 		{{end}}
 
-		<div class="repo-about-topic-list flex-text-block tw-flex-wrap tw-gap-1">
+		<div class="repo-about-topic-list flex-text-block tw-flex-wrap">
 			{{range .Topics}}
 				<a class="repo-topic ui large label" title="{{.}}" href="{{AppSubUrl}}/explore/repos?q={{.}}&topic=1">{{.}}</a>
 			{{end}}
 		</div>
 
 		{{if and (.Permission.CanRead $.UnitTypeCode) (not .IsEmptyRepo)}}
+			{{/* GitHub no longer lists the README or the repository size here. */}}
 			<div class="repo-home-sidebar-metadata flex-relaxed-list">
-				{{if .ReadmeExist}}
-					<a class="flex-text-block muted" href="{{.TreeLink}}/{{PathEscapeSegments .FileName}}">
-						{{svg "octicon-book"}} {{ctx.Locale.Tr "repo.readme"}}
-					</a>
-				{{end}}
 				{{if .CitationFile}}
 					<a class="flex-text-block muted" href="{{.RepoLink}}/src/branch/{{.BranchName}}/{{.CitationFile}}">
 						{{svg "octicon-cross-reference"}} {{ctx.Locale.Tr "repo.cite_this_repo"}}
@@ -46,15 +42,15 @@
 				</a>
 				{{if not .DisableStars}}
 					<a class="flex-text-block muted" href="{{.RepoLink}}/stars">
-						{{svg "octicon-star"}} <b>{{CountFmt .Repository.NumStars}}</b> {{ctx.Locale.Tr "repo.stars"}}
+						{{svg "octicon-star"}} <span>{{ctx.Locale.TrPluralString .Repository.NumStars "stars.n_stars" (HTMLFormat "<b>%s</b>" (CountFmt .Repository.NumStars))}}</span>
 					</a>
 				{{end}}
 				<a class="flex-text-block muted" href="{{.RepoLink}}/watchers">
-					{{svg "octicon-eye"}} <b>{{CountFmt .Repository.NumWatches}}</b> {{ctx.Locale.Tr "repo.watchers"}}
+					{{svg "octicon-eye"}} <span>{{ctx.Locale.TrPluralString .Repository.NumWatches "watch.n_watchers" (HTMLFormat "<b>%s</b>" (CountFmt .Repository.NumWatches))}}</span>
 				</a>
 				{{if not .DisableForks}}
 					<a class="flex-text-block muted" href="{{.RepoLink}}/forks">
-						{{svg "octicon-repo-forked"}} <b>{{CountFmt .Repository.NumForks}}</b> {{ctx.Locale.Tr "repo.forks"}}
+						{{svg "octicon-repo-forked"}} <span>{{ctx.Locale.TrPluralString .Repository.NumForks "fork.n_forks" (HTMLFormat "<b>%s</b>" (CountFmt .Repository.NumForks))}}</span>
 					</a>
 				{{end}}
                 <div class="repo-mobile-summary only-mobile">
@@ -62,10 +58,6 @@
                     <a class="flex-text-block muted" href="{{.RepoLink}}/tags">{{svg "octicon-tag" 16}}{{.NumTags}} {{if eq .NumTags 1}}tag{{else}}tags{{end}}</a>
                 </div>
                 <div class="repo-mobile-visibility only-mobile">{{if .Repository.IsPrivate}}{{svg "octicon-lock" 16}}{{else}}{{svg "octicon-globe" 16}}{{end}}{{if .Repository.IsPrivate}}Private{{else if .Repository.Owner.Visibility.IsPrivate}}Internal{{else}}Public{{end}} repository</div>
-				<div class="flex-text-block muted" {{if not (eq .Repository.Size 0)}}data-tooltip-content="{{.Repository.SizeDetailsString ctx.Locale}}"{{end}}>
-					{{$fileSizeFields := ctx.Locale.TrSize .Repository.Size}}
-					{{svg "octicon-database"}} <b>{{$fileSizeFields.PrettyNumber}}</b> {{$fileSizeFields.TranslatedUnit}}
-				</div>
 			</div>
 		{{end}}
 	</div>
