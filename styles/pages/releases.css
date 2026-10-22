@@ -1,8 +1,5 @@
 /* Releases, tags and the release form. Kept as a page stylesheet, outside the size-limited theme files. */
 
-.page-content.repository.github-releases .repository-content-header {
-  display: none;
-}
 .page-content.repository.github-releases > .ui.container {
   box-sizing: border-box;
   max-width: calc(100% - 32px);
@@ -17,7 +14,7 @@
   gap: 16px;
   justify-content: space-between;
   margin: 0 0 32px;
-  padding: 24px 0;
+  padding: 0 0 24px;
 }
 .github-release-actions {
   align-items: center;
@@ -470,13 +467,13 @@
     > .ui.container {
       max-width: calc(100% - 32px);
       width: calc(100% - 32px) !important;
-      margin: 0 auto !important;
+      margin: 24px auto 0 !important;
       padding: 0;
     }
     .github-release-toolbar {
       gap: 8px;
       margin: 0 14px 16px;
-      padding: 24px 0 16px;
+      padding: 0 0 16px;
     }
     .github-release-content {
       display: block;
@@ -635,9 +632,6 @@
   }
 }
 /* New and edit release: GitHub's form page, on Forgejo's own template. */
-.page-content.repository.new.release .repository-content-header {
-  display: none;
-}
 .page-content.repository.new.release {
   > .ui.container {
     box-sizing: border-box;
@@ -711,9 +705,6 @@
     font-weight: 500;
   }
 }
-.page-content.repository.github-tags .repository-content-header {
-  display: none;
-}
 .page-content.repository.github-tags > .ui.container {
   box-sizing: border-box;
   max-width: calc(100% - 32px);
@@ -726,7 +717,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 16px;
-  padding: 24px 0;
+  padding: 0 0 24px;
 }
 .github-tags-search {
   width: 248px;

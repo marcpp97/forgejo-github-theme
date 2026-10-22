@@ -1,10 +1,7 @@
 /* Project board in GitHub's layout, and the side panel that opens a card's issue. Kept as a page stylesheet, outside
    the size-limited theme files. */
 
-/* Page: GitHub shows a project without the repository header, at full width. */
-.page-content.repository.github-project-page .repository-content-header {
-  display: none;
-}
+/* Page: GitHub shows a project at full width. */
 .full.height > .page-content.github-project-page {
   margin-top: 0;
   padding-top: 0;
@@ -437,7 +434,6 @@
 .github-embedded #navbar-drawer,
 .github-embedded .repository-tab-nav,
 .github-embedded .secondary-nav,
-.github-embedded .repository-content-header,
 .github-embedded .page-footer {
   display: none !important;
 }

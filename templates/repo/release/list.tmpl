@@ -1,7 +1,6 @@
 {{template "base/head" .}}
 {{$single := StringUtils.Contains .Link "/releases/tag/"}}
 <div role="main" aria-label="{{.Title}}" class="page-content repository releases github-releases{{if $single}} github-release-single{{end}}">
-	{{template "repo/header" .}}
 	<div class="ui container">
 		{{template "base/alert" .}}
 		{{if and $single .Releases}}

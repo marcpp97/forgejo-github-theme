@@ -2,7 +2,6 @@
 {{/* Forgejo 17 compare.tmpl, laid out like GitHub's "Compare changes": centred container, the create box with its text and
      the button on the right, and the equal-branches notice with a disabled button. */}}
 <div role="main" aria-label="{{.Title}}" class="page-content repository diff github-compare {{if .PageIsComparePull}}compare pull{{end}}">
-	{{template "repo/header" .}}
 	{{$showDiffBox := false}}
 	{{$canReadPullRequests := .Permission.CanRead $.UnitTypePullRequests}}
 	<div class="ui container">

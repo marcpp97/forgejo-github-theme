@@ -318,6 +318,8 @@ describe("Forgejo 15 native integration", () => {
     "repo/global_header.tmpl",
     "repo/header.tmpl",
     "repo/home.tmpl",
+    "repo/home_header.tmpl",
+    "repo/empty.tmpl",
     "repo/home_sidebar_bottom.tmpl",
     "repo/home_sidebar_top.tmpl",
     "repo/view_content.tmpl",
@@ -476,9 +478,23 @@ describe("Forgejo 15 native integration", () => {
     expect(repoContentStyle).toContain(".repo-code-actions > li > a:hover");
   });
 
+  it("shows the repository title row only on the code home, as GitHub does", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, "templates", ...parts), "utf-8");
+
+    expect(read("repo", "header.tmpl")).not.toContain("<");
+    expect(read("repo", "home.tmpl")).toContain('{{template "repo/home_header" .}}');
+    expect(read("repo", "empty.tmpl")).toContain('{{template "repo/home_header" .}}');
+    for (const page of [
+      ["repo", "release", "list.tmpl"],
+      ["repo", "tag", "list.tmpl"],
+      ["repo", "diff", "compare.tmpl"],
+    ])
+      expect(read(...page)).not.toContain('template "repo/header"');
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
-    const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "header.tmpl"), "utf-8");
+    const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");
     const repoContentStyle = fs.readFileSync(
       path.join(ROOT_DIR, "styles", "templates", "repo", "view_content.ts"),
       "utf-8"
@@ -597,9 +613,9 @@ describe("Forgejo 15 native integration", () => {
     expect(diffBoxTemplate).toContain(
       "const diffTreeVisible = localStorage?.getItem('diff_file_tree_visible') !== 'false';"
     );
-    expect(commitPageStyle).toContain("> .repository-content-header");
     const diffViewStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "components", "repo", "diff_view.ts"), "utf8");
     expect(diffViewStyle).toContain("min-height: 40px;");
+    expect(commitPageStyle).not.toContain("repository-content-header");
     expect(diffBoxTemplate).toContain('template "repo/diff/file_header"');
     expect(commitPageTemplate).toContain('template "repo/diff/change_summary"');
   });
