@@ -92,7 +92,7 @@ function fixture() {
   };
 }
 
-describe("mobile navigation drawer", () => {
+describe("navigation drawer", () => {
   it("opens once as a modal and restores focus, scroll, and disclosure state on close", () => {
     const f = fixture();
     f.toggle.emit("click");
@@ -132,16 +132,15 @@ describe("mobile navigation drawer", () => {
     expect(preventDefault).toHaveBeenCalledTimes(2);
   });
 
-  it("closes when crossing to desktop and does not reopen there", () => {
+  it("opens on desktop too, leaving the custom links in the navbar", () => {
     const f = fixture();
-    f.toggle.emit("click");
     f.media.matches = false;
-    f.media.emit("change");
     f.toggle.emit("click");
-    expect(f.drawer.open).toBe(false);
-    expect(f.drawer.showModal).toHaveBeenCalledTimes(1);
-    expect(f.classes.has("navbar-drawer-open")).toBe(false);
-    expect(f.toggle.focus).not.toHaveBeenCalled();
+    expect(f.drawer.showModal).toHaveBeenCalledOnce();
+    expect(f.slot.append).not.toHaveBeenCalled();
+    f.closeButton.emit("click");
+    expect(f.end.before).not.toHaveBeenCalled();
+    expect(f.toggle.focus).toHaveBeenCalledOnce();
   });
 
   it("moves existing custom links into the drawer and restores the same nodes", () => {

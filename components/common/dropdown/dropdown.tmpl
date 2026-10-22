@@ -1,6 +1,6 @@
-{{/* Kind: single (radio), multiple (checkbox), or actions (links/buttons). Items owns page-specific content. */}}
+{{/* Kind: single (radio), multiple (checkbox), or actions (links/buttons). Items owns page-specific content. Small uses the 28px control. */}}
 <details class="theme-dropdown{{if .Quiet}} theme-dropdown-quiet{{end}}" data-theme-dropdown="{{.Kind}}">
-	<summary class="theme-control"{{if .IconOnly}} aria-label="{{.Label}}" data-tooltip-content="{{.Label}}"{{end}}>
+	<summary class="theme-control{{if .Small}} button theme-control-small{{end}}"{{if .IconOnly}} aria-label="{{.Label}}" data-tooltip-content="{{.Label}}"{{end}}>
 		{{if .Icon}}{{svg .Icon 16}}{{end}}
 		{{if not .IconOnly}}<span{{if .UpdateLabel}} data-theme-dropdown-label{{end}}>{{.Label}}</span>{{svg "octicon-triangle-down" 12}}{{end}}
 	</summary>

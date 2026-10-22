@@ -387,11 +387,17 @@ describe("Forgejo 15 native integration", () => {
       "utf-8"
     );
     const navbarTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "base", "head_navbar.tmpl"), "utf-8");
+    const navbarStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "components", "navbar.ts"), "utf-8");
 
     expect(header).toContain("height: 52px;");
     expect(header).toContain("padding-top: 16px;");
     expect(header).toContain("border-bottom: 0;");
-    expect(header).toContain(".navbar-left > #navbar-logo.item");
+    // GitHub: the menu button, 12px, a bare 32px logo, 8px, "owner / repo" with a repository icon and no avatar.
+    expect(navbarStyle).toContain("&#navbar-logo {");
+    expect(navbarStyle).toContain("min-width: 32px;");
+    expect(navbarTemplate.indexOf('id="navbar-drawer-toggle"')).toBeLessThan(
+      navbarTemplate.indexOf('id="navbar-logo"')
+    );
     expect(header).toContain("height: 48px;");
     expect(header).toContain("gap: 8px;");
     expect(header).toContain("margin: 0 7px;");
@@ -401,8 +407,8 @@ describe("Forgejo 15 native integration", () => {
     expect(header).toContain("line-height: 21px;");
     expect(header).toContain("bottom: -8px;");
     expect(secondaryMenu).toContain(".overflow-menu-items {\n      gap: 8px;");
-    expect(navbarTemplate).toContain("{{ctx.AvatarUtils.Avatar .Owner 16}}");
-    expect(navbarTemplate).not.toContain('class="repository-navbar-owner-avatar"');
+    expect(navbarTemplate).not.toContain("{{ctx.AvatarUtils.Avatar .Owner 16}}");
+    expect(navbarTemplate).toContain("{{svg $repoIcon 16}}");
   });
 
   it("ships the mobile drawer assets and keeps its toggle independent of Forgejo's inline menu", () => {
@@ -615,7 +621,9 @@ describe("Forgejo 15 native integration", () => {
       expect(style).toContain("@media (max-width: 767.98px)");
     }
 
-    expect(headerStyle).toContain("padding-left: 8px;");
+    // GitHub keeps its 16px gutter on phones and drops the tab icons there.
+    expect(headerStyle).not.toContain("padding-left: 8px;");
+    expect(headerStyle).toContain(".overflow-menu-items > .item > svg {");
     expect(headerStyle).toContain(".repo-buttons");
     expect(viewContentStyle).toContain("> .repo-button-row-left");
     expect(viewContentStyle).toContain("> .repo-button-row-right");

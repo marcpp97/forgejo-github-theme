@@ -48,7 +48,7 @@
 		{{if and .CanWriteCode .IsViewBranch (not .Repository.IsMirror) (not .Repository.IsArchived) (not .IsViewFile)}}
 			<button class="ui dropdown basic compact jump button repo-add-file"{{if not .Repository.CanEnableEditor}} disabled{{end}}>
 				{{ctx.Locale.Tr "file_editor.add_file"}}
-				{{svg "octicon-triangle-down" 14 "dropdown icon"}}
+				{{svg "octicon-triangle-down" 16 "dropdown icon"}}
 				<div class="menu">
 					<a class="item" href="{{.RepoLink}}/_new/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">
 						{{svg "octicon-plus" 16}}{{ctx.Locale.Tr "file_editor.new_file"}}

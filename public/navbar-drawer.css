@@ -155,3 +155,10 @@ html.navbar-drawer-open {
     animation: none;
   }
 }
+
+/* On desktop the avatar and create menus stay in the header, as on GitHub, so the drawer only navigates. */
+@media (min-width: 768px) {
+  .navbar-drawer .navbar-drawer-group:has(> .navbar-drawer-create, > .navbar-drawer-account) {
+    display: none;
+  }
+}

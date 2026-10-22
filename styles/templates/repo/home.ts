@@ -33,12 +33,19 @@ const repositoryHome = css`
     grid-template-rows: auto auto 1fr;
   }
 
+  /* GitHub's page gutter: 16px, and 32px from 1012px. */
   .page-content.repository.file.list.repo-has-sidebar > .ui.container,
   .page-content.repository.file.list.repo-has-sidebar > .repository-content-header > .ui.container {
-    width: calc(100% - 64px);
+    width: calc(100% - 32px);
     max-width: 1216px;
     margin-left: auto;
     margin-right: auto;
+  }
+  @media (min-width: 1012px) {
+    .page-content.repository.file.list.repo-has-sidebar > .ui.container,
+    .page-content.repository.file.list.repo-has-sidebar > .repository-content-header > .ui.container {
+      width: calc(100% - 64px);
+    }
   }
   .page-content.repository.file.list.repo-has-sidebar > .repository-content-header > .ui.container {
     padding-bottom: 18px;
@@ -224,10 +231,6 @@ const repositoryHome = css`
       order: 2;
     }
 
-    .page-content.repository.file.list.repo-has-sidebar > .ui.container,
-    .page-content.repository.file.list.repo-has-sidebar > .repository-content-header > .ui.container {
-      width: calc(100% - 32px);
-    }
     .page-content.repository.file.list .repo-grid-filelist-sidebar {
       grid-template-columns: 100%;
       grid-template-rows: auto auto auto;

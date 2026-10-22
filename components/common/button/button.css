@@ -22,6 +22,7 @@
 }
 
 .button.theme-control-small {
+  gap: 4px;
   height: 28px;
   min-height: 28px;
   padding: 0 8px;
@@ -29,8 +30,41 @@
   line-height: 18px;
 }
 
+/* A main action and its menu joined into one shape, like GitHub's Fork button. */
+.theme-control-split {
+  display: inline-flex;
+  align-items: stretch;
+}
+.theme-control-split > .theme-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.theme-control-split > .theme-dropdown > summary.theme-control {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+/* An icon-only small menu trigger is a 28px square, like GitHub's "…" and split carets. */
+.theme-dropdown > summary.theme-control-small:not(:has(> span)) {
+  width: 28px;
+  padding: 0;
+}
+
 .theme-control:hover {
   background: var(--color-hover);
+}
+
+/* GitHub draws a default button's icons muted; a filled star keeps its own colour. */
+.theme-control:not(.primary) > svg:not(.octicon-star-fill) {
+  color: var(--color-text-light-1);
+}
+
+/* Forgejo sizes buttons in dropdown summaries through --button-min-height on more specific rules. */
+details > summary.button.theme-control {
+  min-height: 32px;
+}
+details > summary.button.theme-control-small {
+  min-height: 28px;
 }
 
 .theme-control:focus-visible {
@@ -87,7 +121,9 @@
   .comment-code-cloud .field.footer .ui.ui.ui.button,
   .comment-code-cloud :is(.button-row, .button-sequence):has(.comment-form-reply) .ui.ui.ui.button,
   .page-content.repository.new.issue.github-issue-new .issue-content-left .text.right .ui.ui.ui.button,
-  .page-content.repository.new.release .ui.form .ui.ui.ui.button:not(.mini)
+  .page-content.repository.new.release .ui.form .ui.ui.ui.button:not(.mini),
+  .repo-button-row .ui.ui.ui.button.repo-add-file,
+  .js-branch-tag-selector .ui.ui.ui.button.branch-dropdown-button
 ) {
   height: 32px;
   min-height: 32px;
@@ -95,4 +131,23 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
+}
+
+/* The branch selector is a Forgejo Vue component: GitHub sets its branch name in the button's weight and uses a
+   16px caret. */
+/* Its spacing comes from Forgejo's Tailwind utilities, which are !important. */
+.js-branch-tag-selector .ui.ui.ui.ui.button.branch-dropdown-button {
+  padding: 5px 12px !important;
+}
+.js-branch-tag-selector .branch-dropdown-button > .text {
+  gap: 8px;
+  margin-right: 0 !important;
+}
+.js-branch-tag-selector .branch-dropdown-button strong {
+  margin-left: 0 !important;
+  font-weight: inherit;
+}
+.js-branch-tag-selector .branch-dropdown-button > svg:last-child {
+  width: 16px;
+  height: 16px;
 }

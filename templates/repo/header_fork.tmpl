@@ -1,0 +1,49 @@
+{{with .Repository}}
+{{if and (not .IsEmpty) ($.Permission.CanRead $.UnitTypeCode)}}
+	{{/* GitHub's Fork button: the count inside, and a menu for existing forks and a new fork beside it. */}}
+	{{$disabled := or (not $.IsSigned) (and (not $.CanSignedUserFork) (not $.UserAndOrgForks))}}
+	<div class="theme-control-split repo-header-fork">
+		<a class="button theme-control theme-control-small repo-header-control{{if $.ShowForkModal}} show-modal{{end}}{{if $disabled}} disabled{{end}}"
+			{{if not $.IsSigned}}
+				data-tooltip-content="{{ctx.Locale.Tr "repo.fork_guest_user"}}"
+			{{else if and (not $.CanSignedUserFork) (not $.UserAndOrgForks)}}
+				data-tooltip-content="{{ctx.Locale.Tr "repo.fork_from_self"}}"
+			{{end}}
+			{{if not $.CanSignedUserFork}}
+				{{if gt (len $.UserAndOrgForks) 1}}
+					href="#" data-modal="#fork-repo-modal"
+				{{else if eq (len $.UserAndOrgForks) 1}}
+					href="{{AppSubUrl}}/{{(index $.UserAndOrgForks 0).FullName}}"
+				{{/*else is not required here, because the button shouldn't link to any site if you can't create a fork*/}}
+				{{end}}
+			{{else if not $.UserAndOrgForks}}
+				href="{{$.RepoLink}}/fork"
+			{{else}}
+				href="#" data-modal="#fork-repo-modal"
+			{{end}}
+		>
+			{{svg "octicon-repo-forked"}}<span class="text not-mobile">{{ctx.Locale.Tr "repo.fork"}}</span>
+			<span class="theme-counter theme-counter-tab" aria-label="{{ctx.Locale.TrPluralString .NumForks "fork.n_forks" (printf "%d" .NumForks)}}">{{CountFmt .NumForks}}</span>
+		</a>
+		{{template "components/common/dropdown/dropdown" dict "Kind" "actions" "Icon" "octicon-triangle-down" "IconOnly" true "Small" true "Label" (ctx.Locale.Tr "repo.forks") "Items" "repo/header_fork_menu" "Data" $}}
+		<dialog id="fork-repo-modal">
+			<article>
+				<header>{{ctx.Locale.Tr "repo.already_forked" .Name}}</header>
+				<div class="content tw-text-left">
+					<div class="ui list">
+						{{range $.UserAndOrgForks}}
+							<div class="ui item tw-py-2">
+								<a href="{{.Link}}">{{svg "octicon-repo-forked" 16 "tw-mr-2"}}{{.FullName}}</a>
+							</div>
+						{{end}}
+					</div>
+					{{if $.CanSignedUserFork}}
+					<div class="divider"></div>
+					<a href="{{$.RepoLink}}/fork">{{ctx.Locale.Tr "repo.fork_to_different_account"}}</a>
+					{{end}}
+				</div>
+			</article>
+		</dialog>
+	</div>
+{{end}}
+{{end}}
