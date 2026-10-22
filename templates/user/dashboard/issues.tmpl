@@ -1,4 +1,5 @@
 {{template "base/head" .}}
+{{$themeList := "issues"}}{{if .PageIsPulls}}{{$themeList = "pulls"}}{{end}}
 {{/*
 	The dashboard's issue and pull request lists use the repository list's layout and classes
 	("repository issue-list") so they share its styles; nothing repository-specific is rendered.
@@ -45,15 +46,15 @@
 				<div class="switch">
 					<a class="{{if not .IsShowClosed}}active {{end}}item" href="?type={{$.ViewType}}&sort={{$.SortType}}&project={{$.ProjectID}}&state=open&labels={{.SelectLabels}}&q={{$keyword}}" data-test-name="open-issue-count">
 						{{if .PageIsPulls}}{{svg "octicon-git-pull-request" 16}}{{else}}{{svg "octicon-issue-opened" 16}}{{end}}
-						{{ctx.Locale.PrettyNumber .IssueStats.OpenCount}}&nbsp;{{ctx.Locale.Tr "repo.issues.open_title"}}
+						{{ctx.Locale.Tr "repo.issues.open_title"}} <span class="theme-counter issue-state-count">{{ctx.Locale.PrettyNumber .IssueStats.OpenCount}}</span>
 					</a>
 					<a class="{{if .IsShowClosed}}active {{end}}item" href="?type={{$.ViewType}}&sort={{$.SortType}}&project={{$.ProjectID}}&state=closed&labels={{.SelectLabels}}&q={{$keyword}}" data-test-name="closed-issue-count">
 						{{svg "octicon-issue-closed" 16}}
-						{{ctx.Locale.PrettyNumber .IssueStats.ClosedCount}}&nbsp;{{ctx.Locale.Tr "repo.issues.closed_title"}}
+						{{ctx.Locale.Tr "repo.issues.closed_title"}} <span class="theme-counter issue-state-count">{{ctx.Locale.PrettyNumber .IssueStats.ClosedCount}}</span>
 					</a>
 				</div>
 			</div>
-			<div class="issue-list-toolbar-right">
+			<div class="issue-list-toolbar-right" id="issue-filter-controls">
 				<div class="ui secondary filter menu">
 					{{if .PageIsOrgIssues}}
 						{{template "shared/label_filter" .}}
@@ -84,10 +85,10 @@
 					</div>
 				</div>
 			</div>
+			<button type="button" class="theme-icon-button issue-mobile-filter-toggle" aria-label="{{ctx.Locale.Tr "filter"}}" aria-controls="issue-filter-controls" aria-expanded="false">…</button>
 		</div>
-		{{template "shared/issuelist" dict "." . "listType" "dashboard"}}
+		{{template "shared/issuelist" dict "." . "listType" "dashboard" "themeList" $themeList}}
 	</div>
 </div>
 <script src="{{AssetUrlPrefix}}/js/issue-list.js" defer></script>
-<script src="{{AssetUrlPrefix}}/js/repository-labels.js" defer></script>
 {{template "base/footer" .}}

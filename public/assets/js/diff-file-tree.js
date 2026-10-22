@@ -110,11 +110,6 @@
             toggleAttribute(group, "data-tree-filtered", !visible);
             visit(group, `${path}/`, level + 1);
           }
-          if (!row.querySelector(".tree-directory-icon")) {
-            const icon = document.getElementById("diff-tree-icon-directory").content.firstElementChild.cloneNode(true);
-            icon.classList.add("tree-directory-icon");
-            row.insertBefore(icon, row.querySelector("span"));
-          }
           // Reveal matching descendants when searching, including Vue's lazy subtrees.
           if (revealMatches && visible && row.getAttribute("aria-expanded") === "false") row.click();
         } else if (row.matches(".item-file")) {
@@ -127,18 +122,6 @@
           setAttribute(row, "aria-level", level);
           setAttribute(row, "aria-selected", row.classList.contains("selected"));
           setAttribute(row, "tabindex", -1);
-          if (!row.querySelector(".tree-file-icon")) {
-            const kind = row.querySelector(".octicon-diff-added")
-              ? "added"
-              : row.querySelector(".octicon-diff-removed")
-                ? "removed"
-                : "diff";
-            const icon = document.getElementById(`diff-tree-icon-${kind}`)?.content.firstElementChild.cloneNode(true);
-            if (icon) {
-              icon.classList.add("tree-file-icon");
-              row.prepend(icon);
-            }
-          }
         } else if (row.matches(".diff-file-tree-items")) visit(row, prefix, level);
       }
     }

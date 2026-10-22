@@ -50,15 +50,15 @@
 				<div class="switch">
 					<a class="{{if not .IsShowClosed}}active {{end}}item" href="?repos=[{{range $.RepoIDs}}{{.}}%2C{{end}}]&sort={{$.SortType}}&state=open&q={{$.Keyword}}" data-test-name="open-issue-count">
 						{{svg "octicon-milestone" 16}}
-						{{ctx.Locale.PrettyNumber .MilestoneStats.OpenCount}}&nbsp;{{ctx.Locale.Tr "repo.issues.open_title"}}
+						{{ctx.Locale.Tr "repo.issues.open_title"}} <span class="theme-counter issue-state-count">{{ctx.Locale.PrettyNumber .MilestoneStats.OpenCount}}</span>
 					</a>
 					<a class="{{if .IsShowClosed}}active {{end}}item" href="?repos=[{{range $.RepoIDs}}{{.}}%2C{{end}}]&sort={{$.SortType}}&state=closed&q={{$.Keyword}}" data-test-name="closed-issue-count">
 						{{svg "octicon-check" 16}}
-						{{ctx.Locale.PrettyNumber .MilestoneStats.ClosedCount}}&nbsp;{{ctx.Locale.Tr "repo.issues.closed_title"}}
+						{{ctx.Locale.Tr "repo.issues.closed_title"}} <span class="theme-counter issue-state-count">{{ctx.Locale.PrettyNumber .MilestoneStats.ClosedCount}}</span>
 					</a>
 				</div>
 			</div>
-			<div class="issue-list-toolbar-right">
+			<div class="issue-list-toolbar-right" id="issue-filter-controls">
 				<div class="ui secondary filter menu">
 					<div class="list-header-sort ui dropdown type jump item">
 						<span class="text tw-whitespace-nowrap">{{ctx.Locale.Tr "repo.issues.filter_sort"}}</span>
@@ -75,6 +75,7 @@
 					</div>
 				</div>
 			</div>
+			<button type="button" class="theme-icon-button issue-mobile-filter-toggle" aria-label="{{ctx.Locale.Tr "filter"}}" aria-controls="issue-filter-controls" aria-expanded="false">…</button>
 		</div>
 		<div class="milestone-list">
 			{{range .Milestones}}

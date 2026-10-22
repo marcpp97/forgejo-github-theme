@@ -54,7 +54,7 @@
 							{{else if not $release.IsTag}}
 								<a class="github-release-latest" href="{{$.RepoLink}}/releases/latest" hidden><span class="ui green label theme-label theme-label-large">Latest</span></a>
 							{{end}}
-							{{template "repo/commit_statuses" dict "Status" $info.CommitStatus "Statuses" $info.CommitStatuses "AdditionalClasses" "tw-flex"}}
+							{{template "repo/commit_statuses" dict "Status" $info.CommitStatus "Statuses" $info.CommitStatuses "AdditionalClasses" "tw-flex" "StatusLabel" true}}
 						</h4>
 						<div class="github-release-controls">
 							{{if and $release.Sha1 ($.Permission.CanRead $.UnitTypeCode)}}{{template "repo/branch_dropdown" dict "root" $ "release" $release}}{{end}}

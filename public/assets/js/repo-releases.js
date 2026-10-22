@@ -16,17 +16,6 @@ for (const digest of document.querySelectorAll(".github-release-digest[data-dige
     })
     .catch(() => digest.remove());
 }
-for (const status of document.querySelectorAll('a[data-tippy="commit-statuses"]')) {
-  const icon = status.querySelector("svg");
-  const label = icon?.classList.contains("yellow")
-    ? "Checks pending"
-    : icon?.classList.contains("green")
-      ? "Checks passed"
-      : icon?.classList.contains("red")
-        ? "Checks failed"
-        : "Checks";
-  status.setAttribute("aria-label", label);
-}
 const releaseMenu = document.querySelector(".github-release-mobile-toc");
 releaseMenu?.addEventListener("click", event => {
   if (event.target.closest("a")) releaseMenu.open = false;
