@@ -610,6 +610,20 @@ describe("Forgejo 15 native integration", () => {
     ).toBe(true);
   });
 
+  it("gives the create pages GitHub's page heading and the settings form groups", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
+    const form = read("components", "common", "form", "form.css");
+    expect(form).toContain(".page-content.new:is(.repo, .org, .migrate, .fork, .milestone)");
+    expect(form).toContain(".inline.field > label:first-child:empty");
+    expect(read("components", "common", "settings", "settings.css")).not.toContain("& .ui.checkbox {");
+    const create = read("styles", "pages", "create.css");
+    expect(create).toContain(".page-content.new:is(.repo, .org, .migrate, .fork) .ui.form > .ui.top.attached.header");
+    expect(create).toContain(".page-content.repository.new.migrate .migrate-entries");
+    // The theme's boxed create pages are gone, and its rules use Forgejo's classes, not Gitea's new-repo.
+    expect(read("styles", "public", "attached.ts")).not.toContain("new.migrate");
+    expect(read("styles", "components", "newrepo.ts")).toContain(".page-content.repository.new.repo {");
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");

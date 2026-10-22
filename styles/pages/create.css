@@ -1,0 +1,190 @@
+/* Create pages (repository, organization, migration, fork, milestone): GitHub's page instead of Forgejo's box. An
+   800px column, the title as a 24px heading over a divider and the introduction, then the form with its sections
+   divided by lines. Kept as a page stylesheet, outside the size-limited theme files. */
+.page-content.new:is(.repo, .org, .migrate, .fork) > .ui.grid {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+.page-content.new:is(.repo, .org, .migrate, .fork) > .ui.grid > .column {
+  width: 100% !important;
+  padding: 0 !important;
+}
+
+.page-content.new:is(.repo, .org, .migrate, .fork) .ui.form > .ui.top.attached.header {
+  margin: 0;
+  padding: 0 0 8px;
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 36px;
+  text-align: left;
+}
+
+.page-content.new:is(.repo, .org, .migrate, .fork) .ui.form > .ui.attached.segment {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+/* Forgejo's introduction (Migrate repository) follows the divider, muted. */
+.page-content.new:is(.repo, .org, .migrate, .fork) .ui.form > .ui.top.attached.header {
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-light-border);
+}
+
+.page-content.new.repo .ui.form > .ui.attached.segment > p.center {
+  margin: 0 0 8px;
+  color: var(--color-text-light-1);
+  text-align: left;
+}
+
+.page-content.new:is(.repo, .org, .migrate, .fork) .ui.form fieldset {
+  margin: 0;
+  padding: 16px 0 0;
+  border: 0;
+}
+
+.page-content.new:is(.repo, .org, .migrate, .fork) .ui.form fieldset + fieldset,
+.page-content.new.repo #non_template > fieldset:first-child {
+  margin-top: 16px;
+  border-top: 1px solid var(--color-light-border);
+}
+
+.page-content.new:is(.repo, .org, .migrate, .fork) .ui.form fieldset > legend {
+  margin-bottom: 8px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+/* The submit sits after a divider, as GitHub's Create repository does. */
+.page-content.new:is(.repo, .org, .migrate, .fork) .ui.form > .ui.attached.segment > .ui.primary.button {
+  margin-top: 16px;
+}
+
+/* Forgejo lays these forms out with right-aligned labels in a 250px column and indents the header and notes to match,
+   all with !important; GitHub stacks the label over the control. */
+.page-content.new:is(.repo, .org, .migrate, .fork) .ui.form {
+  width: 100% !important;
+  & .header {
+    padding-inline-start: 0 !important;
+  }
+  & .inline.field > label {
+    width: auto !important;
+    text-align: start;
+  }
+  & .help {
+    margin-inline-start: 0 !important;
+  }
+  & .optional .title {
+    margin-inline-start: 0 !important;
+  }
+  & .inline.field > :is(input, textarea) {
+    width: 100%;
+  }
+}
+
+/* The legend sits inside the divided section instead of cutting through its line. */
+.page-content.new:is(.repo, .org, .migrate, .fork) .ui.form fieldset > legend {
+  float: left;
+  width: 100%;
+  /* Forgejo divides sections on the legend; the fieldset draws the divider here. */
+  border: 0;
+  & + * {
+    clear: both;
+  }
+}
+
+/* Migration chooser: GitHub has no gallery of large logos; the services become one box with a row per service, its
+   32px logo beside the name and description. */
+.page-content.repository.new.migrate > .ui.container {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+.page-content.repository.new.migrate > .ui.container > h2 {
+  margin: 0 0 16px !important;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-light-border);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 36px;
+}
+
+.page-content.repository.new.migrate .migrate-entries {
+  display: block;
+  border: 1px solid var(--color-light-border);
+  border-radius: var(--border-radius);
+}
+
+.page-content.repository.new.migrate .migrate-entry {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  transition: none;
+  & + .migrate-entry {
+    border-top: 1px solid var(--color-light-border);
+  }
+  &:hover {
+    transform: none;
+    box-shadow: none;
+    background: var(--color-hover);
+  }
+  & svg {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+  }
+  & .content {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: start;
+  }
+  & h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+  & .description {
+    margin-top: 2px;
+    color: var(--color-text-light-1);
+    font-size: 12px;
+    line-height: 18px;
+    text-wrap: wrap;
+  }
+}
+
+/* New and edit milestone: GitHub's subhead, the title over its note and a divider. */
+.page-content.new.milestone .ui.dividing.header {
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-light-border);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 36px;
+  & > .sub.header {
+    margin: 0;
+    color: var(--color-text-light-1);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+  }
+}
