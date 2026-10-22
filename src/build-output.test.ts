@@ -594,6 +594,22 @@ describe("Forgejo 15 native integration", () => {
     expect(read("templates", "repo", "activity.tmpl")).toContain("flex-container github-insights");
   });
 
+  it("lists a repository's packages like a user's or an organization's", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
+    expect(read("templates", "repo", "packages.tmpl")).toContain('{{template "components/package/list/list" .}}');
+    expect(read("templates", "user", "profile_packages.tmpl")).toContain(
+      '{{template "components/package/list/list" .}}'
+    );
+    // Forgejo's flash message is a classless div; the old list rule boxed it into a stray line.
+    expect(read("styles", "components", "repo", "packages.ts")).not.toContain("div:not([class])");
+    expect(read("scripts", "assembleForgejo.ts")).toContain('readdirSync(join(root, "components"))');
+    expect(
+      fs.existsSync(
+        path.join(DIST_DIR, "forgejo", "public", "assets", "css", "components", "package", "list", "list.css")
+      )
+    ).toBe(true);
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");

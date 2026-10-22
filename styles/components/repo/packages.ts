@@ -17,44 +17,7 @@
  * limitations under the License.
  */
 
-import { css, cssCombine, otherThemeVars, themeVars } from "@lutinglt/gitea-github-theme/core";
-
-const packageList = css`
-  .page-content.packages > .ui.container > div:not([class]):not(:has(img.ui.avatar)) {
-    border: 1px solid ${themeVars.color.light.border};
-    border-radius: ${otherThemeVars.border.radius};
-    margin-top: 16px;
-    > .flex-list {
-      border-top: 1px solid ${themeVars.color.light.border};
-      &:first-child {
-        border-top: 0;
-      }
-      > .flex-item {
-        padding: 16px;
-        .flex-item-title {
-          gap: 8px;
-          > a {
-            min-height: 25px;
-          }
-          .ui.label {
-            background-color: transparent;
-            border: 1px solid ${themeVars.color.light.border};
-            color: ${themeVars.color.primary.self};
-            gap: 4px;
-            min-height: 24.5px;
-            padding: 3px 6px;
-          }
-        }
-        .flex-item-body {
-          font-size: 12px;
-          a {
-            text-decoration: underline;
-          }
-        }
-      }
-    }
-  }
-`;
+import { css, cssCombine, themeVars } from "@lutinglt/gitea-github-theme/core";
 
 const packageDetails = css`
   .page-content.packages {
@@ -138,4 +101,4 @@ const packageDetailsMobile = css`
   }
 `;
 
-export default cssCombine(packageList, packageDetails, packageDetailsMobile);
+export default cssCombine(packageDetails, packageDetailsMobile);
