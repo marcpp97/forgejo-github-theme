@@ -57,15 +57,84 @@ export default css`
   .diff-expand-file[hidden] {
     display: none;
   }
+  /* Once every line is expanded the button becomes GitHub's "Collapse non-diff lines". */
+  .diff-expand-file > .diff-collapse-icon,
+  .diff-file-box[data-context-expanded] .diff-expand-file > .diff-expand-icon {
+    display: none;
+  }
+  .diff-file-box[data-context-expanded] .diff-expand-file > .diff-collapse-icon {
+    display: inline-block;
+  }
   .diff-file-status {
     flex: 0 0 16px;
     margin-left: 4px;
   }
-  .repository #diff-container .diff-content-controls {
-    justify-content: flex-start;
-  }
   .diff-content-controls-right {
-    margin-left: 0;
+    margin-left: auto;
+  }
+  /* GitHub's "n / m viewed": a small progress ring and muted text; Forgejo's <progress> stays, hidden. */
+  .diff-viewed-summary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 4px;
+    color: ${themeVars.color.text.light.num1};
+    font-size: 12px;
+    white-space: nowrap;
+    position: relative;
+    /* Forgejo sizes the progress by id (width: 100%); the id outranks a plain class rule and the hidden bar, absolutely
+       placed, stretched the page sideways. */
+    & > #viewed-files-summary {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+  }
+  .diff-viewed-ring {
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: conic-gradient(
+      ${themeVars.github.fgColor.done} calc(var(--viewed-ratio, 0) * 360deg),
+      ${themeVars.color.light.border} 0
+    );
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+  }
+  /* GitHub's toolbar buttons are 28px, like the review button next to the gear. */
+  .diff-content-controls .diff-view-settings > .theme-icon-button,
+  .diff-content-controls .diff-toggle-file-tree-button {
+    width: 28px;
+    height: 28px;
+  }
+  /* The commit filter is an icon-only Vue button; GitHub labels it ("All commits"). */
+  #diff-commit-select :is(#diff-commit-list-expand, .ui.jump.dropdown.button) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    min-height: 0;
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 500;
+    &::after {
+      content: var(--diff-commit-label, "");
+    }
+  }
+  /* Forgejo opens the commit menu to the left, as its button sat on the right; it now sits on the left. */
+  #diff-commit-select #diff-commit-selector-menu {
+    left: 0 !important;
+    right: auto !important;
+  }
+  /* The shared dropdown style pins items to 32px with !important; commit entries have a summary and an
+     author line. */
+  #diff-commit-selector-menu > .vertical.item {
+    height: auto !important;
+    min-height: 32px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
   }
   .diff-code-search {
     display: flex;
@@ -99,21 +168,25 @@ export default css`
   .theme-menu-popover a > input {
     pointer-events: none;
   }
+  /* Forgejo spaces the boxes with an 8px flex gap; GitHub leaves 16px between files. */
+  .repository #diff-file-boxes {
+    gap: 16px;
+  }
   .repository #diff-file-boxes .diff-file-box {
-    margin: 0 0 16px !important;
-    scroll-margin-top: 84px;
+    margin: 0 !important;
+    scroll-margin-top: calc(var(--diff-toolbar-height, 0px) + 16px);
   }
   .repository #diff-file-boxes .diff-file-header {
     background: ${themeVars.color.box.header};
     border: 1px solid ${themeVars.color.light.border};
     border-radius: ${otherThemeVars.border.radius} ${otherThemeVars.border.radius} 0 0;
     box-sizing: border-box;
-    min-height: 46px;
+    min-height: 40px;
     margin: 0;
-    padding: 6px 8px;
+    padding: 4px 8px;
     gap: 8px;
     flex-wrap: nowrap;
-    top: calc(var(--sticky-top-offset, 0px) + 66px);
+    top: calc(var(--sticky-top-offset, 0px) + var(--diff-toolbar-height, 0px));
     z-index: 7;
   }
   .repository #diff-file-boxes .diff-file-name {
@@ -144,6 +217,11 @@ export default css`
   .repository #diff-file-boxes .diff-file-header-actions {
     flex-wrap: nowrap;
     gap: 8px;
+  }
+  /* GitHub's file header buttons are 28px, which keeps the header at 40px. */
+  .repository #diff-file-boxes .diff-file-menu > .theme-icon-button {
+    width: 28px;
+    height: 28px;
   }
   .repository #diff-file-boxes .fold-file {
     display: inline-flex;
@@ -205,10 +283,65 @@ export default css`
   .diff-deleted-placeholder > :not(.diff-deleted-skeleton) {
     position: relative;
   }
+  /* Large diffs Forgejo does not render: GitHub's "Load diff" over a skeleton, inside the file body. */
+  .repository #diff-file-boxes .diff-suppressed-placeholder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+    padding: 0;
+    color: ${themeVars.color.text.light.num1};
+    font-size: 12px;
+  }
+  .diff-suppressed-placeholder > .diff-deleted-skeleton {
+    top: 16px;
+  }
+  .diff-suppressed-placeholder > :not(.diff-deleted-skeleton) {
+    position: relative;
+  }
+  .diff-suppressed-placeholder > .diff-load-button {
+    color: ${themeVars.github.fgColor.accent};
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .diff-suppressed-placeholder > .diff-load-button:hover {
+    text-decoration: underline;
+  }
+  /* Forgejo marks the link while it fetches the diff. */
+  .diff-suppressed-placeholder > .diff-load-button.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
   .repository #diff-file-boxes [data-deleted-diff-hidden] > .diff-file-body,
   .repository #diff-file-boxes [data-folded="true"] > .diff-deleted-placeholder,
   .repository #diff-file-boxes .diff-deleted-placeholder[hidden] {
     display: none;
+  }
+  /* While a file folds, skip painting the files below it that are off screen. Large pull requests otherwise
+     repaint all of them on each animation frame. Only for that moment: estimated sizes above the viewport
+     would break jumps to a file. */
+  .repository #diff-file-boxes > .diff-file-box[data-folding] ~ .diff-file-box {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 400px;
+  }
+  /* Forgejo hides a folded file with display: none, which throws away the styles of every row: unfolding a large
+     file then restyled all of them in one long frame. content-visibility: hidden skips its layout and paint the
+     same way but keeps that work, so unfolding again is cheap. */
+  .repository #diff-file-boxes .diff-file-box[data-folded="true"] > .diff-file-body {
+    display: block;
+  }
+  .repository #diff-file-boxes .diff-file-box[data-folded="true"]:not([data-folding]) > .diff-file-body {
+    content-visibility: hidden;
+    height: 0;
+    padding: 0;
+    border-width: 0;
+  }
+  .repository #diff-file-boxes .diff-file-box[data-folding] > .diff-file-body {
+    display: block;
+    overflow: hidden;
   }
   .repository #diff-file-boxes .diff-file-body {
     border-color: ${themeVars.color.light.border};

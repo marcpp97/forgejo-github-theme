@@ -20,7 +20,7 @@
 								{{if .Owner.Visibility.IsPrivate}}
 									<span class="ui label">{{ctx.Locale.Tr "repo.desc.internal"}}</span>
 								{{else}}
-									<span class="ui label">{{ctx.Locale.Tr "settings.visibility.public"}}</span>
+									<span class="ui label">{{ctx.Locale.Tr "user.visibility.public.title"}}</span>
 								{{end}}
 							{{end}}
 							{{if .IsTemplate}}

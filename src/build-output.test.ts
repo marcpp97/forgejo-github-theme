@@ -168,6 +168,57 @@ it("stamps every template asset link with the hash of the shipped file", async (
   }
 });
 
+it("defines the colour variables Forgejo 17 only sets in its own themes", () => {
+  // Forgejo 17 reads these without a fallback (.text.green, Actions runner status, image diffs...). Undefined, the
+  // coloured status icons all turned white.
+  const required = [
+    "--color-thin-green",
+    "--color-thin-red",
+    "--color-thin-purple",
+    "--color-thin-violet",
+    "--color-thin-orange",
+    "--color-thin-blue",
+    "--color-indicator-offline",
+    "--color-indicator-idle",
+    "--color-indicator-active",
+    "--checkerboard-color-1",
+    "--checkerboard-color-2",
+    "--fancy-card-bg",
+    "--color-light-mimic-enabled",
+  ];
+  // Auto themes only import a light and a dark file.
+  const themes = fs.readdirSync(DIST_DIR).filter(name => /^theme-.+\.css$/.test(name) && !name.endsWith("-auto.css"));
+  expect(themes.length).toBeGreaterThan(0);
+  for (const theme of themes) {
+    const css = fs.readFileSync(path.join(DIST_DIR, theme), "utf-8");
+    for (const variable of required) expect(css, `${theme} defines ${variable}`).toContain(`${variable}:`);
+  }
+});
+
+it("resets Fomantic's will-change on dropdown menus and modals", () => {
+  // will-change keeps the element on its own GPU layer; at a fractional position its text renders blurry.
+  for (const file of ["styles/public/dropdown/dropdown.ts", "styles/public/modal.ts"]) {
+    expect(fs.readFileSync(path.join(ROOT_DIR, file), "utf-8"), file).toContain("will-change: auto;");
+  }
+});
+
+it("keeps :has() off elements that wrap a whole page", () => {
+  // Chrome re-evaluates a :has() whenever its subtree changes. On an element that wraps the page, a folded diff file,
+  // an opened comment editor or a selected line in a large file restyles every element on the page.
+  const output = path.join(DIST_DIR, "forgejo", "public", "assets", "css");
+  const pageWrapper =
+    /(?:^|[\s,{}>~+(])(?:body|html|:root|\.page-content|\.ui\.container|#diff-container)(?:[.#[:][^\s,{}>~+]*)?:has\(/m;
+  const files = fs
+    .readdirSync(output, { recursive: true })
+    .map(String)
+    .filter(file => file.endsWith(".css"));
+  expect(files.length).toBeGreaterThan(0);
+  for (const file of files) {
+    const match = fs.readFileSync(path.join(output, file), "utf-8").match(pageWrapper);
+    expect(match?.[0], `${file} puts :has() on a page wrapper`).toBeUndefined();
+  }
+});
+
 it("versions the theme stylesheet link and the auto themes' imports", async () => {
   const { createHash } = await import("node:crypto");
   const version = (...files: string[]) => {
@@ -379,9 +430,8 @@ describe("Forgejo 15 native integration", () => {
     const compactMenu = fs.readFileSync(path.join(ROOT_DIR, "styles", "public", "menu", "compact_menu.ts"), "utf-8");
     const notification = fs.readFileSync(path.join(ROOT_DIR, "styles", "components", "notification.ts"), "utf-8");
 
-    expect(compactMenu).toContain(
-      ".page-content.user.notification > .ui.container:has(> .ui.bottom.active.tab.segment)"
-    );
+    expect(compactMenu).toContain(".page-content.user.notification:not(#notification_div) > .ui.container,");
+    expect(compactMenu).not.toContain(".ui.container:has(");
     expect(compactMenu).not.toContain(".page-content.user.notification > .ui.container,");
     expect(notification).toContain("--switch-item-min-height: 32px;");
     expect(notification).toContain("background: light-dark(");
@@ -413,7 +463,7 @@ describe("Forgejo 15 native integration", () => {
     expect(repoContentTemplate).toContain('svg "octicon-terminal" 16');
     expect(repoContentStyle).toContain("border-radius: 12px;");
     expect(repoContentStyle).toContain("width: min(400px, calc(100vw - 32px));");
-    expect(repoContentStyle).toContain("grid-template-rows: 32px 32px;");
+    expect(repoContentStyle).toContain("grid-template-rows: 32px 32px auto;");
     expect(repoContentStyle).toContain("border-radius: ${otherThemeVars.border.radius} !important;");
     expect(repoContentStyle).toContain("font-size: 14px;");
     expect(repoContentStyle).toContain("padding: 0 !important;");
@@ -437,8 +487,8 @@ describe("Forgejo 15 native integration", () => {
     expect(repoContentStyle).toContain(".repo-about-block > .repo-about-heading");
     expect(repoContentStyle).toContain("> .repo-description.no-description");
     expect(repoContentStyle).toContain("font-style: italic;");
-    expect(repoContentStyle).toContain("min-height: 34px;");
-    expect(repoContentStyle).toContain("flex: 1 1 120px;");
+    expect(sidebarTemplate).toContain('name="topics" type="text" value="{{StringUtils.Join .Topics ","}}"');
+    expect(repoContentStyle).toContain('input:is([name="description"], [name="website"], [name="topics"])');
     expect(repoContentStyle).toContain("> .ui.dropdown.selection");
     expect(repoContentStyle).toContain("border-radius: 0 !important;");
   });
@@ -544,7 +594,7 @@ describe("Forgejo 15 native integration", () => {
     );
     expect(commitPageStyle).toContain("> .repository-content-header");
     const diffViewStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "components", "repo", "diff_view.ts"), "utf8");
-    expect(diffViewStyle).toContain("min-height: 46px;");
+    expect(diffViewStyle).toContain("min-height: 40px;");
     expect(diffBoxTemplate).toContain('template "repo/diff/file_header"');
     expect(commitPageTemplate).toContain('template "repo/diff/change_summary"');
   });

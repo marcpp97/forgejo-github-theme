@@ -223,8 +223,9 @@
     font: 14px/21px var(--fonts-proportional);
     border-radius: var(--border-radius);
   }
-  .job-step-summary .octicon-check-circle-fill {
-    color: var(--color-text-light-1) !important;
+  /* Skipped steps are muted on GitHub; the theme's grey text is the regular text colour. */
+  .job-step-summary .octicon-skip.text.grey {
+    color: var(--color-text-light-2) !important;
   }
   .job-step-summary:hover {
     background: var(--github-control-transparent-bgColor-hover);

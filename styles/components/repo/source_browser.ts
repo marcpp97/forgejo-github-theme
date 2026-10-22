@@ -1,7 +1,7 @@
 import { css, otherThemeVars, themeVars } from "@lutinglt/gitea-github-theme/core";
 
 export default css`
-  .page-content.repository.file.list:has(#repo-source-browser) > .ui.container {
+  .page-content.repository.file.list.repo-has-source-browser > .ui.container {
     width: 100%;
     max-width: none;
     margin: 0;

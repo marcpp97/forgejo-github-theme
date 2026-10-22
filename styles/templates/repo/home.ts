@@ -33,14 +33,14 @@ const repositoryHome = css`
     grid-template-rows: auto auto 1fr;
   }
 
-  .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) > .ui.container,
-  .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) > .repository-content-header > .ui.container {
+  .page-content.repository.file.list.repo-has-sidebar > .ui.container,
+  .page-content.repository.file.list.repo-has-sidebar > .repository-content-header > .ui.container {
     width: calc(100% - 64px);
     max-width: 1216px;
     margin-left: auto;
     margin-right: auto;
   }
-  .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) > .repository-content-header > .ui.container {
+  .page-content.repository.file.list.repo-has-sidebar > .repository-content-header > .ui.container {
     padding-bottom: 18px;
   }
   .page-content.repository.file.list .repo-home-sidebar-top .repo-home-sidebar-header {
@@ -183,7 +183,7 @@ const repositoryHome = css`
   }
 
   @media (max-width: 767.98px) {
-    .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) > .repository-content-header > .ui.container {
+    .page-content.repository.file.list.repo-has-sidebar > .repository-content-header > .ui.container {
       border-bottom: 0;
       padding-bottom: 0;
     }
@@ -193,14 +193,14 @@ const repositoryHome = css`
       text-transform: lowercase;
     }
 
-    .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) .repo-header > .flex-item {
+    .page-content.repository.file.list.repo-has-sidebar .repo-header > .flex-item {
       display: none;
     }
-    .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) .repo-header > .repo-buttons > a[href$=".rss"] {
+    .page-content.repository.file.list.repo-has-sidebar .repo-header > .repo-buttons > a[href$=".rss"] {
       display: none;
     }
-    .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) #watch-button .text.not-mobile,
-    .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) a[href$="/fork"] .text.not-mobile {
+    .page-content.repository.file.list.repo-has-sidebar #watch-button .text.not-mobile,
+    .page-content.repository.file.list.repo-has-sidebar a[href$="/fork"] .text.not-mobile {
       display: inline !important;
     }
     .page-content.repository.file.list .repo-about-heading {
@@ -280,8 +280,8 @@ const repositoryHome = css`
       order: 2;
     }
 
-    .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) > .ui.container,
-    .page-content.repository.file.list:has(.repo-grid-filelist-sidebar) > .repository-content-header > .ui.container {
+    .page-content.repository.file.list.repo-has-sidebar > .ui.container,
+    .page-content.repository.file.list.repo-has-sidebar > .repository-content-header > .ui.container {
       width: calc(100% - 32px);
     }
     .page-content.repository.file.list .repo-grid-filelist-sidebar {

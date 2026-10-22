@@ -104,11 +104,50 @@
   document
     .getElementById("diff-minimize-comments")
     ?.addEventListener("change", event => container.classList.toggle("diff-minimize-comments", event.target.checked));
+  function setContextExpanded(box, expanded) {
+    const button = box.querySelector(".diff-expand-file");
+    box.toggleAttribute("data-context-expanded", expanded);
+    if (!button) return;
+    const label = button.dataset[expanded ? "collapseLabel" : "expandLabel"];
+    // Forgejo moves title into its own tooltip attribute, so keep both in sync.
+    button.title = label;
+    if (button.hasAttribute("data-tooltip-content")) button.setAttribute("data-tooltip-content", label);
+    button.setAttribute("aria-label", `${label}: ${box.dataset.newFilename}`);
+    if (expanded) button.hidden = false;
+  }
+  // GitHub's "Collapse non-diff lines": reload the file's original diff through Forgejo's own "Load diff"
+  // handler, which also re-enables htmx on the restored expander buttons.
+  function collapseContext(box, button) {
+    const source = box.querySelector(".diff-file-body > .file-body");
+    if (!source) return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("file-only", "true");
+    params.delete("files");
+    params.append("files", box.dataset.newFilename);
+    if (box.dataset.oldFilename && box.dataset.oldFilename !== box.dataset.newFilename)
+      params.append("files", box.dataset.oldFilename);
+    const holder = document.createElement("div");
+    holder.className = "diff-file-body binary";
+    holder.textContent = "Loading…";
+    const link = document.createElement("a");
+    link.className = "diff-load-button tw-hidden";
+    link.dataset.href = `?${params}`;
+    holder.append(link);
+    source.replaceChildren(holder);
+    setContextExpanded(box, false);
+    box.setAttribute("data-context-reloading", "");
+    button.disabled = true;
+    link.click();
+  }
   container.addEventListener("click", async event => {
     const button = event.target.closest(".diff-expand-file");
     if (!button) return;
     const box = button.closest(".diff-file-box");
     if (box.dataset.folded === "true") box.querySelector(".fold-file").click();
+    if (box.hasAttribute("data-context-expanded")) {
+      collapseContext(box, button);
+      return;
+    }
     button.disabled = true;
     const requested = new Set();
     try {
@@ -132,6 +171,7 @@
         });
         if (!success) break;
       }
+      if (requested.size) setContextExpanded(box, true);
     } finally {
       button.disabled = false;
     }
@@ -144,7 +184,15 @@
     }
     for (const box of boxes?.querySelectorAll(".diff-file-box") || []) {
       const expand = box.querySelector(".diff-expand-file");
-      if (expand) expand.hidden = !box.querySelector(".code-expander-button");
+      if (expand) {
+        const expanders = Boolean(box.querySelector(".code-expander-button"));
+        expand.hidden = !expanders && !box.hasAttribute("data-context-expanded");
+        // Re-enabled once Forgejo has restored the collapsed diff.
+        if (expanders && box.hasAttribute("data-context-reloading")) {
+          box.removeAttribute("data-context-reloading");
+          expand.disabled = false;
+        }
+      }
       const button = box.querySelector(".fold-file");
       if (!button) continue;
       const expanded = box.dataset.folded !== "true";
@@ -152,8 +200,37 @@
       button.setAttribute("aria-label", expanded ? "Collapse file" : "Expand file");
     }
   }
+  // Forgejo hides a folded file body at once. Keep it shown while its height slides to or from zero; past the
+  // viewport the motion is not visible, so long diffs only animate their first screen.
+  function animateFold(box) {
+    const body = box.querySelector(":scope > .diff-file-body");
+    if (!body || box.hasAttribute("data-deleted-diff-hidden") || matchMedia("(prefers-reduced-motion: reduce)").matches)
+      return;
+    // Resizing a very long file each frame walks all its rows and stutters, while only its first screen moves.
+    // Long files fold at once, as on GitHub.
+    if (body.getElementsByTagName("tr").length > 500) return;
+    for (const animation of body.getAnimations()) animation.cancel();
+    box.setAttribute("data-folding", "");
+    const height = `${Math.min(body.scrollHeight, window.innerHeight)}px`;
+    const frames = [
+      { height, opacity: 1 },
+      { height: "0px", opacity: 0 },
+    ];
+    const animation = body.animate(box.dataset.folded === "true" ? frames : frames.reverse(), {
+      duration: 150,
+      easing: "ease-out",
+    });
+    animation.onfinish = () => box.removeAttribute("data-folding");
+  }
   if (boxes)
     new MutationObserver(mutations => {
+      for (const mutation of mutations)
+        if (
+          mutation.attributeName === "data-folded" &&
+          mutation.target.matches(".diff-file-box") &&
+          mutation.oldValue !== mutation.target.dataset.folded
+        )
+          animateFold(mutation.target);
       updateFoldLabels();
       if (
         search.value &&
@@ -164,9 +241,23 @@
       subtree: true,
       childList: true,
       attributes: true,
+      attributeOldValue: true,
       attributeFilter: ["data-folded", "data-tree-filtered"],
     });
   updateFoldLabels();
+  // Forgejo writes the viewed count into a hidden <progress>; draw it as GitHub's progress ring.
+  const viewedProgress = document.getElementById("viewed-files-summary");
+  const viewedRing = document.querySelector(".diff-viewed-ring");
+  if (viewedProgress && viewedRing) {
+    const updateRing = () => {
+      const max = Number(viewedProgress.getAttribute("max")) || 0;
+      const value = Number(viewedProgress.getAttribute("value")) || 0;
+      viewedRing.style.setProperty("--viewed-ratio", max ? String(Math.min(value / max, 1)) : "0");
+      viewedRing.classList.toggle("is-complete", max > 0 && value >= max);
+    };
+    new MutationObserver(updateRing).observe(viewedProgress, { attributes: true, attributeFilter: ["value", "max"] });
+    updateRing();
+  }
   // Let Forgejo load the actual referencing branches using its existing handler.
   window.addEventListener("load", () => document.querySelector(".commit-card .load-branches-and-tags")?.click(), {
     once: true,

@@ -24,7 +24,8 @@ const smallCompactMenu = css`
   /* 编辑/预览切换菜单(仓库编辑文件时的编辑器操作栏左侧) */
   .page-content.repository.file.editor #editor-bar,
   /* 订阅/关注切换菜单(应只选中订阅/关注页面, 不能选中通知页面) */
-  .page-content.user.notification > .ui.container:has(> .ui.bottom.active.tab.segment),
+  /* No :has() on the container: Chrome would then track every .ui.container and restyle the whole page on editor tab changes. */
+  .page-content.user.notification:not(#notification_div) > .ui.container,
   /* 里程碑/标签切换菜单(里程碑页) */
   .page-content.repository.milestones .list-header,
   /* 里程碑/标签切换菜单(新建里程碑页) */

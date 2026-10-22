@@ -10,13 +10,10 @@
 			<input type="hidden" name="sort" value="{{$.SortType}}">
 		{{end}}
 		{{if .PageIsPullList}}
-			{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.pull_kind") "Tooltip" (ctx.Locale.Tr "explore.go_to")}}
+			{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.pull_kind") "Tooltip" (ctx.Locale.Tr "search.verb") "Syntax" true}}
 		{{else if .PageIsMilestones}}
-			{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.milestone_kind") "Tooltip" (ctx.Locale.Tr "explore.go_to")}}
+			{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.milestone_kind") "Tooltip" (ctx.Locale.Tr "search.verb")}}
 		{{else}}
-			{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.issue_kind") "Tooltip" (ctx.Locale.Tr "explore.go_to")}}
+			{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.issue_kind") "Tooltip" (ctx.Locale.Tr "search.verb") "Syntax" true}}
 		{{end}}
-	{{if not .PageIsMilestones}}
-		{{template "shared/search/issue/syntax"}}
-	{{end}}
 </form>

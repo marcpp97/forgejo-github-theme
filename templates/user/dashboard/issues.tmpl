@@ -35,11 +35,10 @@
 			<input type="hidden" name="project" value={{$.ProjectID}}>
 			<input type="hidden" name="state" value="{{$.State}}">
 			{{if .PageIsPulls}}
-				{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.pull_kind") "Tooltip" (ctx.Locale.Tr "explore.go_to")}}
+				{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.pull_kind") "Tooltip" (ctx.Locale.Tr "search.verb") "Syntax" true}}
 			{{else}}
-				{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.issue_kind") "Tooltip" (ctx.Locale.Tr "explore.go_to")}}
+				{{template "components/common/search/search" dict "Value" .Keyword "Placeholder" (ctx.Locale.Tr "search.issue_kind") "Tooltip" (ctx.Locale.Tr "search.verb") "Syntax" true}}
 			{{end}}
-			{{template "shared/search/issue/syntax"}}
 		</form>
 		<div id="issue-filters" class="issue-list-toolbar">
 			<div class="issue-list-toolbar-left">
@@ -78,7 +77,7 @@
 							{{$sortKeyword := StringUtils.RemoveAllPrefix $.Keyword "sort:"}}
 							{{$o := .}}
 							{{range $opt := StringUtils.Make "recentupdate" "leastupdate" "latest" "oldest" "mostcomment" "leastcomment" "nearduedate" "farduedate"}}
-								{{$text := ctx.Locale.Tr (printf "repo.issues.filter_sort.%s" $opt)}}
+								{{$text := ctx.Locale.Tr (printf "issues.search.sort.%s" $opt)}}
 								<a class="{{if or (eq $o.SortType $opt) (and (eq $opt "latest") (not $o.SortType))}}active {{end}}item" href="?type={{$.ViewType}}&sort={{$opt}}&project={{$.ProjectID}}&state={{$.State}}&labels={{$o.SelectLabels}}&q={{$sortKeyword}}">{{$text}}</a>
 							{{end}}
 						</div>

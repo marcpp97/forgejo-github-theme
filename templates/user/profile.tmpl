@@ -79,19 +79,6 @@
 	{{template "components/repository/results/results" dict "Data" . "View" .TabName "Pagination" "base/paginate"}}
 {{end}}
 {{template "user/profile_layout_end" .}}
-<div class="ui g-modal-confirm delete modal" id="block-user">
-	<div class="header">
-		{{ctx.Locale.Tr "user.block_user"}}
-	</div>
-	<div class="content">
-		<p>{{ctx.Locale.Tr "user.block_user.detail"}}</p>
-		<ul>
-			<li>{{ctx.Locale.Tr "user.block_user.detail_1"}}</li>
-			<li>{{ctx.Locale.Tr "user.block_user.detail_2"}}</li>
-			<li>{{ctx.Locale.Tr "user.block_user.detail_3"}}</li>
-		</ul>
-	</div>
-	{{template "base/modal_actions_confirm" .}}
-</div>
+{{template "shared/admin/user_delete" .}}
 
 {{template "base/footer" .}}

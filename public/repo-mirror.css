@@ -53,9 +53,7 @@
 }
 
 @media (max-width: 767px) {
-  .page-content.repository.file.list:has(.repo-grid-filelist-sidebar)
-    .repo-header
-    > .flex-item:has(.repository-mirror) {
+  .page-content.repository.file.list.repo-has-sidebar .repo-header > .flex-item:has(.repository-mirror) {
     display: flex;
   }
 

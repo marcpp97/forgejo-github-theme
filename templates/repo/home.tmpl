@@ -1,7 +1,8 @@
 {{/* Repository home composition adapted to Forgejo 15 partials. */}}
 {{template "base/head" .}}
 {{$showSidebar := and (not .TreeNames) (not .HideRepoInfo) (not .IsBlame)}}
-<div role="main" aria-label="{{.Title}}" class="page-content repository file list {{if .IsBlame}}blame{{end}}">
+{{/* Layout classes instead of CSS :has(): a :has() on .page-content restyles the whole page, every line of a large file included, on any DOM change. */}}
+<div role="main" aria-label="{{.Title}}" class="page-content repository file list {{if .IsBlame}}blame{{end}}{{if $showSidebar}} repo-has-sidebar{{else if .TreeNames}} repo-has-source-browser{{end}}">
 	{{if not .TreeNames}}{{template "repo/header" .}}{{end}}
 	<div class="ui container {{if or .TreeNames .IsBlame}}fluid padded{{end}}">
 		{{template "base/alert" .}}

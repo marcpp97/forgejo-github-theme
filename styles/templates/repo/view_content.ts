@@ -178,8 +178,8 @@ const repoToolbarDetails = css`
       align-items: center;
       column-gap: 0;
       display: grid;
-      grid-template-columns: max-content max-content minmax(0, 1fr) 36px;
-      grid-template-rows: 32px 32px;
+      grid-template-columns: max-content max-content max-content minmax(0, 1fr) 36px;
+      grid-template-rows: 32px 32px auto;
       height: auto !important;
       min-height: 72px;
       row-gap: 8px;
@@ -187,7 +187,8 @@ const repoToolbarDetails = css`
     }
 
     & .repo-code-dropdown .clone-panel > #repo-clone-https,
-    & .repo-code-dropdown .clone-panel > #repo-clone-ssh {
+    & .repo-code-dropdown .clone-panel > #repo-clone-ssh,
+    & .repo-code-dropdown .clone-panel > #repo-clone-fj {
       background: transparent !important;
       border: 1px solid #0000 !important;
       border-radius: ${otherThemeVars.border.radius} !important;
@@ -212,13 +213,31 @@ const repoToolbarDetails = css`
       grid-column: 2;
     }
 
-    & .repo-code-dropdown .clone-panel > .primary:is(#repo-clone-https, #repo-clone-ssh) {
+    & .repo-code-dropdown .clone-panel > #repo-clone-fj {
+      grid-column: 3;
+    }
+
+    /* GitHub explains its CLI under the field: "Work fast with our official CLI. Learn more". */
+    & .repo-code-dropdown .clone-panel > .repo-clone-hint {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      margin: 0;
+      color: ${themeVars.color.text.light.num1};
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    & .repo-code-dropdown .clone-panel > .repo-clone-hint[hidden] {
+      display: none;
+    }
+
+    & .repo-code-dropdown .clone-panel > .primary:is(#repo-clone-https, #repo-clone-ssh, #repo-clone-fj) {
       background: light-dark(${themeVars.github.controlKnob.bgColor.rest}, ${themeVars.color.hover.self}) !important;
       border-color: ${themeVars.color.secondary.self} !important;
       font-weight: 600;
     }
 
-    & .repo-code-dropdown .clone-panel > .basic:is(#repo-clone-https, #repo-clone-ssh):hover {
+    & .repo-code-dropdown .clone-panel > .basic:is(#repo-clone-https, #repo-clone-ssh, #repo-clone-fj):hover {
       background: ${themeVars.github.control.transparent.bgColor.hover} !important;
     }
 
@@ -226,9 +245,9 @@ const repoToolbarDetails = css`
       background: ${themeVars.color.box.header};
       border: 1px solid ${themeVars.color.light.border};
       border-radius: ${otherThemeVars.border.radius};
-      font-family: var(--font-monospace);
+      font-family: var(--fonts-monospace);
       font-size: 12px;
-      grid-column: 1 / 4;
+      grid-column: 1 / 5;
       grid-row: 2;
       height: 32px;
       min-width: 0;
@@ -249,7 +268,7 @@ const repoToolbarDetails = css`
       display: grid;
       font-size: 14px;
       gap: 0;
-      grid-column: 4;
+      grid-column: 5;
       grid-row: 2;
       height: 32px;
       justify-content: center;
@@ -412,33 +431,14 @@ const repoToolbarDetails = css`
     line-height: 21px;
   }
 
-  .page-content.repository.file.list .repo-about-modal-body input:is([name="description"], [name="website"]) {
+  .page-content.repository.file.list
+    .repo-about-modal-body
+    input:is([name="description"], [name="website"], [name="topics"]) {
     box-sizing: border-box;
     font-size: 14px;
     height: 32px;
     line-height: 20px;
     padding: 5px 12px;
-  }
-
-  .page-content.repository.file.list .repo-about-topics-input {
-    align-content: flex-start;
-    align-items: center;
-    box-sizing: border-box;
-    font-size: 12px;
-    line-height: 20px;
-    min-height: 34px;
-    padding: 6px 0 6px 12px;
-  }
-
-  .page-content.repository.file.list .repo-about-topics-input > input.search {
-    flex: 1 1 120px;
-    font-size: 12px;
-    height: 20px;
-    line-height: 20px;
-    margin: 0 12px 0 0;
-    min-width: 120px;
-    padding: 0;
-    width: auto !important;
   }
 
   .page-content.repository.file.list .repo-about-error {
