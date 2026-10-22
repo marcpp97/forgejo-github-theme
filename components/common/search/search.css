@@ -98,6 +98,28 @@
   display: none;
 }
 
+/* A shortcut hint, like the "/" in GitHub's header search; it gives way to the clear button once there is text. */
+.theme-search-field > .theme-search-shortcut {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  padding: 0 3px;
+  border: 1px solid var(--color-text-light-1);
+  border-radius: 3px;
+  box-shadow: none;
+  background: transparent;
+  color: var(--color-text-light-1);
+  font: 12px/1 var(--fonts-monospace);
+}
+
+.theme-search-field:not(:has(> input:placeholder-shown)) > .theme-search-shortcut {
+  display: none;
+}
+
 /* Syntax fields: a mirror behind the transparent input text colours qualifier values (author:<value>). */
 .theme-search-syntax-control {
   position: relative;

@@ -35,6 +35,44 @@ const navbarRight = css`
       position: relative;
       text-decoration: none;
     }
+    /* GitHub: the menu button, 12px, the logo, 8px, the page's name. Header controls are transparent with a border. */
+    #navbar-drawer-toggle {
+      background: transparent;
+      &:hover {
+        background: ${themeVars.github.control.transparent.bgColor.hover};
+      }
+    }
+    /* GitHub's header search: a 197px field first on the right from 1012px, a search button below that. */
+    .navbar-search {
+      width: 197px;
+    }
+    .navbar-search-field {
+      padding-left: 12px;
+      background: transparent;
+    }
+    .navbar-search-button {
+      order: -1;
+    }
+    @media (min-width: 1012px) {
+      .navbar-search-button {
+        display: none !important;
+      }
+    }
+    @media (max-width: 1011.98px) {
+      .navbar-search {
+        display: none;
+      }
+    }
+    /* On mobile GitHub keeps only search and the inbox on the right; the drawer has the dashboard links. */
+    .navbar-mobile-right > .navbar-dashboard-link {
+      display: none !important;
+    }
+    /* GitHub drops the logo below 600px. */
+    @media (max-width: 599.98px) {
+      .navbar-left > #navbar-logo.item {
+        display: none;
+      }
+    }
     .navbar-left {
       gap: 8px;
       > .item {
@@ -48,10 +86,18 @@ const navbarRight = css`
           font-weight: 600;
         }
         &#navbar-logo {
-          /* 与下方的用户切换头像对齐 */
-          padding-left: 6px;
+          /* GitHub: a bare 32px mark 12px after the menu button. */
+          flex: none;
+          box-sizing: border-box;
+          width: 32px;
+          min-width: 32px;
+          height: 32px;
+          min-height: 32px;
+          margin-left: 4px;
+          padding: 0;
           &:hover {
             background: unset;
+            box-shadow: none;
           }
           img {
             height: 32px;

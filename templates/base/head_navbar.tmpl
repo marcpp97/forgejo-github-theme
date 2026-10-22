@@ -8,6 +8,8 @@
 {{/* Forgejo 15 navigation adapted to the theme's GitHub-style layout. */}}
 <nav id="navbar"{{if .Repository}} class="repository-navbar"{{end}} aria-label="{{ctx.Locale.Tr "aria.navbar"}}">
 	<div class="navbar-left">
+		{{/* GitHub opens its navigation drawer from a button before the logo on every width. */}}
+		<button type="button" class="theme-icon-button theme-icon-button-outlined" id="navbar-drawer-toggle" aria-controls="navbar-drawer" aria-haspopup="dialog" aria-expanded="false" aria-label="{{ctx.Locale.Tr "toggle_menu"}}">{{svg "octicon-three-bars" 16}}</button>
 		<!-- the logo -->
 		<a class="item" id="navbar-logo" href="{{AppSubUrl}}/" aria-label="{{if .IsSigned}}{{ctx.Locale.Tr "dashboard"}}{{else}}{{ctx.Locale.Tr "home"}}{{end}}">
 			<img width="30" height="30" src="{{AssetUrlPrefix}}/img/logo.svg" alt="{{ctx.Locale.Tr "logo"}}" aria-hidden="true">
@@ -16,19 +18,20 @@
 		<!-- mobile right menu, it must be here because in mobile view, each item is a flex column, the first item is a full row column -->
 		<div class="ui secondary menu navbar-mobile-right only-mobile">
 			{{template "base/head_navbar_icons" dict "Data" .}}
-			<button class="item ui icon mini button tw-m-0" id="navbar-drawer-toggle" aria-controls="navbar-drawer" aria-haspopup="dialog" aria-expanded="false" aria-label="{{ctx.Locale.Tr "toggle_menu"}}">{{svg "octicon-three-bars"}}</button>
 		</div>
 
 		<!-- navbar links non-mobile -->
 		{{if .Repository}}
 			{{with .Repository}}
 			<div class="repository-navbar-breadcrumb not-mobile">
+				{{/* On narrow screens GitHub folds the owner into a menu before the slash. */}}
+				{{template "components/common/dropdown/dropdown" dict "Kind" "actions" "Icon" "octicon-kebab-horizontal" "IconOnly" true "Small" true "Quiet" true "Label" .Owner.Name "Items" "base/navbar_breadcrumb_items" "Data" $}}
 				<a class="repository-navbar-owner" href="{{.Owner.HomeLink}}">
-					{{ctx.AvatarUtils.Avatar .Owner 16}}
 					<span>{{.Owner.Name}}</span>
 				</a>
 				<span class="repository-navbar-separator">/</span>
-				<a class="repository-navbar-name" href="{{$.RepoLink}}">{{.Name}}</a>
+				{{$repoIcon := "octicon-repo"}}{{if .IsPrivate}}{{$repoIcon = "octicon-lock"}}{{else if .IsFork}}{{$repoIcon = "octicon-repo-forked"}}{{else if .IsMirror}}{{$repoIcon = "octicon-mirror"}}{{end}}
+				<a class="repository-navbar-name" href="{{$.RepoLink}}">{{svg $repoIcon 16}}<span>{{.Name}}</span></a>
 			</div>
 			{{end}}
 		{{else if $isOrganization}}
@@ -56,6 +59,12 @@
 
 	<!-- the full dropdown menus -->
 	<div class="navbar-right">
+		{{if not (and .IsSigned .HideNavbarLinks)}}
+			{{/* GitHub's search sits first on the right; here it searches repositories and "/" focuses it. */}}
+			<form class="navbar-search not-mobile" action="{{AppSubUrl}}/explore/repos" method="get" role="search">
+				{{template "components/common/search/search" dict "Kind" "icon" "Placeholder" (ctx.Locale.Tr "search.repo_kind") "Shortcut" "/" "Class" "navbar-search-field"}}
+			</form>
+		{{end}}
 		{{if and .IsSigned .HideNavbarLinks}}
 			<div class="ui dropdown jump item" data-tooltip-content="{{ctx.Locale.Tr "user_profile_and_more"}}">
 				<span class="text">

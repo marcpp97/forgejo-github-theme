@@ -13,9 +13,13 @@
     extraNodes.push(node);
   }
 
+  // The drawer opens on every width, like GitHub's. Custom navbar links only move into it on mobile, where the
+  // navbar hides them; on desktop they stay in the navbar.
+  let movedExtras = false;
   toggle.addEventListener("click", () => {
-    if (!mobile.matches || drawer.open) return;
-    if (extraSlot && extraEnd) {
+    if (drawer.open) return;
+    movedExtras = mobile.matches && Boolean(extraSlot && extraEnd);
+    if (movedExtras) {
       extraSlot.hidden = !extraNodes.some(node => node.nodeType === 1 || node.textContent.trim());
       extraSlot.append(...extraNodes);
     }
@@ -41,11 +45,12 @@
     }
   });
   drawer.addEventListener("close", () => {
-    extraEnd?.before(...extraNodes);
+    if (movedExtras) extraEnd.before(...extraNodes);
+    movedExtras = false;
     toggle.setAttribute("aria-expanded", "false");
     document.documentElement.classList.remove("navbar-drawer-open");
     drawer.querySelectorAll("details[open]").forEach(details => (details.open = false));
-    if (mobile.matches) toggle.focus();
+    toggle.focus();
   });
 
   // A modal dialog reports backdrop clicks on the dialog itself. Check both
@@ -63,9 +68,6 @@
   drawer.addEventListener("click", event => {
     if (backdropPress && event.target === drawer && outside(event)) drawer.close();
     backdropPress = false;
-  });
-  mobile.addEventListener("change", () => {
-    if (!mobile.matches && drawer.open) drawer.close();
   });
   window.addEventListener("pagehide", () => {
     if (drawer.open) drawer.close();

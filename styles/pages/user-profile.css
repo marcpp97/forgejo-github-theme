@@ -374,6 +374,8 @@
 }
 
 #navbar .profile-navbar-name {
+  /* Like the repository breadcrumb: the name starts 6px into its link. */
+  padding-inline: 6px;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;

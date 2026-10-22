@@ -13,6 +13,16 @@
     if (applied && input.form) input.form.requestSubmit();
   });
 
+  // A field with a shortcut takes focus when its key is pressed outside another text field.
+  document.addEventListener("keydown", event => {
+    if (event.ctrlKey || event.metaKey || event.altKey || event.isComposing) return;
+    if (event.target.closest("input, textarea, select, [contenteditable]")) return;
+    const input = document.querySelector(`input[data-search-shortcut="${CSS.escape(event.key)}"]`);
+    if (!input || !input.checkVisibility()) return;
+    event.preventDefault();
+    input.focus();
+  });
+
   // Qualifiers Forgejo's issue search understands; their values are highlighted like GitHub's.
   const qualifiers = new Set(["is", "author", "assignee", "review", "mentions", "sort", "modified"]);
 

@@ -46,16 +46,6 @@ const repositoryHeader = css`
     gap: 8px;
   }
 
-  #navbar.repository-navbar .navbar-left > #navbar-logo.item {
-    box-sizing: border-box;
-    flex: none;
-    height: 32px;
-    min-height: 32px;
-    min-width: 32px;
-    padding: 0;
-    width: 32px;
-  }
-
   #navbar .repository-navbar-breadcrumb {
     align-items: center;
     display: flex;
@@ -80,20 +70,20 @@ const repositoryHeader = css`
     background: ${themeVars.color.nav.hoverBg};
   }
 
-  #navbar .repository-navbar-owner {
-    gap: 8px;
-  }
-
-  #navbar .repository-navbar-owner img {
-    border-radius: 9999px;
-    height: 16px;
-    margin: 0 !important;
-    width: 16px;
-  }
-
   #navbar .repository-navbar-breadcrumb > a.repository-navbar-name {
+    gap: 8px;
     font-weight: 600;
     padding: 4px;
+  }
+
+  /* The owner menu only replaces the owner on narrow screens. */
+  #navbar .repository-navbar-breadcrumb > .theme-dropdown {
+    display: none;
+  }
+  @media (max-width: 767.98px) {
+    #navbar .repository-navbar-breadcrumb > .theme-dropdown {
+      display: block;
+    }
   }
 
   #navbar .repository-navbar-separator {
@@ -158,6 +148,11 @@ const repositoryHeader = css`
   .repository-tab-nav.page-content.repository .ui.secondary.pointing.menu .overflow-menu-items > .item {
     border-bottom: 0 !important;
     box-sizing: border-box;
+    /* GitHub: 8px between the icon, the label and the counter. */
+    gap: 8px;
+    & > svg {
+      margin-right: 0;
+    }
     height: 32px;
     line-height: 21px;
     margin: 0 0 8px !important;
@@ -310,7 +305,7 @@ const repositoryHeader = css`
     z-index: 1;
   }
 
-  .page-content.repository > .secondary-nav .ui.secondary.pointing.menu .active.item > .ui.label::after {
+  .page-content.repository > .secondary-nav .ui.secondary.pointing.menu .active.item > .theme-counter::after {
     content: none;
   }
 
@@ -366,33 +361,28 @@ const repositoryHeader = css`
       flex: 1;
       min-width: 0;
     }
-    #navbar.repository-navbar .repository-navbar-owner,
-    #navbar.repository-navbar .repository-navbar-separator {
+    #navbar.repository-navbar .repository-navbar-owner {
       display: none;
     }
     #navbar.repository-navbar .repository-navbar-name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: block;
+      min-width: 0;
+      & > span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      & > svg {
+        flex: none;
+      }
     }
     #navbar.repository-navbar .navbar-mobile-right {
       order: 2;
       flex-shrink: 0;
     }
 
-    #navbar.repository-navbar {
-      padding-left: 8px;
-      padding-right: 8px;
-    }
-
-    .repository-tab-nav.page-content.repository > .secondary-nav > overflow-menu.ui.container {
-      padding-left: 8px;
-      padding-right: 8px;
-    }
-
-    .repository-tab-nav.page-content.repository .ui.secondary.pointing.menu .overflow-menu-items {
-      gap: 4px;
+    /* GitHub drops the tab icons once the tabs run out of room; with Forgejo's longer tab list that is mobile. */
+    .repository-tab-nav.page-content.repository .ui.secondary.pointing.menu .overflow-menu-items > .item > svg {
+      display: none;
     }
 
     .page-content.repository > .repository-content-header {
