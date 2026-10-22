@@ -113,6 +113,71 @@
       cardsObserver.observe(cards, { childList: true });
   }
 
+  // Card menu: its panel is pinned to the viewport so the scrolling column does not clip it, and the card's own
+  // column is not offered as a target.
+  const placeCardMenu = menu => {
+    const summary = menu.querySelector("summary").getBoundingClientRect();
+    const panel = menu.querySelector(".theme-dropdown-panel");
+    const width = panel.offsetWidth;
+    const right = document.documentElement.clientWidth - 16;
+    panel.style.translate = "none";
+    panel.style.left = `${Math.max(16, Math.min(summary.left, right - width))}px`;
+    panel.style.top = `${summary.bottom + 4}px`;
+    panel.style.right = "auto";
+  };
+  board.addEventListener(
+    "toggle",
+    event => {
+      const menu = event.target;
+      if (!menu.matches(".github-project-card-meta > .theme-dropdown[open]")) return;
+      const column = menu.closest(".project-column")?.dataset.id;
+      for (const button of menu.querySelectorAll("[data-project-card-move]"))
+        button.disabled = button.dataset.projectCardMove === column;
+      placeCardMenu(menu);
+    },
+    true
+  );
+  const closeCardMenus = () => {
+    for (const menu of board.querySelectorAll(".github-project-card-meta > .theme-dropdown[open]")) menu.open = false;
+  };
+  board.addEventListener("scroll", event => event.target.closest?.(".theme-dropdown-panel") || closeCardMenus(), true);
+  window.addEventListener("resize", closeCardMenus);
+
+  // Move to top, bottom or another column, then save the target column's order the way Forgejo's drag and drop does.
+  board.addEventListener("click", async event => {
+    const button = event.target.closest("[data-project-card-move]");
+    if (!button || button.disabled) return;
+    const card = button.closest(".issue-card");
+    const target = button.dataset.projectCardMove;
+    const column =
+      target === "top" || target === "bottom"
+        ? card.closest(".project-column")
+        : board.querySelector(`.project-column[data-id="${CSS.escape(target)}"]`);
+    const source = card.closest(".project-column");
+    const cards = column?.querySelector(":scope > .cards");
+    if (!cards) return;
+    if (target === "top") cards.prepend(card);
+    else cards.append(card);
+    for (const changed of new Set([source, column])) {
+      const count = changed.querySelector(".project-column-issue-count");
+      if (count) count.textContent = String(changed.querySelectorAll(".issue-card[data-issue]").length);
+    }
+    const issues = [...cards.querySelectorAll(":scope > .issue-card[data-issue]")].map((item, sorting) => ({
+      issueID: Number(item.dataset.issue),
+      sorting,
+    }));
+    try {
+      const response = await fetch(`${column.dataset.url}/move`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Csrf-Token": window.config?.csrfToken ?? "" },
+        body: JSON.stringify({ issues }),
+      });
+      if (!response.ok) throw new Error(String(response.status));
+    } catch {
+      window.location.reload();
+    }
+  });
+
   // Side panel: a card opens its issue next to the board, as on GitHub. The issue page loads in a frame and drops
   // the site chrome there (see base/head_style).
   const panel = document.querySelector(".github-project-panel");
@@ -205,6 +270,7 @@
   board.addEventListener("click", event => {
     const card = event.target.closest(".issue-card");
     if (!card || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (event.target.closest(".theme-dropdown")) return;
     // Labels, assignees, milestones and pull requests keep their own links.
     const link = event.target.closest("a");
     if (link && !link.matches(".github-project-card-title")) return;

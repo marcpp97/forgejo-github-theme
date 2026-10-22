@@ -1,6 +1,7 @@
-{{/* GitHub-style project card: the number above the title, with the repository in organization and user projects,
-	assignees in the corner, then labels and compact details. Forgejo's repo/issue/card stays untouched for the pinned
-	issues it also renders. */}}
+{{/* GitHub-style project card: the repository and number above the title with the card menu beside them, assignees in
+	the corner, then labels and compact details. Forgejo's repo/issue/card stays untouched for the pinned issues it also
+	renders. */}}
+{{$canWrite := and $.Page.CanWriteProjects (or (not $.Page.Repository) (not $.Page.Repository.IsArchived))}}
 {{with .Issue}}
 	{{if eq $.Page.Project.CardType 1}}{{/* Images and Text*/}}
 		{{$attachments := index $.Page.issuesAttachmentMap .ID}}
@@ -15,7 +16,8 @@
 	<div class="content github-project-card">
 		<div class="github-project-card-meta">
 			<span class="issue-card-icon">{{template "shared/issueicon" .}}</span>
-			<span class="github-project-card-ref">{{if not $.Page.Repository}}{{.Repo.Name}} {{end}}#{{.Index}}</span>
+			<span class="github-project-card-ref">{{.Repo.Name}} #{{.Index}}</span>
+			{{template "components/common/dropdown/dropdown" dict "Kind" "actions" "Icon" "octicon-kebab-horizontal" "IconOnly" true "Small" true "Quiet" true "Label" (ctx.Locale.Tr "profile.actions.tooltip") "Items" "projects/card_menu" "Data" (dict "Context" $.Page.Context "Link" .Link "Columns" $.Page.Columns "CanWrite" $canWrite)}}
 			{{if .Assignees}}
 				<span class="github-project-card-assignees">
 					{{range .Assignees}}

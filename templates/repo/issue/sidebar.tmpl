@@ -3,7 +3,7 @@
 <aside class="theme-sidebar" aria-label="{{if .PageIsPullList}}Pull requests{{else}}Issues{{end}} sidebar navigation">
     <div class="theme-sidebar-content">
     <nav aria-label="{{if .PageIsPullList}}Pull request{{else}}Issue{{end}} filters">
-        <a class="{{if or (eq .ViewType "all") (not .ViewType)}}active{{end}}" href="{{.RepoLink}}/{{$list}}?type=all&amp;state=open">{{if .PageIsPullList}}{{svg "octicon-git-pull-request" 16}}Pull requests{{else}}{{svg "octicon-issue-opened" 16}}Issues{{end}}</a>
+        <a class="{{if and (not .IsProjectsPage) (or (eq .ViewType "all") (not .ViewType))}}active{{end}}" href="{{.RepoLink}}/{{$list}}?type=all&amp;state=open">{{if .PageIsPullList}}{{svg "octicon-git-pull-request" 16}}Pull requests{{else}}{{svg "octicon-issue-opened" 16}}Issues{{end}}</a>
         {{if .IsSigned}}
             {{/* GitHub's order: authored, assigned, involved, review requests. */}}
             <a class="{{if eq .ViewType "created_by"}}active{{end}}" href="{{.RepoLink}}/{{$list}}?type=created_by&amp;state=open">{{svg "octicon-person" 16}}Created by me</a>
@@ -15,7 +15,8 @@
     </nav>
     <hr>
     <nav aria-label="Pages">
-        {{/* GitHub lists Milestones and Labels; Forgejo's extra pages follow them. */}}
+        {{/* GitHub lists Projects, Milestones and Labels; Forgejo's extra pages follow them. */}}
+        {{if and (not .UnitProjectsGlobalDisabled) (.Permission.CanRead $.UnitTypeProjects)}}<a class="{{if .IsProjectsPage}}active{{end}}" href="{{.RepoLink}}/projects">{{svg "octicon-table" 16}}{{ctx.Locale.Tr "repo.projects"}}</a>{{end}}
         <a href="{{.RepoLink}}/milestones">{{svg "octicon-milestone" 16}}{{ctx.Locale.Tr "repo.milestones"}}</a>
         <a href="{{.RepoLink}}/labels">{{svg "octicon-tag" 16}}{{ctx.Locale.Tr "repo.labels"}}</a>
         <a href="{{.RepoLink}}/{{$list}}?state=all">{{svg "octicon-eye" 16}}All states</a>
