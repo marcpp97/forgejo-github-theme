@@ -118,14 +118,6 @@ const repositoryHome = css`
     white-space: nowrap;
   }
 
-  .page-content.repository.file.list .repo-home-sidebar-metadata {
-    gap: 2px;
-  }
-
-  .page-content.repository.file.list .repo-home-sidebar-metadata .flex-text-block {
-    min-height: 22px;
-  }
-
   .page-content.repository.file.list .repo-home-sidebar-header {
     align-items: center;
     display: flex;
@@ -134,9 +126,7 @@ const repositoryHome = css`
 
   .page-content.repository.file.list .language-stats {
     background-color: ${themeVars.github.progressBar.track.bgColor};
-    border-radius: 5px;
     display: flex;
-    gap: 1px;
     height: 8px;
     margin: 0;
     overflow: hidden;
@@ -145,52 +135,10 @@ const repositoryHome = css`
     width: 100%;
   }
 
-  .page-content.repository.file.list .language-stats-details {
-    column-gap: 16px;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 8px;
-    padding-bottom: 3px;
-    row-gap: 3px;
-  }
-
-  .page-content.repository.file.list .language-stats-details .item {
-    align-items: center;
-    display: flex;
-    gap: 0;
-    height: auto;
-    justify-content: flex-start;
-    line-height: 18px;
-    padding: 0;
-    text-decoration: none;
-  }
-
-  .page-content.repository.file.list .language-stats-details .color-icon {
-    border-radius: 50%;
-    display: inline-block;
-    flex: 0 0 10px;
-    height: 10px;
-    margin-right: 6px;
-    width: 10px;
-  }
-
-  .page-content.repository.file.list .language-stats-details .tw-font-semibold {
-    margin-right: 4px;
-  }
-
-  .page-content.repository.file.list .repo-language-content {
-    margin-top: -4px;
-  }
-
   @media (max-width: 767.98px) {
     .page-content.repository.file.list.repo-has-sidebar > .repository-content-header > .ui.container {
       border-bottom: 0;
       padding-bottom: 0;
-    }
-    .page-content.repository.file.list
-      .repo-home-sidebar-metadata
-      > a:has(:is(.octicon-star, .octicon-repo-forked, .octicon-eye)) {
-      text-transform: lowercase;
     }
 
     .page-content.repository.file.list.repo-has-sidebar .repo-header > .flex-item {
@@ -206,14 +154,10 @@ const repositoryHome = css`
     .page-content.repository.file.list .repo-about-heading {
       display: none;
     }
-    .page-content.repository.file.list .repo-home-sidebar-metadata {
+    .page-content.repository.file.list .repo-home-sidebar-top .repo-home-sidebar-metadata {
       flex-direction: row;
       flex-wrap: wrap;
       gap: 8px 16px;
-    }
-    .page-content.repository.file.list .repo-home-sidebar-metadata > a:has(.octicon-book),
-    .page-content.repository.file.list .repo-home-sidebar-metadata > div:has(.octicon-database) {
-      display: none;
     }
     .page-content.repository.file.list .repo-home-sidebar-metadata > a:has(.octicon-star) {
       order: 1;

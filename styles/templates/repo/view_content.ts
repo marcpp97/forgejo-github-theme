@@ -365,7 +365,7 @@ const repoToolbarDetails = css`
     width: 24px;
   }
 
-  .page-content.repository.file.list .repo-about-settings:hover,
+  /* The About gear has GitHub's bare link hover instead, in repo_sidebar.ts. */
   .page-content.repository.file.list .repo-about-modal-close:hover {
     background: ${themeVars.github.control.transparent.bgColor.hover};
     box-shadow: inset 0 0 0 1px ${themeVars.github.control.transparent.borderColor.active};

@@ -502,7 +502,6 @@ describe("Forgejo 15 native integration", () => {
       path.join(ROOT_DIR, "styles", "components", "repo", "repo_sidebar.ts"),
       "utf-8"
     );
-    const repoHomeStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "home.ts"), "utf-8");
     const viewListStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "view_list.ts"), "utf-8");
     const viewListTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "view_list.tmpl"), "utf-8");
     const latestCommitTemplate = fs.readFileSync(
@@ -554,10 +553,10 @@ describe("Forgejo 15 native integration", () => {
     expect(viewListStyle).toContain("#repo-files-table .repo-file-cell.name > svg");
     expect(viewListStyle).toContain("color: ${themeVars.color.text.light.num1};");
     expect(viewListStyle).toContain("text-transform: capitalize;");
-    expect(repoHomeStyle).toContain("column-gap: 16px;");
-    expect(repoHomeStyle).toContain(".language-stats-details .item");
-    expect(repoHomeStyle).toContain("padding: 0;");
-    expect(repoSidebarStyle).toContain("margin-right: 0;");
+    // GitHub's language legend: 12px between entries, an 8px dot 8px before the name, 4px before the share.
+    expect(repoSidebarStyle).toContain(".language-stats-details {");
+    expect(repoSidebarStyle).toContain("gap: 3px 12px;");
+    expect(repoSidebarStyle).toContain("margin-right: 8px;");
     expect(repoSidebarStyle).toContain("margin-right: 4px;");
     expect(repoFilesStyle).not.toContain("&.repo-file-last-commit");
   });
