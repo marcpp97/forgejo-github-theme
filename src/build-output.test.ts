@@ -655,6 +655,12 @@ describe("Forgejo 15 native integration", () => {
     expect(forks).toContain("No one has forked this repository yet");
   });
 
+  it("heads organization settings with the settings context, as personal settings", () => {
+    const layout = fs.readFileSync(path.join(ROOT_DIR, "templates", "org", "settings", "layout_head.tmpl"), "utf-8");
+    expect(layout).not.toContain('template "org/header"');
+    expect(layout).toContain('template "components/common/settings/context"');
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");

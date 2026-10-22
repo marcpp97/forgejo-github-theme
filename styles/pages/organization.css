@@ -304,22 +304,6 @@
   }
 }
 
-.page-content.organization.settings .ui.container.org-identity {
-  min-height: 48px;
-  margin-bottom: 24px;
-  padding-bottom: 0;
-  border: 0;
-}
-
-.page-content.organization.settings .ui.container.org-identity > img.org-avatar {
-  width: 48px;
-  height: 48px;
-}
-
-.page-content.organization.settings .ui.container.org-identity .org-title h1 {
-  font-size: 20px;
-}
-
 .organization .list-header {
   margin-bottom: 16px;
 }
