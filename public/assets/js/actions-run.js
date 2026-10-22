@@ -5,13 +5,112 @@
   const initial = JSON.parse(mount.dataset.initialPostResponse);
   const run = initial.state.run;
   let fingerprint = "";
+  let expandedJob = "";
   let isSummary = location.hash === "#summary";
+  const artifacts = JSON.parse(mount.dataset.initialArtifactsResponse || "{}").artifacts ?? [];
   const make = (tag, className, text) => {
     const node = document.createElement(tag);
     node.className = className;
     if (text !== undefined) node.textContent = text;
     return node;
   };
+  // The graph's stages come from the workflow file this run used; until it loads, or if it cannot be read, the jobs
+  // have no links and share one card, which is how GitHub shows a workflow without `needs`.
+  let workflowJobs = new Map();
+  fetch(mount.dataset.workflowSourceUrl.replace(/\/src\/(commit|branch|tag)\//, "/raw/$1/"))
+    .then(response => (response.ok ? response.text() : ""))
+    .then(text => {
+      workflowJobs = window.themeActionsGraph?.parseNeeds(text) ?? new Map();
+      fingerprint = "";
+      render();
+    })
+    .catch(() => {});
+  const svgElement = name => document.createElementNS("http://www.w3.org/2000/svg", name);
+  function jobGraph(jobs) {
+    const scroller = make("div", "actions-job-graph");
+    const canvas = make("div", "actions-job-canvas");
+    const links = svgElement("svg");
+    links.classList.add("actions-job-links");
+    links.setAttribute("aria-hidden", "true");
+    canvas.append(links);
+    scroller.append(canvas);
+    const runJobs = jobs.map(job => ({ name: job.querySelector(".job-brief-name")?.textContent.trim() ?? "", job }));
+    const { stages, edges } = window.themeActionsGraph?.layout(runJobs, workflowJobs) ?? {
+      stages: [[runJobs]],
+      edges: [],
+    };
+    const cardOf = new Map();
+    for (const stage of stages) {
+      const column = make("div", "actions-job-stage");
+      for (const group of stage) {
+        const card = make("div", "actions-job-node");
+        for (const node of group) {
+          const row = make("a", "actions-job-card");
+          row.href = node.job.href;
+          const icon = node.job.querySelector(".job-brief-item-left > span");
+          if (icon) row.append(icon.cloneNode(true));
+          row.append(make("strong", "", node.name));
+          const duration = node.job.querySelector(".step-summary-duration")?.textContent.trim();
+          row.append(make("span", "actions-job-duration", duration));
+          card.append(row);
+          cardOf.set(node, card);
+        }
+        column.append(card);
+      }
+      canvas.append(column);
+    }
+    const port = (card, side) =>
+      card.querySelector(`.actions-job-port.is-${side}`) ??
+      card.appendChild(make("span", `actions-job-port is-${side}`));
+    const paths = edges.map(([from, to]) => {
+      const link = { from: cardOf.get(from), to: cardOf.get(to), path: svgElement("path") };
+      link.out = port(link.from, "output");
+      link.in = port(link.to, "input");
+      links.append(link.path);
+      return link;
+    });
+    const draw = () => {
+      const box = canvas.getBoundingClientRect();
+      if (!box.width) return;
+      for (const { from, to, path } of paths) {
+        const a = from.getBoundingClientRect();
+        const b = to.getBoundingClientRect();
+        path.setAttribute(
+          "d",
+          window.themeActionsGraph.linkPath(
+            Math.round(a.right - box.left),
+            Math.round(a.top + a.height / 2 - box.top),
+            Math.round(b.left - box.left),
+            Math.round(b.top + b.height / 2 - box.top)
+          )
+        );
+      }
+    };
+    new ResizeObserver(draw).observe(canvas);
+    // GitHub highlights a linked job's own links and dims the jobs it is not linked to.
+    const highlight = card => {
+      const active = card ? paths.filter(link => link.from === card || link.to === card) : [];
+      const related = new Set(active.flatMap(link => [link.from, link.to]));
+      canvas.classList.toggle("is-focused", active.length > 0);
+      for (const node of canvas.querySelectorAll(".actions-job-node"))
+        node.classList.toggle("is-related", related.has(node));
+      for (const link of paths) {
+        const on = active.includes(link);
+        link.path.classList.toggle("is-active", on);
+        if (on) links.append(link.path);
+      }
+      for (const item of canvas.querySelectorAll(".actions-job-port")) item.classList.remove("is-active");
+      for (const link of active) {
+        link.out.classList.add("is-active");
+        link.in.classList.add("is-active");
+      }
+    };
+    canvas.addEventListener("pointerover", event => highlight(event.target.closest(".actions-job-node")));
+    canvas.addEventListener("pointerleave", () => highlight(null));
+    canvas.addEventListener("focusin", event => highlight(event.target.closest(".actions-job-node")));
+    canvas.addEventListener("focusout", () => highlight(null));
+    return scroller;
+  }
   function render() {
     const header = mount.querySelector(".action-view-header");
     const sidebar = mount.querySelector(".action-view-left");
@@ -20,8 +119,11 @@
     if (!header || !sidebar || !right || !body) return;
     page.classList.toggle("actions-summary-mode", isSummary);
     if (!header.querySelector(".actions-run-back")) {
-      const back = make("a", "actions-run-back", "← " + mount.dataset.workflowName);
+      const back = make("a", "actions-run-back");
       back.href = mount.dataset.workflowUrl;
+      const arrow = document.querySelector("#actions-nav-icons")?.content.querySelector('[data-icon="back"] svg');
+      if (arrow) back.append(arrow.cloneNode(true));
+      back.append(make("span", "", mount.dataset.workflowName));
       header.prepend(back);
     }
     const title = header.querySelector(".action-info-summary-title-text");
@@ -42,6 +144,33 @@
       sidebar.append(make("h3", "actions-details-heading", "Run details"), source);
     }
     sidebar.querySelector(".actions-summary-link").setAttribute("aria-current", isSummary ? "page" : "false");
+    // GitHub keeps Delete in the run's "…" menu beside the re-run buttons; the menu drives Forgejo's own button.
+    const actions = header.querySelector(".action-info-summary-actions");
+    if (actions && !actions.querySelector(".actions-run-menu")) {
+      const menu = make("details", "theme-dropdown actions-run-menu");
+      menu.dataset.themeDropdown = "actions";
+      const summary = make("summary", "theme-control button");
+      summary.setAttribute("aria-label", "More actions");
+      const kebab = document.querySelector("#actions-nav-icons")?.content.querySelector('[data-icon="kebab"] svg');
+      if (kebab) summary.append(kebab.cloneNode(true));
+      const panel = make("div", "theme-dropdown-panel");
+      // Forgejo renders Delete only once it knows the permissions, so the items are built when the menu opens.
+      menu.addEventListener("toggle", () => {
+        if (!menu.open) return;
+        const source = make("a", "theme-dropdown-action", "Workflow file");
+        source.href = mount.dataset.workflowSourceUrl;
+        panel.replaceChildren(source);
+        const remove = mount.querySelector("#delete-run");
+        if (remove) {
+          const item = make("button", "theme-dropdown-action theme-dropdown-danger", remove.textContent.trim());
+          item.type = "button";
+          item.addEventListener("click", () => remove.click());
+          panel.append(item);
+        }
+      });
+      menu.append(summary, panel);
+      actions.append(menu);
+    }
     const tools = right.querySelector(".job-info-header-right");
     if (tools && !tools.querySelector(".actions-log-search")) {
       const search = make("div", "actions-log-search");
@@ -57,6 +186,12 @@
       tools.prepend(search);
     }
     filterLogs();
+    // GitHub opens a failed job on its failing step.
+    const failedStep = right.querySelector(".job-step-summary.step-expandable:has(.octicon-x-circle-fill)");
+    if (!isSummary && failedStep && expandedJob !== location.pathname) {
+      expandedJob = location.pathname;
+      if (!right.querySelector(".job-step-summary.selected")) failedStep.click();
+    }
     const jobs = [...sidebar.querySelectorAll(".job-brief-item")];
     const status = header.querySelector(".action-info-summary-title > span")?.getAttribute("aria-label") || run.status;
     const next = JSON.stringify([
@@ -84,7 +219,7 @@
     facts.append(triggered);
     for (const [name, value] of [
       ["Status", status],
-      ["Jobs", String(jobs.length)],
+      ["Artifacts", artifacts.length ? String(artifacts.length) : "–"],
     ]) {
       const fact = make("div", "actions-run-fact");
       fact.append(make("span", "actions-fact-label", name), make("strong", "", value));
@@ -95,19 +230,7 @@
     const heading = make("a", "actions-workflow-title", mount.dataset.workflowName);
     heading.href = mount.dataset.workflowSourceUrl;
     workflow.append(heading);
-    const cards = make("div", "actions-job-cards");
-    for (const job of jobs) {
-      const card = make("a", "actions-job-card");
-      card.href = job.href;
-      const icon = job.querySelector(".job-brief-item-left > span");
-      if (icon) card.append(icon.cloneNode(true));
-      card.append(make("strong", "", job.querySelector(".job-brief-name")?.textContent.trim()));
-      card.append(
-        make("span", "actions-job-duration", job.querySelector(".step-summary-duration")?.textContent.trim())
-      );
-      cards.append(card);
-    }
-    workflow.append(cards);
+    workflow.append(jobGraph(jobs));
     overview.append(workflow);
     body.querySelector(".actions-run-overview")?.remove();
     body.append(overview);

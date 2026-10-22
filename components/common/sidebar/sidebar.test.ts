@@ -27,6 +27,7 @@ function fixture({ mobile = false, stored = "false", storageBlocked = false } = 
   const collapse = control();
   const classes = new Set<string>();
   const page = {
+    ...events(),
     dataset: { themeSidebar: "org_repositories_sidebar_collapsed" },
     classList: { toggle: (name: string, value: boolean) => (value ? classes.add(name) : classes.delete(name)) },
     querySelectorAll: () => [expand, collapse],
@@ -37,19 +38,21 @@ function fixture({ mobile = false, stored = "false", storageBlocked = false } = 
     querySelectorAll: () => [page],
   };
   runInNewContext(script, { document, matchMedia: () => media, localStorage: storage });
-  return { media, storage, expand, collapse, classes };
+  // Clicks reach the page, which finds the toggle the event came from.
+  const click = (control: unknown) => page.emit("click", { target: { closest: () => control } });
+  return { media, storage, expand, collapse, classes, click };
 }
 
 describe("shared theme components", () => {
   it("restores the desktop sidebar preference and moves focus to the available toggle", () => {
     const f = fixture({ stored: "true" });
     expect(f.classes.has("theme-sidebar-collapsed")).toBe(true);
-    f.expand.emit("click");
+    f.click(f.expand);
     expect(f.classes.has("theme-sidebar-collapsed")).toBe(false);
     expect(f.collapse.focus).toHaveBeenCalled();
     expect(f.expand.setAttribute).toHaveBeenLastCalledWith("aria-expanded", "true");
     expect(f.storage.setItem).toHaveBeenCalledWith("org_repositories_sidebar_collapsed", "false");
-    f.collapse.emit("click");
+    f.click(f.collapse);
     expect(f.expand.focus).toHaveBeenCalled();
     expect(f.classes.has("theme-sidebar-collapsed")).toBe(true);
   });
@@ -57,7 +60,7 @@ describe("shared theme components", () => {
   it("starts collapsed on mobile and never overwrites the desktop preference there", () => {
     const f = fixture({ mobile: true });
     expect(f.classes.has("theme-sidebar-collapsed")).toBe(true);
-    f.expand.emit("click");
+    f.click(f.expand);
     expect(f.classes.has("theme-sidebar-collapsed")).toBe(false);
     expect(f.storage.setItem).not.toHaveBeenCalled();
     f.media.matches = false;
@@ -67,7 +70,7 @@ describe("shared theme components", () => {
 
   it("remains usable when storage is blocked", () => {
     const f = fixture({ storageBlocked: true });
-    f.collapse.emit("click");
+    f.click(f.collapse);
     expect(f.classes.has("theme-sidebar-collapsed")).toBe(true);
   });
 });

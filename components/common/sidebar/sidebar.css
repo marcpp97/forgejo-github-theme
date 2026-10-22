@@ -144,3 +144,19 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* A small heading inside a nav group, like GitHub's "Workflows". */
+.theme-sidebar-label {
+  display: block;
+  padding: 8px 16px 4px;
+  color: var(--color-text-light-1);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+/* Secondary links pinned to the bottom of the sidebar, above the collapse toggle. */
+.theme-sidebar-content > .theme-sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid color-mix(in srgb, var(--color-light-border) 70%, transparent);
+}

@@ -18,13 +18,13 @@
 					{{if .Prioritize}}<span class="ui label">{{ctx.Locale.Tr "actions.runs.prioritized_run"}}</span>{{end}}
 				</div>
 				<div class="flex-item-body">
-					<b>{{if not $.CurWorkflow}}{{.WorkflowID}} {{end}}#{{.Index}}</b> -
+					{{if not $.CurWorkflow}}<b>{{.WorkflowID}}</b> {{end}}#{{.Index}}:
 					{{if .IsScheduledRun -}}
-						{{ctx.Locale.Tr "actions.runs.scheduled_description" .CommitLink (ShortSha .CommitSHA)}}
+						{{ctx.Locale.Tr "actions.runs.scheduled_description" .CommitLink (slice .CommitSHA 0 7)}}
 					{{else if .IsDispatchedRun -}}
-						{{ctx.Locale.Tr "actions.runs.workflow_dispatch_description" .CommitLink (ShortSha .CommitSHA) .TriggerUser.HomeLink .TriggerUser.GetDisplayName}}
+						{{ctx.Locale.Tr "actions.runs.workflow_dispatch_description" .CommitLink (slice .CommitSHA 0 7) .TriggerUser.HomeLink .TriggerUser.GetDisplayName}}
 					{{else -}}
-						{{ctx.Locale.Tr "actions.runs.on_push_description" .CommitLink (ShortSha .CommitSHA) .TriggerUser.HomeLink .TriggerUser.GetDisplayName}}
+						{{ctx.Locale.Tr "actions.runs.on_push_description" .CommitLink (slice .CommitSHA 0 7) .TriggerUser.HomeLink .TriggerUser.GetDisplayName}}
 					{{end -}}
 				</div>
 			</div>
