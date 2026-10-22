@@ -42,6 +42,16 @@ const navbarRight = css`
         background: ${themeVars.github.control.transparent.bgColor.hover};
       }
     }
+    /* GitHub names the current context after the logo: the owner, or the page (Dashboard, Issues, Notifications). Like
+       the repository breadcrumb, the name starts 6px into its link. */
+    .navbar-left > .navbar-context-title {
+      padding-inline: 6px;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 600;
+    }
     /* GitHub's header search: a 197px field first on the right from 1012px, a search button below that. */
     .navbar-search {
       width: 197px;
