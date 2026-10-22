@@ -544,6 +544,24 @@ describe("Forgejo 15 native integration", () => {
     );
   });
 
+  it("shows the repository history as GitHub's Commits page grouped by day", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
+    const commits = read("templates", "repo", "commits.tmpl");
+    expect(commits).toContain('{{ctx.Locale.Tr "repo.commits.commits"}}');
+    expect(commits).not.toContain('template "repo/sub_menu"');
+    expect(commits).toContain('"Items" "repo/commits_search_scope"');
+    for (const list of [
+      ["templates", "repo", "commits_list.tmpl"],
+      ["templates", "repo", "pulls", "commits_list.tmpl"],
+    ])
+      expect(read(...list)).toContain('template "components/repository/commit-groups/commit-groups"');
+    expect(read("components", "repository", "commit-groups", "commit-groups.tmpl")).toContain(
+      '<article class="theme-commit-group">'
+    );
+    expect(fs.existsSync(path.join(ROOT_DIR, "public", "pull-commits.css"))).toBe(false);
+    expect(read("templates", "base", "component_assets.tmpl")).toContain("/css/components/pages/commits.css");
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");
@@ -582,7 +600,10 @@ describe("Forgejo 15 native integration", () => {
       path.join(ROOT_DIR, "templates", "repo", "latest_commit_row.tmpl"),
       "utf-8"
     );
-    const commitsListTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "commits_list.tmpl"), "utf-8");
+    const commitsListTemplate = fs.readFileSync(
+      path.join(ROOT_DIR, "components", "repository", "commit-groups", "commit-groups.tmpl"),
+      "utf-8"
+    );
     const commitSubjectTemplate = fs.readFileSync(
       path.join(ROOT_DIR, "templates", "repo", "commit_message_subject.tmpl"),
       "utf-8"
