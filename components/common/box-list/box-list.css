@@ -81,7 +81,15 @@
   font-weight: 600;
 }
 
-.theme-box-list-header > .theme-dropdown > summary.theme-control {
+/* More than one menu on the right of the header (Type and Sort). */
+.theme-box-list-filters {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.theme-box-list-header > .theme-dropdown > summary.theme-control,
+.theme-box-list-filters > .theme-dropdown > summary.theme-control {
   font-weight: 400;
 }
 

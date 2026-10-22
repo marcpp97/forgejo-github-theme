@@ -661,6 +661,16 @@ describe("Forgejo 15 native integration", () => {
     expect(layout).toContain('template "components/common/settings/context"');
   });
 
+  it("shows subscriptions and watched repositories in the notifications sidebar layout", () => {
+    const read = (...parts: string[]) =>
+      fs.readFileSync(path.join(ROOT_DIR, "templates", "user", "notification", ...parts), "utf-8");
+    expect(read("notification_div.tmpl")).toContain('template "user/notification/sidebar"');
+    const subscriptions = read("notification_subscriptions.tmpl");
+    expect(subscriptions).toContain('template "user/notification/sidebar" dict "Data" . "Current" $current');
+    expect(subscriptions).toContain('"Items" "user/notification/subscriptions_sort"');
+    expect(read("sidebar.tmpl")).toContain('href="{{AppSubUrl}}/notifications/watching"');
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");

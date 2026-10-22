@@ -1,18 +1,7 @@
 <div role="main" aria-label="{{.Title}}" class="page-content user notification theme-sidebar-layout github-notifications" id="notification_div" data-sequence-number="{{.SequenceNumber}}" data-theme-sidebar="notification_sidebar_collapsed">
 	{{$notificationUnreadCount := call .NotificationUnreadCount}}
-	<aside class="theme-sidebar" aria-label="{{.Title}}">
-		<div class="theme-sidebar-content">
-			<nav aria-label="{{.Title}}">
-				<a class="{{if eq .Status 1}}active{{end}}" href="{{AppSubUrl}}/notifications?q=unread">{{svg "octicon-inbox" 16}}<span>{{ctx.Locale.Tr "notification.unread"}}</span><span class="theme-counter notifications-unread-count{{if not $notificationUnreadCount}} tw-hidden{{end}}">{{$notificationUnreadCount}}</span></a>
-				<a class="{{if eq .Status 2}}active{{end}}" href="{{AppSubUrl}}/notifications?q=read">{{svg "octicon-check" 16}}<span>{{ctx.Locale.Tr "notification.read"}}</span></a>
-			</nav>
-			<hr>
-			<nav>
-				<a href="{{AppSubUrl}}/notifications/subscriptions">{{svg "octicon-eye" 16}}<span>{{ctx.Locale.Tr "notification.subscriptions"}}</span></a>
-			</nav>
-		</div>
-		{{template "components/common/sidebar/toggle" .}}
-	</aside>
+	{{$current := "unread"}}{{if eq .Status 2}}{{$current = "read"}}{{end}}
+	{{template "user/notification/sidebar" dict "Data" . "Current" $current}}
 	<div class="ui container theme-sidebar-main">
 		<div class="theme-list-heading">
 			<div class="theme-list-title">

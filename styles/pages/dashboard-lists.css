@@ -1,4 +1,4 @@
-/* The dashboard's own lists: issues, pull requests and notifications. */
+/* The dashboard's own lists: issues, pull requests, notifications and subscriptions. */
 
 /* The context switcher sits at the top of the sidebar instead of in a bar across the page. */
 .dashboard-list-context .secondary-nav {
@@ -83,4 +83,10 @@
 
 .dashboard-list-context .ui.secondary.menu > .item {
   align-self: flex-start;
+}
+
+/* Subscriptions: the issue list sits in the box under its header instead of drawing its own border. As specific as
+   the issue list rule for notification pages, and loaded after it. */
+.page-content.user.notification .theme-box-list #issue-list {
+  border: 0;
 }
