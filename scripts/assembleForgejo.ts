@@ -28,7 +28,7 @@ const copyTemplates = (source: string, target: string): void => {
 };
 copyTemplates(join(root, "components"), join(templates, "components"));
 
-for (const directory of ["common", "repository"]) {
+for (const directory of ["common", "project", "repository"]) {
   const source = join(root, "components", directory);
   for (const component of readdirSync(source, { withFileTypes: true })) {
     if (!component.isDirectory()) continue;

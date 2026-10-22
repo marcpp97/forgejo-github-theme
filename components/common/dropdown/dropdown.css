@@ -113,6 +113,16 @@
   color: var(--color-text);
 }
 
+/* Destructive actions such as Delete, red like GitHub's danger menu items. */
+.theme-dropdown-panel > .theme-dropdown-action.theme-dropdown-danger,
+.theme-dropdown-panel > .theme-dropdown-action.theme-dropdown-danger > .svg {
+  color: var(--github-fgColor-danger, var(--color-red));
+}
+
+.theme-dropdown-panel > .theme-dropdown-action.theme-dropdown-danger:hover {
+  background: var(--github-control-danger-bgColor-hover, color-mix(in srgb, var(--color-red) 15%, transparent));
+}
+
 .theme-dropdown-action:disabled {
   color: var(--color-text-light-1);
   cursor: default;

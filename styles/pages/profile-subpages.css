@@ -164,8 +164,7 @@
   background: var(--color-hover);
 }
 
-:is(.github-profile, .github-org) .profile-person-list,
-:is(.github-profile, .github-org) .profile-project-list {
+:is(.github-profile, .github-org) .profile-person-list {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -267,18 +266,6 @@
   line-height: 20px;
 }
 
-:is(.github-profile, .github-org) .profile-projects .button {
-  min-height: 32px;
-  margin: 0;
-  padding: 5px 16px;
-  font-size: 14px;
-  line-height: 20px;
-}
-
-:is(.github-profile, .github-org) .profile-projects .button.primary {
-  box-shadow: none;
-}
-
 :is(.github-profile, .github-org) .profile-package-row {
   border: 1px solid var(--color-secondary);
   border-bottom: 0;
@@ -331,79 +318,6 @@
   font-size: 14px;
 }
 
-:is(.github-profile, .github-org) .profile-projects .list-header {
-  margin: 0;
-  padding: 16px;
-  gap: 16px;
-  border: 1px solid var(--color-secondary);
-  border-radius: 6px 6px 0 0;
-  background: var(--color-nav-bg);
-}
-
-:is(.github-profile, .github-org) .profile-project-list {
-  border: 1px solid var(--color-secondary);
-  border-top: 0;
-  border-radius: 0 0 6px 6px;
-}
-
-:is(.github-profile, .github-org) .profile-project {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  border-bottom: 1px solid var(--color-secondary);
-}
-
-:is(.github-profile, .github-org) .profile-project:last-child {
-  border-bottom: 0;
-}
-
-:is(.github-profile, .github-org) .profile-project h3 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font-size: 16px;
-  line-height: 24px;
-}
-
-:is(.github-profile, .github-org) .profile-project h3 > .svg {
-  flex: none;
-  color: var(--color-success);
-}
-
-:is(.github-profile, .github-org) .profile-project .content {
-  order: 1;
-  color: var(--color-text-light-1);
-  font-size: 14px;
-  line-height: 21px;
-}
-
-:is(.github-profile, .github-org) .profile-project .content > :last-child {
-  margin-bottom: 0;
-}
-
-:is(.github-profile, .github-org) .profile-project .milestone-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 8px 16px;
-  order: 2;
-  color: var(--color-text-light-1);
-  font-size: 12px;
-  line-height: 18px;
-}
-
-:is(.github-profile, .github-org) .profile-project .milestone-toolbar .group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-:is(.github-profile, .github-org) .profile-project-list > li > .profile-empty {
-  border: 0;
-}
-
 :is(.github-profile, .github-org) .profile-federation #activity-feed {
   border: 1px solid var(--color-secondary);
   border-radius: var(--border-radius);
@@ -443,71 +357,14 @@
   :is(.github-profile, .github-org) .profile-search-controls .theme-select {
     width: 100%;
   }
-
-  :is(.github-profile, .github-org) .profile-projects .list-header {
-    flex-wrap: wrap;
-    padding: 12px;
-  }
-
-  :is(.github-profile, .github-org) .profile-projects .list-header-search {
-    flex-basis: 100%;
-  }
 }
 
 :is(.github-profile, .github-org) .profile-code input[type="search"]:focus {
   border-color: var(--github-borderColor-accent-emphasis);
 }
 
-:is(.github-profile, .github-org) .profile-packages .flex-item-title > a,
-:is(.github-profile, .github-org) .profile-project .milestone-header h3 > a {
+:is(.github-profile, .github-org) .profile-packages .flex-item-title > a {
   color: var(--color-primary);
-}
-
-:is(.github-profile, .github-org) .profile-project .milestone-header h3 > .svg {
-  color: var(--color-green);
-}
-
-:is(.github-profile, .github-org) .profile-project .milestone-toolbar a {
-  font-size: 12px;
-}
-
-:is(.github-profile, .github-org) .profile-projects .primary.button {
-  height: 32px;
-  min-height: 32px;
-  box-shadow: none;
-}
-
-:is(.github-profile, .github-org) .profile-project-state {
-  display: inline-flex;
-  min-width: 0;
-  border: 1px solid var(--color-secondary);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-}
-
-:is(.github-profile, .github-org) .profile-project-state a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 30px;
-  padding: 5px 12px;
-  color: var(--color-text-light-1);
-  font-size: 14px;
-  line-height: 20px;
-}
-
-:is(.github-profile, .github-org) .profile-project-state a.active {
-  background: var(--color-active);
-  color: var(--color-text);
-  font-weight: 600;
-}
-
-:is(.github-profile, .github-org) .profile-project-state a + a {
-  border-left: 1px solid var(--color-secondary);
-}
-
-:is(.github-profile, .github-org) .profile-project.is-closed .milestone-header h3 > .svg {
-  color: var(--color-text-light-1);
 }
 
 :is(.github-profile, .github-org) .profile-subpage-title {
