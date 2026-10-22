@@ -1,7 +1,7 @@
 {{/* GitHub's organization settings nav: an icon per page, grouped under Access, Code, planning, and automation,
 	and Integrations. Forgejo has no strings for the group names. */}}
 <div class="flex-container-nav">
-	<div class="ui fluid vertical menu">
+	<div class="ui fluid vertical menu theme-nav-list">
 		<a class="{{if .PageIsSettingsOptions}}active {{end}}item" href="{{.OrgLink}}/settings">
 			{{svg "octicon-gear" 16}}{{ctx.Locale.Tr "org.settings.options"}}
 		</a>

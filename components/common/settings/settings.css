@@ -58,86 +58,9 @@
   margin-top: 0;
 }
 
-/* Nav: GitHub's action list with an icon per page, group labels and a blue bar beside the current page. */
+/* Nav column: 256px, holding the shared nav list (components/common/nav-list). */
 .theme-settings > .flex-container-nav {
   width: 256px;
-  & > .ui.fluid.vertical.menu {
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-  & > .ui.vertical.menu {
-    & > .item:not(details),
-    & > details.item > summary,
-    & > details.item > .menu > .item {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 33px;
-      margin: 0;
-      padding: 6px 8px;
-      border: 0;
-      border-radius: var(--border-radius);
-      background: transparent;
-      color: var(--color-text);
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 21px;
-      &:hover {
-        background: var(--github-control-transparent-bgColor-hover);
-        color: var(--color-text);
-      }
-      &:focus-visible {
-        outline: 2px solid var(--github-fgColor-accent);
-        outline-offset: -2px;
-      }
-    }
-    & > details.item {
-      display: block;
-      width: 100%;
-      padding: 0;
-      background: transparent;
-      & > summary {
-        cursor: pointer;
-      }
-      & > .menu {
-        margin: 0;
-        padding: 0;
-      }
-      /* Pages inside a group line up with their group's label, as on GitHub. */
-      & > .menu > .item {
-        padding-left: 32px;
-      }
-    }
-    & .item > .svg,
-    & summary > .svg:first-child {
-      flex: none;
-      color: var(--color-text-light-1);
-    }
-    & > .item.active,
-    & > details.item > .menu > .item.active {
-      background: var(--github-control-transparent-bgColor-active);
-      font-weight: 600;
-      &::before {
-        content: "";
-        /* Fomantic hides ::before on nested menu items with a more specific rule. */
-        display: block !important;
-        position: absolute;
-        top: 4px;
-        left: -8px;
-        width: 4px;
-        height: 24px;
-        border-radius: var(--border-radius);
-        background: var(--github-bgColor-accent-emphasis);
-      }
-    }
-  }
-  & > .ui.fluid.vertical.menu > details.item > summary::after {
-    flex: none;
-    margin-left: auto;
-    color: var(--color-text-light-1);
-  }
 }
 
 .theme-settings-group,

@@ -2,7 +2,7 @@
 	Integrations. Forgejo has no strings for the group names. */}}
 {{if not .HideNavbarLinks}}
 <div class="flex-container-nav">
-	<div class="ui fluid vertical menu">
+	<div class="ui fluid vertical menu theme-nav-list">
 		<a class="{{if .PageIsSettingsProfile}}active {{end}}item" href="{{AppSubUrl}}/user/settings">
 			{{svg "octicon-person" 16}}{{ctx.Locale.Tr "settings.profile"}}
 		</a>
