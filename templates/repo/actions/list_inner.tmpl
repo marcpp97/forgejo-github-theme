@@ -1,31 +1,12 @@
 {{if .HasWorkflowsOrRuns}}
 <div class="actions-layout">
-	<aside class="actions-sidebar" aria-label="Actions workflows">
-<div class="actions-sidebar-heading"><h2>Actions</h2>{{if and .CanWriteCode .CanWriteActions}}<a class="ui small primary button" href="{{.RepoLink}}/_new/{{.Repository.DefaultBranch | PathEscapeSegments}}/.forgejo/workflows/">New workflow</a>{{end}}</div>
-		<nav class="ui fluid vertical menu actions-menu">
-			<a class="item{{if not $.CurWorkflow}} active{{end}}" href="?actor={{$.CurActor}}&status={{$.CurStatus}}">{{ctx.Locale.Tr "actions.runs.all_workflows"}}</a>
-            <div class="actions-workflow-divider" role="separator"></div>
-			{{range .workflows}}
-				<a class="item{{if eq .Entry.Name $.CurWorkflow}} active{{end}}" href="?workflow={{.Entry.Name}}&actor={{$.CurActor}}&status={{$.CurStatus}}">
-					<span class="content" data-tooltip-content="{{.Entry.Name}}">
-						{{.Entry.Name}}
-					</span>
-
-					{{if .ErrMsg}}
-						<span class="error" data-tooltip-content="{{.ErrMsg}}">
-							{{svg "octicon-alert" 16 "text red"}}
-						</span>
-					{{end}}
-
-					{{if $.ActionsConfig.IsWorkflowDisabled .Entry.Name}}
-						<div class="ui red label">{{ctx.Locale.Tr "disabled"}}</div>
-					{{end}}
-				</a>
-			{{end}}
-		</nav>
-	</aside>
 	<main class="actions-main">
-<div class="actions-heading"><div><h1>{{if .CurWorkflow}}{{.CurWorkflow}}{{else}}All workflows{{end}}</h1><p>{{if .CurWorkflow}}Workflow runs{{else}}Showing runs from all workflows{{end}}</p></div>{{template "components/common/search/search" dict "Kind" "icon" "Local" true "ID" "actions-run-filter" "Class" "actions-search" "Placeholder" "Filter runs on this page"}}</div>
+<div class="theme-list-heading actions-heading">
+			<div class="theme-list-title"><button type="button" class="theme-icon-button" data-theme-sidebar-toggle data-theme-sidebar-expand aria-expanded="false" aria-label="Expand sidebar">{{svg "octicon-sidebar-expand" 16}}</button><h1>{{if .CurWorkflow}}{{.CurWorkflow}}{{else}}{{ctx.Locale.Tr "actions.runs.all_workflows"}}{{end}}</h1></div>
+			{{if and .CanWriteCode .CanWriteActions}}<a class="ui button theme-control" href="{{.RepoLink}}/_new/{{.Repository.DefaultBranch | PathEscapeSegments}}/.forgejo/workflows/">New workflow</a>{{end}}
+		</div>
+		<p class="actions-subtitle">{{if .CurWorkflow}}Workflow runs{{else}}Showing runs from all workflows{{end}}</p>
+		{{template "components/common/search/search" dict "Kind" "icon" "Local" true "ID" "actions-run-filter" "Class" "actions-search" "Placeholder" "Filter runs on this page"}}
 		<div class="ui secondary filter menu actions-filters"><strong class="actions-run-count">{{.Page.Paginater.Total}} workflow {{if eq .Page.Paginater.Total 1}}run{{else}}runs{{end}}</strong>
 			<div id="reloading-indicator" class="htmx-indicator"></div>
 

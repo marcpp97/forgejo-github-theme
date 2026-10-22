@@ -12,20 +12,20 @@
       for (const button of page.querySelectorAll("[data-theme-sidebar-toggle]"))
         button.setAttribute("aria-expanded", String(!collapsed));
     };
-    for (const button of page.querySelectorAll("[data-theme-sidebar-toggle]")) {
-      button.addEventListener("click", () => {
-        collapsed = !collapsed;
-        update();
-        const next = page.querySelector(collapsed ? "[data-theme-sidebar-expand]" : ".theme-sidebar-toggle");
-        next?.focus();
-        if (!mobile.matches)
-          try {
-            localStorage.setItem(page.dataset.themeSidebar, String(collapsed));
-          } catch {
-            /* Optional desktop preference. */
-          }
-      });
-    }
+    // Delegated, so toggles inside content that Forgejo refreshes in place (the Actions run list) keep working.
+    page.addEventListener("click", event => {
+      if (!event.target.closest?.("[data-theme-sidebar-toggle]")) return;
+      collapsed = !collapsed;
+      update();
+      const next = page.querySelector(collapsed ? "[data-theme-sidebar-expand]" : ".theme-sidebar-toggle");
+      next?.focus();
+      if (!mobile.matches)
+        try {
+          localStorage.setItem(page.dataset.themeSidebar, String(collapsed));
+        } catch {
+          /* Optional desktop preference. */
+        }
+    });
     mobile.addEventListener("change", () => {
       collapsed = mobile.matches;
       update();

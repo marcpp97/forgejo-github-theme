@@ -1,132 +1,39 @@
 .page-content.repository.actions.github-actions-list:not(.settings) {
-  --actions-sidebar-width: 336px;
   padding-top: 0;
   margin-top: 0 !important;
-  .actions-list-shell {
-    width: 100%;
-  }
-  .actions-layout {
-    display: grid;
-    grid-template-columns: var(--actions-sidebar-width) minmax(0, 1fr);
-    min-height: calc(100dvh - 100px);
-  }
-  .actions-sidebar {
-    padding: 16px 8px;
-    border-right: 1px solid var(--color-light-border);
-  }
-  .actions-sidebar-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4px 8px 8px;
-    gap: 8px;
-  }
-  .actions-sidebar-heading h2 {
-    margin: 0;
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: 600;
-  }
-  .actions-sidebar-heading .ui.button {
-    height: 28px;
-    min-height: 28px;
-    padding: 3px 8px;
-    font-size: 12px;
-    margin: 0;
-  }
-  .actions-menu.ui.menu {
-    width: 100%;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    margin: 0;
-  }
-  .actions-menu::before,
-  .actions-menu .item::before {
-    display: none;
-  }
-  .actions-menu .item {
-    overflow: visible;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    min-height: 32px;
-    margin: 0 8px;
-    padding: 6px 8px;
-    border: 0;
-    border-radius: var(--border-radius);
-    color: var(--color-text);
-    font-size: 14px;
-    line-height: 20px;
-    background: transparent;
-  }
-  .actions-workflow-divider {
-    height: 1px;
-    margin: 8px 0;
-    background: var(--color-light-border);
-  }
-  .actions-menu .item .content {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .actions-menu .item:hover {
-    text-decoration: none;
-    background: var(--github-control-transparent-bgColor-hover);
-  }
-  .actions-menu .item.active {
-    background: var(--github-control-transparent-bgColor-active);
-    font-weight: 600;
-  }
-  .actions-menu.ui.menu .item.active::before {
-    display: block !important;
-    content: "";
-    position: absolute;
-    left: -8px;
-    top: 4px;
-    height: 24px;
-    width: 4px;
-    background: var(--color-primary);
-    border-radius: var(--border-radius);
-  }
+  /* Heading, subtitle and a full-width search above the run list, as on GitHub. */
   .actions-main {
     min-width: 0;
-    padding: 16px 24px 32px;
   }
   .actions-heading {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 0;
   }
   .actions-heading h1 {
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: 400;
-    margin: 4px 0 0;
     overflow-wrap: anywhere;
   }
-  .actions-heading p {
-    color: var(--color-text-light-1);
+  .actions-subtitle {
+    margin: 0 0 8px;
     font-size: 14px;
     line-height: 21px;
-    margin: 0;
   }
   .actions-search {
-    width: 300px;
-    flex-shrink: 0;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  .theme-sidebar .actions-workflow-error {
+    display: inline-flex;
+    margin-left: auto;
+    & > .svg {
+      color: var(--color-red);
+    }
   }
   .actions-filters.ui.menu {
     display: flex;
     align-items: center;
     gap: 8px;
-    min-height: 64px;
+    min-height: 48px;
     margin: 0;
-    padding: 16px;
+    padding: 8px 8px 8px 16px;
     border: 1px solid var(--color-light-border);
     border-bottom: 0;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -134,6 +41,7 @@
   }
   .actions-run-count {
     margin-right: auto;
+    color: var(--color-text-light-1);
     font-size: 14px;
     line-height: 21px;
     white-space: nowrap;
@@ -202,7 +110,6 @@
       visibility: hidden;
     }
   }
-  .actions-menu .item:focus-visible,
   .actions-run-options:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: -2px;
@@ -225,8 +132,8 @@
     display: grid;
     grid-template-columns: 16px minmax(0, 1fr) minmax(250px, 45%);
     gap: 8px;
-    min-height: 78px;
-    padding: 16px;
+    min-height: 67px;
+    padding: 12px 16px;
   }
   .run-list > .flex-item[hidden] {
     display: none;
@@ -241,7 +148,7 @@
   .run-list .flex-item-title {
     font-size: 16px;
     line-height: 24px;
-    font-weight: 600;
+    font-weight: 500;
     min-width: 0;
   }
   .run-list .flex-item-title > a {
@@ -256,13 +163,13 @@
     overflow-wrap: anywhere;
   }
   .run-list .flex-item-body a {
-    text-decoration: underline;
+    color: var(--color-primary);
   }
   .run-list .flex-item-trailing {
     width: 100%;
     max-width: none;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 156px 28px;
+    grid-template-columns: minmax(0, 1fr) 156px 32px;
     gap: 8px;
     margin: 0;
     min-width: 0;
@@ -272,6 +179,7 @@
     justify-self: start;
     min-width: 0;
     max-width: 100%;
+    padding: 2px 6px;
     font-size: 12px;
     line-height: 18px;
     border: 0;
@@ -288,8 +196,8 @@
   .actions-run-options {
     display: grid;
     place-items: center;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     border: 0;
     border-radius: var(--border-radius);
@@ -328,12 +236,11 @@
     display: none;
   }
   @media (max-width: 1200px) {
-    --actions-sidebar-width: 256px;
     .run-list > .flex-item {
       grid-template-columns: 16px minmax(0, 1fr) 210px;
     }
     .run-list .flex-item-trailing {
-      grid-template-columns: minmax(0, 1fr) 28px;
+      grid-template-columns: minmax(0, 1fr) 32px;
     }
     .run-list .run-list-ref {
       grid-column: 1;
@@ -360,37 +267,6 @@
       margin-top: 4px;
     }
 
-    .actions-layout {
-      display: block;
-    }
-    .actions-sidebar {
-      border-right: 0;
-      border-bottom: 1px solid var(--color-light-border);
-      padding: 8px;
-    }
-    .actions-menu.ui.menu {
-      display: flex;
-      flex-direction: row;
-      overflow: auto;
-    }
-    .actions-menu .item {
-      flex: 0 0 auto;
-    }
-    .actions-workflow-divider,
-    .actions-menu.ui.menu .item.active::before {
-      display: none !important;
-    }
-    .actions-main {
-      padding: 16px;
-    }
-    .actions-heading {
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .actions-search {
-      width: 100%;
-    }
     .actions-filters.ui.menu {
       flex-wrap: wrap;
       padding: 8px;
