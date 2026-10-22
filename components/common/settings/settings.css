@@ -1,0 +1,953 @@
+/* GitHub's settings layout, shared by repository, personal, organization and site administration settings. The
+   area layouts mark their container with .theme-settings; Forgejo's own menu and form markup stays underneath. */
+
+/* Context header: who or what the settings belong to. */
+.theme-settings-context {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 24px 0 16px;
+  & > img,
+  & .theme-settings-context-icon {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+  & .theme-settings-context-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-light-border);
+    background: var(--color-box-header);
+    color: var(--color-text-light-1);
+  }
+  & > .button > .svg {
+    color: var(--color-text-light-1);
+  }
+}
+
+.theme-settings-context-title {
+  flex: 1;
+  min-width: 0;
+  & h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 30px;
+    overflow-wrap: anywhere;
+  }
+  & h1 > span,
+  & p {
+    color: var(--color-text-light-1);
+  }
+  & p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 21px;
+  }
+}
+
+/* Columns: a 256px nav and the page, 40px apart. */
+.ui.container.flex-container.theme-settings {
+  gap: 40px;
+  margin-top: 24px;
+}
+
+.theme-settings-context-container + .ui.container.flex-container.theme-settings {
+  margin-top: 0;
+}
+
+/* Nav: GitHub's action list with an icon per page, group labels and a blue bar beside the current page. */
+.theme-settings > .flex-container-nav {
+  width: 256px;
+  & > .ui.fluid.vertical.menu {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  & > .ui.vertical.menu {
+    & > .item:not(details),
+    & > details.item > summary,
+    & > details.item > .menu > .item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 33px;
+      margin: 0;
+      padding: 6px 8px;
+      border: 0;
+      border-radius: var(--border-radius);
+      background: transparent;
+      color: var(--color-text);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 21px;
+      &:hover {
+        background: var(--github-control-transparent-bgColor-hover);
+        color: var(--color-text);
+      }
+      &:focus-visible {
+        outline: 2px solid var(--github-fgColor-accent);
+        outline-offset: -2px;
+      }
+    }
+    & > details.item {
+      display: block;
+      width: 100%;
+      padding: 0;
+      background: transparent;
+      & > summary {
+        cursor: pointer;
+      }
+      & > .menu {
+        margin: 0;
+        padding: 0;
+      }
+      /* Pages inside a group line up with their group's label, as on GitHub. */
+      & > .menu > .item {
+        padding-left: 32px;
+      }
+    }
+    & .item > .svg,
+    & summary > .svg:first-child {
+      flex: none;
+      color: var(--color-text-light-1);
+    }
+    & > .item.active,
+    & > details.item > .menu > .item.active {
+      background: var(--github-control-transparent-bgColor-active);
+      font-weight: 600;
+      &::before {
+        content: "";
+        /* Fomantic hides ::before on nested menu items with a more specific rule. */
+        display: block !important;
+        position: absolute;
+        top: 4px;
+        left: -8px;
+        width: 4px;
+        height: 24px;
+        border-radius: var(--border-radius);
+        background: var(--github-bgColor-accent-emphasis);
+      }
+    }
+  }
+  & > .ui.fluid.vertical.menu > details.item > summary::after {
+    flex: none;
+    margin-left: auto;
+    color: var(--color-text-light-1);
+  }
+}
+
+.theme-settings-group,
+.theme-settings-separator {
+  margin: 8px 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-light-border) 70%, transparent);
+}
+
+.theme-settings-group {
+  padding: 14px 8px 6px;
+  color: var(--color-text-light-1);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 19.5px;
+}
+
+.theme-settings-separator {
+  margin-bottom: 8px;
+}
+
+/* The page side is anchored on the page structure, which outranks the theme's older boxed style for settings
+   content. */
+.page-content > .ui.container.flex-container.theme-settings > .flex-container-main {
+  min-width: 0;
+
+  /* Sections: GitHub's subhead, a 24px title over a border, with forms flat beneath it. Lists and tables keep a
+     box, and the danger zone gets GitHub's red-bordered box. */
+  & .ui.top.attached.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0 0 16px;
+    padding: 0 0 8px;
+    border: 0 !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-light-border) 70%, transparent) !important;
+    border-radius: 0;
+    background: transparent !important;
+    color: var(--color-text);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 36px;
+    /* Buttons in a subhead are GitHub's small buttons: 28px, 12px labels. */
+    & .ui.button,
+    & .button {
+      min-height: 28px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 18px;
+    }
+    & > :is(.ui.right, .right) {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+  & .ui.attached.segment ~ .ui.top.attached.header,
+  & .ui.attached.segment ~ * .ui.top.attached.header {
+    margin-top: 40px;
+  }
+  & .ui.attached.segment {
+    margin: 0;
+    padding: 0;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    /* GitHub's Box: tables are boxed, so a description or an add form beside them stays flat. */
+    & > table,
+    & > form > table {
+      margin: 0 0 16px;
+      border: 1px solid var(--color-light-border);
+      border-radius: var(--border-radius);
+      background: var(--color-box-body);
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+    }
+    & > :last-child {
+      margin-bottom: 0;
+    }
+  }
+  /* In lists the box is drawn by the rows with content, so a row Forgejo uses for the description stays a flat
+     paragraph above the box, and a list with only its description shows no empty box. Rows carry the padding, so
+     separators span the box. */
+  & .ui.attached.segment:not(.error) > .flex-list {
+    margin: 0 0 16px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    & > .flex-item {
+      padding: 16px;
+    }
+    /* A row's actions stay side by side, also on phones. */
+    & > .flex-item > .flex-item-trailing {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+    }
+    & > .flex-item:not(:has(> .flex-item-main)) {
+      padding: 0 0 16px;
+      border: 0;
+      font-size: 14px;
+      line-height: 21px;
+    }
+    & > .flex-item:has(> .flex-item-main) {
+      border: 1px solid var(--color-light-border);
+      border-radius: 0;
+      background: var(--color-box-body);
+      &:not(:has(+ .flex-item:has(> .flex-item-main))) {
+        border-bottom-right-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+      }
+    }
+    & > .flex-item:has(> .flex-item-main) + .flex-item:has(> .flex-item-main) {
+      margin-top: -1px;
+    }
+    & > .flex-item:has(> .flex-item-main):not(.flex-item:has(> .flex-item-main) + *) {
+      border-top-left-radius: var(--border-radius);
+      border-top-right-radius: var(--border-radius);
+    }
+  }
+  /* Fomantic lists (emails, personal repositories, git hooks) get the same box rows; what is not an item, such as the
+     emails' description, stays a flat paragraph above. A list wrapping a form (the theme picker) is no list. */
+  & .ui.attached.segment > .ui.list:has(> form) {
+    margin: 0;
+    & > .item {
+      margin: 0 0 16px;
+      padding: 0;
+    }
+  }
+  & .ui.attached.segment:not(.error) > .ui.list:not(:has(> form)) {
+    margin: 0;
+    padding: 0;
+    & > :not(.item) {
+      margin: 0 0 16px;
+      font-size: 14px;
+      line-height: 21px;
+    }
+    & > .item {
+      display: flow-root;
+      margin: 0;
+      padding: 16px;
+      border: 1px solid var(--color-light-border);
+      background: var(--color-box-body);
+      &:first-of-type {
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+      }
+      &:last-of-type {
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+      }
+      & + .item {
+        margin-top: -1px;
+      }
+      &::before {
+        display: none;
+      }
+    }
+  }
+  /* An add form below its list (Forgejo's bottom attached segment) sits 16px under the box. */
+  & .ui.attached.segment + .ui.bottom.attached.segment {
+    margin-top: 16px;
+  }
+  /* The danger zone's rows sit in a red box; a deletion form (an account, an organization) stays flat under its red
+     heading, its warning a danger flash. */
+  & .ui.attached.error.segment {
+    padding: 0;
+    border: 0 !important;
+    background: transparent;
+    &:has(> .flex-list) {
+      border: 1px solid color-mix(in srgb, var(--color-red) 40%, transparent) !important;
+      border-radius: var(--border-radius);
+      background: var(--color-box-body);
+    }
+    & > .flex-list {
+      margin: 0;
+      border: 0;
+      background: transparent;
+    }
+    & .flex-item-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    & > .ui.red.message {
+      margin: 0 0 16px;
+      padding: 16px;
+      border: 1px solid color-mix(in srgb, var(--color-red) 40%, transparent);
+      border-radius: var(--border-radius);
+      background: color-mix(in srgb, var(--color-red) 10%, transparent);
+      box-shadow: none;
+      color: var(--color-text);
+      font-size: 14px;
+      & .svg {
+        color: var(--color-red);
+      }
+    }
+  }
+
+  /* GitHub's box rows for actions (the indexers): what it is on the left, the button on the right. */
+  & .flex-list.theme-settings-rows {
+    margin: 16px 0 0;
+    border: 1px solid var(--color-light-border);
+    border-radius: var(--border-radius);
+    background: var(--color-box-body);
+    & > .flex-item {
+      align-items: center;
+      padding: 16px;
+    }
+    & .flex-item-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    & .flex-item-body {
+      color: var(--color-text-light-1);
+      font-size: 12px;
+    }
+  }
+
+  /* Add forms with a search field (collaborators, teams): the field and its button in one row. */
+  & .ui.attached.segment > form.ui.form:has(> .ui.search) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    & > .ui.search {
+      width: 240px;
+      max-width: 100%;
+    }
+    & > .ui.search > input {
+      width: 100%;
+    }
+  }
+
+  /* A control and its button in one row (the default branch). */
+  & form.ui.form.theme-settings-inline-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    & > .ui.dropdown {
+      width: 320px;
+      max-width: 100%;
+    }
+  }
+
+  /* A form of one field and its button (adding an email) puts the button beside the input, as on GitHub. */
+  & form.ui.form:has(> .field:first-child + .ui.button:last-child) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px;
+    & > .field {
+      flex: 0 1 440px;
+      margin: 0;
+    }
+  }
+
+  /* A section's description above its box, as on GitHub. */
+  & .theme-settings-description {
+    margin: 0 0 16px;
+    font-size: 14px;
+    line-height: 21px;
+  }
+
+  /* GitHub's empty state (components/common/settings/blankslate.tmpl). */
+  & .theme-settings-blankslate {
+    margin: 0 0 16px;
+    padding: 32px;
+    border: 1px solid var(--color-light-border);
+    border-radius: var(--border-radius);
+    background: var(--color-box-body);
+    text-align: center;
+    & h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+    }
+    & p {
+      margin: 4px 0 0;
+      color: var(--color-text-light-1);
+      font-size: 14px;
+      line-height: 21px;
+    }
+  }
+
+  /* GitHub's summary row (a repository's visibility): an icon in a bordered square, a semibold title over a muted
+     line, and an action on the right. */
+  & .theme-settings-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    padding: 0 0 16px;
+    & > .theme-settings-summary-main {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-width: 0;
+      & > strong {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 21px;
+      }
+      & > span {
+        color: var(--color-text-light-1);
+        font-size: 14px;
+        line-height: 21px;
+      }
+    }
+  }
+  & .theme-settings-summary-icon,
+  & .theme-settings-team-icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-light-border);
+    border-radius: var(--border-radius);
+    color: var(--color-text-light-1);
+  }
+  & .theme-settings-summary-icon {
+    width: 50px;
+    height: 50px;
+  }
+  & .theme-settings-team-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* GitHub's bordered panel ("Direct access"): a semibold title with its icon on the right, and a muted line. */
+  & .theme-settings-panel {
+    margin: 0 0 32px;
+    padding: 16px;
+    border: 1px solid color-mix(in srgb, var(--color-light-border) 70%, transparent);
+    border-radius: var(--border-radius);
+    & > .theme-settings-panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 21px;
+      & > .svg {
+        color: var(--color-text-light-1);
+      }
+    }
+    & > p {
+      margin: 8px 0 0;
+      color: var(--color-text-light-1);
+      font-size: 12px;
+      line-height: 18px;
+      & > strong {
+        color: var(--color-text);
+      }
+    }
+  }
+
+  /* A titled part inside a section ("Manage access"): a 16px semibold title with its action on the right. */
+  & .theme-settings-subsection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 32px;
+    margin: 0 0 16px;
+    * + & {
+      margin-top: 32px;
+    }
+    & > h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+    }
+  }
+
+  /* An empty state with an illustration icon is GitHub's spacious one: a larger title and an action below. */
+  & .theme-settings-blankslate:has(> .svg) {
+    & > .svg {
+      color: var(--color-primary);
+    }
+    & > h3 {
+      margin: 16px 0;
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+
+  /* GitHub's two columns (public profile): the form, and a 200px column on the right for the picture. */
+  & .ui.attached.segment.theme-settings-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 200px;
+    gap: 32px;
+    align-items: start;
+  }
+  & .theme-settings-aside {
+    & > h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 21px;
+    }
+    /* Forgejo caps avatar images in forms; the picture here is GitHub's 200px circle. */
+    & > img.theme-settings-avatar {
+      display: block;
+      width: 200px !important;
+      height: 200px !important;
+      margin: 0 0 16px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px var(--color-light-border);
+    }
+    & .field.tw-pl-4 {
+      padding-left: 20px !important;
+    }
+    & input:is([type="file"], [type="text"], :not([type])) {
+      width: 100%;
+      max-width: 100%;
+    }
+    & .button-sequence {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+  }
+  /* Forgejo's form groups ("About you", "Privacy") read as small section titles. */
+  & .ui.form fieldset > legend {
+    margin: 0 0 8px;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+  & .ui.form fieldset + fieldset {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid color-mix(in srgb, var(--color-light-border) 70%, transparent);
+  }
+
+  /* Buttons: GitHub's 32px controls with 500-weight labels, for Fomantic's .ui.button and Forgejo's newer .button. */
+  & :is(.ui.button, .button:not(.ui)):not(.tiny, .mini, .compact, .icon) {
+    min-height: 32px;
+    padding: 5px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  /* GitHub's settings checkbox (components/common/settings/checkbox.tmpl): the box in a 20px gutter beside a
+     semibold title, with the note beneath the title. */
+  & .theme-settings-checkbox {
+    position: relative;
+    margin: 15px 0;
+    padding-left: 20px;
+    & > input[type="checkbox"] {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      margin: 0;
+    }
+    & > label {
+      display: inline;
+      margin: 0;
+      color: var(--color-text);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 21px;
+      cursor: pointer;
+    }
+    & > input:disabled + label {
+      color: var(--color-text-light-1);
+      cursor: default;
+    }
+  }
+  & .theme-settings-checkbox-note {
+    margin: 0;
+    color: var(--color-text-light-1);
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+/* Forms: GitHub's form groups. The label sits on its own line (14px semibold, 6px above the control), controls are
+   32px and no wider than 440px with an inset shadow and an accent focus ring, notes are muted 12px. Forgejo writes
+   fields as .field with a label beside the control, or as a label wrapping its control inside a fieldset or straight
+   in the form; all get the same look. */
+.page-content > .ui.container.flex-container.theme-settings > .flex-container-main .ui.form {
+  & .field,
+  & fieldset > label,
+  & > label {
+    margin: 0 0 15px;
+  }
+  & .field > label,
+  & fieldset > label,
+  & > label {
+    display: block;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 21px;
+  }
+  & .field > label {
+    margin-bottom: 6px;
+  }
+  &
+    :is(.field, fieldset > label)
+    > :is(
+      input:not([type="checkbox"], [type="radio"], [type="file"], [type="hidden"], [type="color"]),
+      select,
+      textarea,
+      .ui.selection.dropdown
+    ),
+  &
+    > label
+    > :is(
+      input:not([type="checkbox"], [type="radio"], [type="file"], [type="hidden"], [type="color"]),
+      select,
+      textarea,
+      .ui.selection.dropdown
+    ) {
+    display: block;
+    width: 100%;
+    max-width: 440px;
+    font-weight: 400;
+  }
+  &
+    fieldset
+    > label
+    > :is(
+      input:not([type="checkbox"], [type="radio"], [type="file"], [type="hidden"], [type="color"]),
+      select,
+      textarea,
+      .ui.selection.dropdown
+    ) {
+    margin-top: 6px;
+  }
+  &
+    :is(
+      input:not([type="checkbox"], [type="radio"], [type="file"], [type="hidden"], [type="color"]),
+      select,
+      textarea
+    ) {
+    border: 1px solid var(--color-light-border);
+    border-radius: var(--border-radius);
+    background: var(--color-input-background);
+    box-shadow: inset 0 1px 0 rgb(1 4 9 / 24%);
+    color: var(--color-text);
+    font-size: 14px;
+    &:focus {
+      border-color: var(--github-bgColor-accent-emphasis);
+      outline: none;
+      box-shadow: inset 0 0 0 1px var(--github-bgColor-accent-emphasis);
+    }
+  }
+  & input:not([type="checkbox"], [type="radio"], [type="file"], [type="hidden"], [type="color"]) {
+    height: 32px;
+    min-height: 32px;
+    padding: 5px 12px;
+    line-height: 20px;
+  }
+  & textarea {
+    padding: 8px 12px;
+    line-height: 21px;
+  }
+
+  /* Selects look like GitHub's: the default button surface with a caret. Fomantic sizes its selection dropdown with
+     a more specific rule. */
+  & select,
+  & .ui.selection.dropdown {
+    min-height: 32px;
+    padding: 5px 24px 5px 12px;
+    border: 1px solid var(--color-light-border);
+    border-radius: var(--border-radius);
+    background-color: var(--color-button);
+    box-shadow: inset 0 1px 0 rgb(1 4 9 / 24%);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  /* Fields wrapped in Fomantic's search or input containers get the same 440px limit. */
+  & .field > :is(.ui.search, .ui.input) {
+    max-width: 440px;
+    & .ui.input,
+    & input {
+      width: 100%;
+    }
+  }
+  /* Multiple-choice dropdowns (allowed users and teams) are 32px until they hold chosen items. */
+  & .ui.multiple.selection.dropdown {
+    min-height: 32px !important;
+    padding: 2px 24px 2px 8px !important;
+    & > input.search,
+    & > .default.text {
+      margin: 3px 0 3px 4px;
+      padding: 0;
+      line-height: 20px;
+    }
+  }
+  & .ui.selection.dropdown:not(.multiple) {
+    padding: 5px 24px 5px 12px !important;
+    line-height: 20px !important;
+    & > .dropdown.icon {
+      right: 8px;
+    }
+  }
+
+  & :is(.help, p.help) {
+    display: block;
+    margin: 4px 0 2px;
+    color: var(--color-text-light-1);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+  }
+
+  /* Checkboxes and radios: the browser's own 13px box in a 20px gutter, a semibold title beside it and any note
+     beneath the title. Fomantic's drawn box and check mark go. */
+  & input[type="checkbox"] {
+    appearance: auto;
+    flex: none;
+    width: 13px;
+    height: 13px;
+    margin: 4px 7px 0 0;
+    /* Forgejo zeroes the top margin with !important; the box lines up with the 21px title line. */
+    margin-block-start: 4px !important;
+    border-radius: 3px;
+    accent-color: var(--github-bgColor-accent-emphasis);
+    vertical-align: top;
+  }
+  /* Forgejo draws its own check mark as the input's ::after; the browser's box draws it instead. */
+  & input:is([type="checkbox"], [type="radio"])::after {
+    display: none;
+  }
+  /* A label wrapping its checkbox (the hidden comment types): the box in the gutter, the text beside it, the note
+     under the text. */
+  & label:has(> input[type="checkbox"]) {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: start;
+    font-weight: 600;
+    & > input[type="checkbox"] {
+      grid-column: 1;
+      grid-row: 1;
+      margin: 4px 0 0;
+    }
+    & > :not(input) {
+      grid-column: 2;
+    }
+    & > .help {
+      display: block;
+    }
+    & + .help {
+      margin-left: 20px;
+    }
+  }
+  & .ui.checkbox {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: start;
+    & > input {
+      position: static;
+      grid-column: 1;
+      grid-row: 1;
+      width: 13px;
+      height: 13px;
+      margin: 4px 0 0;
+      opacity: 1;
+    }
+    & > label {
+      grid-column: 2;
+      grid-row: 1;
+      margin: 0;
+      padding: 0;
+      color: var(--color-text);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 21px;
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+    &.disabled > label {
+      color: var(--color-text-light-1);
+    }
+    /* Notes Forgejo puts inside the checkbox (the signing trust models) sit under the title, not in the box's
+       gutter. */
+    & > :not(input, label) {
+      grid-column: 2;
+      margin: 0;
+    }
+  }
+
+  /* A field that only shows a value (Forgejo's repository size) keeps label and value on one line. */
+  & .inline.field:not(:has(input, select, textarea, .ui.checkbox, .ui.dropdown)) {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    & > label {
+      margin: 0;
+    }
+  }
+  /* Forgejo separates some labels from their choices with a line break; the field spacing does that. */
+  & .field > br {
+    display: none;
+  }
+
+  /* Radio groups Forgejo lays out in a row (.inline.fields) become GitHub's list: the group label above, one choice
+     per line. */
+  & .inline.fields {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0 0 15px;
+    & > label {
+      margin: 0;
+      color: var(--color-text);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 21px;
+    }
+    & > .field {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0 8px;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  /* Forgejo's checkbox fields join one grid without changing their markup (scripts rely on it): the box in the
+     gutter, the title beside it, notes beneath. A field label in front of the checkbox (Forgejo's "Issues" before
+     "Enable repository issues") becomes the title and the checkbox's own label its note, as in GitHub's feature
+     list. */
+  & .inline.field:has(> label:first-child + .ui.checkbox),
+  & .field:has(> .ui.checkbox:first-child) {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: start;
+    margin: 15px 0;
+    & > .ui.checkbox {
+      display: contents;
+    }
+    & > *:not(.ui.checkbox) {
+      grid-column: 2;
+    }
+    & > .help {
+      margin: 0;
+    }
+  }
+  & .inline.field:has(> label:first-child + .ui.checkbox) {
+    & > label:first-child {
+      grid-row: 1;
+      width: auto;
+      margin: 0;
+      padding: 0;
+    }
+    & > .ui.checkbox > label {
+      grid-row: 2;
+      color: var(--color-text-light-1);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 18px;
+    }
+  }
+}
+
+/* Choices inside a radio group sit 8px apart; the checkbox-field margin above does not apply to them. */
+.page-content
+  > .ui.container.flex-container.theme-settings
+  > .flex-container-main
+  .ui.form
+  .inline.fields
+  > .field:has(> .ui.checkbox) {
+  margin: 0;
+}
+
+@media (max-width: 767.98px) {
+  .ui.container.flex-container.theme-settings {
+    gap: 24px;
+  }
+
+  .theme-settings > .flex-container-nav {
+    width: auto;
+  }
+
+  .page-content
+    > .ui.container.flex-container.theme-settings
+    > .flex-container-main
+    .ui.attached.segment.theme-settings-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-content
+    > .ui.container.flex-container.theme-settings
+    > .flex-container-main
+    .ui.form
+    .field
+    > :is(input, select, textarea, .ui.selection.dropdown) {
+    max-width: none;
+  }
+
+  .theme-settings-context {
+    flex-wrap: wrap;
+  }
+}

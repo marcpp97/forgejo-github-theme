@@ -18,11 +18,7 @@
  */
 
 import { css, cssCombine, cssStyle, themeVars } from "@lutinglt/gitea-github-theme/core";
-import {
-  basicButtonStyle,
-  primaryButtonHoverStyle,
-  primaryButtonStyle,
-} from "@lutinglt/gitea-github-theme/styles/common";
+import { primaryButtonHoverStyle, primaryButtonStyle } from "@lutinglt/gitea-github-theme/styles/common";
 
 const tinyStyle = cssStyle({
   color: themeVars.github.themeExtra.button.primary.fgColor.accent,
@@ -38,15 +34,11 @@ const tinyHoverStyle = cssStyle({
 
 // 设置界面下的按钮
 const button = css`
-  /* 不包含管理员的设置界面 */
+  /* Settings outside site administration keep GitHub's green primary buttons (Update profile, Add key). */
   .user-main-content,
   .repo-setting-content,
   .user-setting-content,
   .org-setting-content {
-    /* 主色调按钮替换为普通按钮 */
-    .ui.primary.button {
-      ${basicButtonStyle}
-    }
     /* 迷你按钮替换为自定义的主色调按钮 (例: SSH 验证按钮) */
     .ui.primary.button.tiny {
       ${tinyStyle}
