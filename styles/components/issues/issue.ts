@@ -73,10 +73,11 @@ const babel = css`
   }
 `;
 
-// PR 分支标签
+// PR 分支标签, and GitHub's branch name on the branches page
 const prBranch = css`
   .repository.view.issue .pull-desc code,
-  #issue-list .branches .branch {
+  #issue-list .branches .branch,
+  .theme-branch-name {
     color: ${themeVars.github.fgColor.accent};
     background-color: ${themeVars.github.bgColor.accent.muted};
     border-radius: ${otherThemeVars.border.radius};
