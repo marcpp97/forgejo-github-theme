@@ -176,3 +176,13 @@
     margin: 0 8px;
   }
 }
+
+/* Forks: the owner's avatar before the fork's name. */
+.theme-fork-row {
+  min-height: 48px;
+}
+
+.theme-fork-row > img.ui.avatar {
+  flex: none;
+  border-radius: 50%;
+}
