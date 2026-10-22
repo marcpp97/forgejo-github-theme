@@ -25,13 +25,7 @@ const smallCompactMenu = css`
   .page-content.repository.file.editor #editor-bar,
   /* 订阅/关注切换菜单(应只选中订阅/关注页面, 不能选中通知页面) */
   /* No :has() on the container: Chrome would then track every .ui.container and restyle the whole page on editor tab changes. */
-  .page-content.user.notification:not(#notification_div) > .ui.container,
-  /* 里程碑/标签切换菜单(里程碑页) */
-  .page-content.repository.milestones .list-header,
-  /* 里程碑/标签切换菜单(新建里程碑页) */
-  .page-content.repository.new.milestone .issue-navbar,
-  /* 里程碑/标签切换菜单(标签页) */
-  .page-content.repository.labels .issue-navbar {
+  .page-content.user.notification:not(#notification_div) > .ui.container {
     .switch {
       --switch-item-min-height: 30px;
       --switch-padding-inline: 12px;

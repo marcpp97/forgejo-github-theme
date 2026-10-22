@@ -21,8 +21,6 @@ import { css, cssCombine, extractVarName, otherThemeVars, themeVars } from "@lut
 
 // 工单&PR 列表
 const issueList = css`
-  /* 仓库页面的里程碑列表菜单栏 */
-  .page-content.repository.milestones,
   .page-content.repository.milestone-issue-list,
   .page-content.repository.issue-list {
     ${extractVarName(otherThemeVars.checkbox.size)}: 16px;
@@ -109,39 +107,11 @@ const issueList = css`
       }
     }
   }
-
-  /* 里程碑列表 */
-  /* [TODO] 暂时排除项目的列表 */
-  .page-content.repository.milestones:not(.projects) .milestone-list,
-  /* 仪表板的里程碑列表 */
-  .page-content.repository.milestones.dashboard .milestone-list {
-    border: 1px solid ${themeVars.color.light.border};
-    border-bottom-left-radius: ${otherThemeVars.border.radius};
-    border-bottom-right-radius: ${otherThemeVars.border.radius};
-    .milestone-card {
-      padding: 8px 16px 10px;
-      .milestone-header h3 > a {
-        font-size: 16px;
-        font-weight: 500;
-      }
-      .milestone-header > .tw-flex > span {
-        font-size: 14px;
-        font-weight: 600;
-      }
-    }
-    .milestone-toolbar {
-      font-size: 12px;
-      .group > a {
-        font-size: 13px;
-      }
-    }
-  }
 `;
 
 // 避免手机/平板下菜单错位
 const issueListMobile = css`
   @media (max-width: 1023.98px) {
-    .page-content.repository.milestones,
     .page-content.repository.milestone-issue-list,
     .page-content.repository.issue-list {
       .issue-list-toolbar {

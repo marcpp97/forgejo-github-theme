@@ -5,36 +5,33 @@ the search; without it, New project sits beside the search as on GitHub's profil
 {{$canWrite := and $data.CanWriteProjects (not $data.Repository.IsArchived)}}
 {{$newProject := ""}}
 {{if $canWrite}}{{$newProject = print $data.Link "/new"}}{{end}}
-<section class="theme-project-list">
+<section class="theme-box-list-page">
 	{{if .Heading}}
 		<div class="theme-list-heading">
 			<div class="theme-list-title"><button type="button" class="theme-icon-button" data-theme-sidebar-toggle data-theme-sidebar-expand aria-expanded="false" aria-label="Expand sidebar">{{svg "octicon-sidebar-expand" 16}}</button><h1>{{ctx.Locale.Tr "repo.projects"}}</h1></div>
 			{{if $newProject}}<a class="primary button theme-control" href="{{$newProject}}">{{ctx.Locale.Tr "repo.projects.new"}}</a>{{end}}
 		</div>
 	{{end}}
-	<div class="theme-project-list-toolbar">
-		<form class="ui form ignore-dirty theme-project-list-search" role="search">
+	<div class="theme-box-list-toolbar">
+		<form class="ui form ignore-dirty theme-box-list-search" role="search">
 			<input type="hidden" name="state" value="{{$data.State}}">
 			<input type="hidden" name="sort" value="{{$data.SortType}}">
 			{{template "components/common/search/search" dict "Kind" "icon" "Value" $data.Keyword "Placeholder" (ctx.Locale.Tr "search.project_kind") "Label" (ctx.Locale.Tr "search.project_kind")}}
 		</form>
 		{{if and $newProject (not .Heading)}}<a class="primary button theme-control" href="{{$newProject}}">{{ctx.Locale.Tr "repo.projects.new"}}</a>{{end}}
 	</div>
-	<div class="theme-project-list-box">
-		<div class="theme-project-list-header">
-			<nav class="theme-project-list-states" aria-label="{{ctx.Locale.Tr "repo.projects"}}">
-				<a href="?state=open&q={{$data.Keyword}}&sort={{$data.SortType}}"{{if not $data.IsShowClosed}} aria-current="page"{{end}}>{{ctx.Locale.Tr "repo.issues.open_title"}} <span class="theme-counter">{{ctx.Locale.PrettyNumber $data.OpenCount}}</span></a>
-				<a href="?state=closed&q={{$data.Keyword}}&sort={{$data.SortType}}"{{if $data.IsShowClosed}} aria-current="page"{{end}}>{{ctx.Locale.Tr "repo.issues.closed_title"}} <span class="theme-counter">{{ctx.Locale.PrettyNumber $data.ClosedCount}}</span></a>
-			</nav>
+	<div class="theme-box-list">
+		<div class="theme-box-list-header">
+			{{template "components/common/box-list/states" dict "Label" (ctx.Locale.Tr "repo.projects") "OpenLink" (print "?state=open&q=" (QueryEscape $data.Keyword) "&sort=" $data.SortType) "ClosedLink" (print "?state=closed&q=" (QueryEscape $data.Keyword) "&sort=" $data.SortType) "OpenCount" $data.OpenCount "ClosedCount" $data.ClosedCount "IsClosed" $data.IsShowClosed}}
 			{{template "components/common/dropdown/dropdown" dict "Kind" "actions" "Label" (ctx.Locale.Tr "repo.issues.filter_sort") "Quiet" true "Items" "components/project/list/sort" "Data" $data}}
 		</div>
-		<ul class="theme-project-list-rows">
+		<ul class="theme-box-list-rows">
 			{{range $data.Projects}}
-				<li class="theme-project-list-row">
-					<div class="theme-project-list-main">
+				<li class="theme-box-list-row">
+					<div class="theme-box-list-main">
 						<h3><a href="{{.Link ctx}}">{{.Title}}</a></h3>
-						<p class="theme-project-list-meta">#{{.ID}} {{ctx.Locale.Tr "issues.updated" (DateUtils.TimeSince .UpdatedUnix)}}</p>
-						{{if .Description}}<div class="theme-project-list-description markup">{{.RenderedContent}}</div>{{end}}
+						<p class="theme-box-list-meta">#{{.ID}} {{ctx.Locale.Tr "issues.updated" (DateUtils.TimeSince .UpdatedUnix)}}</p>
+						{{if .Description}}<div class="theme-box-list-description markup">{{.RenderedContent}}</div>{{end}}
 					</div>
 					{{if $canWrite}}
 						{{template "components/common/dropdown/dropdown" dict "Kind" "actions" "Icon" "octicon-kebab-horizontal" "IconOnly" true "Quiet" true "Label" (ctx.Locale.Tr "profile.actions.tooltip") "Items" "components/project/list/actions" "Data" (dict "Context" $data.Context "Link" (.Link ctx) "IsClosed" .IsClosed)}}

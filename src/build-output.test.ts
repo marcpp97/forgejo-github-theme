@@ -457,7 +457,7 @@ describe("Forgejo 15 native integration", () => {
     const compactMenu = fs.readFileSync(path.join(ROOT_DIR, "styles", "public", "menu", "compact_menu.ts"), "utf-8");
     const notification = fs.readFileSync(path.join(ROOT_DIR, "styles", "components", "notification.ts"), "utf-8");
 
-    expect(compactMenu).toContain(".page-content.user.notification:not(#notification_div) > .ui.container,");
+    expect(compactMenu).toContain(".page-content.user.notification:not(#notification_div) > .ui.container {");
     expect(compactMenu).not.toContain(".ui.container:has(");
     expect(compactMenu).not.toContain(".page-content.user.notification > .ui.container,");
     expect(notification).toContain("--switch-item-min-height: 32px;");
@@ -509,6 +509,39 @@ describe("Forgejo 15 native integration", () => {
       ["repo", "diff", "compare.tmpl"],
     ])
       expect(read(...page)).not.toContain('template "repo/header"');
+  });
+
+  it("lists labels and milestones in the issue sidebar layout with the shared box list", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
+    const sidebar = read("templates", "repo", "issue", "sidebar.tmpl");
+    expect(sidebar).toContain('{{if $isMilestonePage}}active{{end}}" href="{{.RepoLink}}/milestones"');
+    expect(sidebar).toContain('{{if .PageIsLabels}}active{{end}}" href="{{.RepoLink}}/labels"');
+    for (const page of ["labels.tmpl", "milestones.tmpl", "milestone_issues.tmpl", "milestone_new.tmpl"]) {
+      const template = read("templates", "repo", "issue", page);
+      expect(template, page).toContain('{{template "repo/issue/sidebar" .}}');
+      expect(template, page).not.toContain('template "repo/issue/navbar"');
+    }
+    expect(read("templates", "repo", "issue", "milestones.tmpl")).toContain(
+      'template "components/repository/milestone/list"'
+    );
+    expect(read("templates", "user", "dashboard", "milestones.tmpl")).toContain(
+      'template "components/repository/milestone/list"'
+    );
+    expect(read("templates", "repo", "issue", "labels", "label_list.tmpl")).toContain(
+      'template "components/repository/label/list"'
+    );
+    expect(read("templates", "repo", "issue", "milestone_issues.tmpl")).toContain('"themeList" "issues"');
+    // The project, milestone and label lists share GitHub's Box list and its Open/Closed tabs.
+    for (const list of [
+      ["components", "project", "list", "list.tmpl"],
+      ["components", "repository", "milestone", "list.tmpl"],
+      ["components", "repository", "label", "list.tmpl"],
+    ])
+      expect(read(...list)).toContain('class="theme-box-list');
+    expect(read("components", "repository", "label", "actions.tmpl")).toContain("edit-label-button");
+    expect(read("templates", "base", "component_assets.tmpl")).toContain(
+      "/css/components/common/box-list/box-list.css"
+    );
   });
 
   it("matches GitHub's repository About, visibility, and code-search details", () => {
