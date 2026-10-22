@@ -8,7 +8,6 @@
 		{{template "repo/issue/view_content" .}}
 	</div>
 </div>
-<template id="conversation-upload-icon">{{svg "octicon-paperclip" 16}}</template>
 <script src="{{AssetUrlPrefix}}/js/issue-conversation.js" defer></script>
 {{if .Issue.IsPull}}<script src="{{AssetUrlPrefix}}/js/pull-review.js" defer></script>{{end}}
 {{template "base/footer" .}}

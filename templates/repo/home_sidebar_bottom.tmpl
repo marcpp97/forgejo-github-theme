@@ -15,7 +15,7 @@
 					<span class="repo-latest-release-title" data-release-title>Loading latest release…</span>
 					<span class="repo-latest-release-badge" data-release-badge>Latest</span>
 				</div>
-				<span class="repo-latest-release-date" data-release-date></span>
+				<span class="repo-latest-release-date" data-release-date><relative-time tense="past"></relative-time></span>
 			</a>
 			<a class="repo-release-count" data-release-count="{{.NumReleases}}" href="{{.RepoLink}}/releases">+ {{CountFmt .NumReleases}} releases</a>
 			<script>
@@ -29,8 +29,7 @@
 							const count = Number(card.parentElement.querySelector('[data-release-count]')?.dataset.releaseCount || 0);
 							const countLink = card.parentElement.querySelector('[data-release-count]');
 							if (countLink) countLink.textContent = `+ ${Math.max(0, count - 1)} releases`;
-							card.querySelector('[data-release-date]').textContent = release.published_at
-								? (() => { const months = Math.max(1, Math.floor((Date.now() - Date.parse(release.published_at)) / 2592e6)); return months < 12 ? `${months} month${months === 1 ? '' : 's'} ago` : `${Math.floor(months / 12)} year${months < 24 ? '' : 's'} ago`; })() : '';
+							if (release.published_at) card.querySelector('[data-release-date] relative-time').setAttribute('datetime', release.published_at);
 						})
 						.catch(() => {
 							card.querySelector('[data-release-title]').textContent = 'View all releases';

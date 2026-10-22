@@ -1,0 +1,10 @@
+{{- /* An issue label whose colour reaches the theme as a variable, so its stylesheet can adapt it to light and dark
+mode. Forgejo's RenderLabel writes the colours inline with !important, which no stylesheet can override. Scoped
+labels keep Forgejo's two-part rendering. */ -}}
+{{if .ExclusiveScope -}}
+	{{RenderLabel ctx .}}
+{{- else -}}
+	{{- $description := .Description -}}
+	{{- if .IsArchived}}{{$description = print "(" (ctx.Locale.Tr "archived") ") " .Description}}{{end -}}
+	<div class="ui label repository-label{{if .IsArchived}} archived-label{{end}}" style="--repository-label-color: {{.Color}}; --repository-label-foreground: {{ContrastColor .Color}}" data-tooltip-content="{{$description}}" aria-description="{{$description}}">{{RenderEmoji ctx .Name}}</div>
+{{- end}}

@@ -178,10 +178,6 @@
   });
   const boxes = document.getElementById("diff-file-boxes");
   function updateFoldLabels() {
-    // Forgejo's initial hunk labels omit the first @, while loaded excerpts include both.
-    for (const code of container.querySelectorAll(".tag-code .code-inner")) {
-      if (/^@ [+-]/.test(code.textContent)) code.prepend(document.createTextNode("@"));
-    }
     for (const box of boxes?.querySelectorAll(".diff-file-box") || []) {
       const expand = box.querySelector(".diff-expand-file");
       if (expand) {

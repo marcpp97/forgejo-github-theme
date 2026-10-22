@@ -333,10 +333,10 @@ export default css`
           height: 24px;
         }
       }
-      &.merge-ready > .timeline-avatar {
+      &:has(.pull-merge-status) > .timeline-avatar {
         background: ${themeVars.github.bgColor.success.emphasis};
       }
-      &.merge-ready > .content {
+      &:has(.pull-merge-status) > .content {
         border-color: ${themeVars.github.bgColor.success.emphasis};
       }
       /* GitHub keeps the badge and border neutral for blocked, conflicting, draft and closed pull requests. */

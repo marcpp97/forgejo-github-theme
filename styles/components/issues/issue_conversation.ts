@@ -317,6 +317,11 @@ export default css`
         text-decoration: none !important;
       }
     }
+    /* The issue's "opened … by <author>" sentence comes from Forgejo's translation, so its author link has no classes. */
+    & .comment.first .comment-header-left > .text > a:not(.author, :has(relative-time)) {
+      color: ${themeVars.color.text.self};
+      font-weight: 600;
+    }
     & .comment-header .role-label {
       border: 1px solid ${themeVars.color.light.border};
       border-radius: 20px;
