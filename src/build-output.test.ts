@@ -624,6 +624,25 @@ describe("Forgejo 15 native integration", () => {
     expect(read("styles", "components", "newrepo.ts")).toContain(".page-content.repository.new.repo {");
   });
 
+  it("shows the issue's branch as GitHub's Development section, last in both issue sidebars", () => {
+    const read = (...parts: string[]) =>
+      fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "issue", ...parts), "utf-8");
+    const field = read("view_content", "sidebar", "branch_selector_field.tmpl");
+    expect(field).toContain("<strong>Development</strong>");
+    expect(field).toContain('<span class="text branch-name gt-ellipsis">');
+    expect(field).not.toContain('<div class="divider"></div>');
+    const form = read("new_form.tmpl");
+    const order = [
+      "sidebar/assignees",
+      "labels_selector_field",
+      "select-project dropdown",
+      "select-milestone dropdown",
+      "sidebar/branch_selector_field",
+    ].map(part => form.indexOf(part));
+    expect(order.every(index => index > 0)).toBe(true);
+    expect([...order].sort((a, b) => a - b)).toEqual(order);
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");

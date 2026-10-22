@@ -26,8 +26,10 @@
 		<div class="divider"></div>
 	{{end}}
 
-	{{/* Ends with its own divider on issues. */}}
-	{{template "repo/issue/view_content/sidebar/branch_selector_field" .}}
+	{{if not .Issue.IsPull}}
+		{{template "repo/issue/view_content/sidebar/branch_selector_field" .}}
+		<div class="divider"></div>
+	{{end}}
 
 	{{if and $.IssueWatch (not .Repository.IsArchived)}}
 		{{template "repo/issue/view_content/sidebar/watch" .}}
