@@ -210,11 +210,6 @@ const repositoryHome = css`
     .page-content.repository.file.list .repo-button-row > .repo-button-row-left > .js-branch-tag-selector {
       flex: 0 0 auto;
     }
-    .page-content.repository.file.list .repo-button-row .repository-summary,
-    .page-content.repository.file.list .repo-button-row .repo-find-file,
-    .page-content.repository.file.list .repo-button-row .repo-add-file {
-      display: none;
-    }
     .page-content.repository.file.list .repo-code-dropdown {
       position: static;
     }
@@ -251,6 +246,67 @@ const repositoryHome = css`
       grid-column: 1;
       grid-row: 3;
       padding-left: 0;
+    }
+  }
+
+  /*
+   * GitHub's branch row narrows in steps: Add file becomes a "+" below 1280px, the branch and tag counts go below
+   * 1080px, Go to file becomes a plain button below 1012px, and both leave for the "…" menu below 544px.
+   */
+  @media (max-width: 1279.98px) {
+    .page-content.repository.file.list .repo-button-row .repo-add-file {
+      width: 34px;
+      min-width: 0;
+      padding: 0 !important;
+      justify-content: center;
+      & > .repo-add-file-label,
+      & > .dropdown.icon {
+        display: none;
+      }
+    }
+  }
+  @media (min-width: 1280px) {
+    .page-content.repository.file.list .repo-button-row .repo-add-file > .repo-add-file-icon {
+      display: none;
+    }
+  }
+  @media (max-width: 1079.98px) {
+    .page-content.repository.file.list .repo-button-row .repository-summary {
+      display: none;
+    }
+  }
+  @media (max-width: 1011.98px) {
+    .page-content.repository.file.list .repo-button-row .repo-file-picker {
+      width: auto;
+    }
+    .page-content.repository.file.list .repo-button-row .repo-find-file {
+      width: 87px;
+      padding: 0 12px;
+      background: ${themeVars.color.button};
+      cursor: pointer;
+      & > svg,
+      & > kbd {
+        display: none;
+      }
+      & > input {
+        padding: 0;
+        text-align: center;
+        cursor: pointer;
+        &::placeholder {
+          color: ${themeVars.color.text.self};
+          font-weight: 500;
+        }
+      }
+    }
+  }
+  @media (max-width: 543.98px) {
+    .page-content.repository.file.list .repo-button-row .repo-add-file {
+      display: none;
+    }
+  }
+  @media (min-width: 544px) {
+    .page-content.repository.file.list .repo-mobile-actions {
+      display: none !important;
     }
   }
 

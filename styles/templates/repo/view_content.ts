@@ -30,11 +30,15 @@ const repoButtonRow = css`
           display: inline-flex;
           align-items: center;
           gap: 4px;
+          /* GitHub: an invisible 1px border, 4px padding, a 500 label and a 600 count. */
+          border: 1px solid transparent;
           border-radius: ${otherThemeVars.border.radius};
           color: ${themeVars.color.text.light.num1};
           padding: 4px;
           height: 32px;
           min-height: 32px;
+          font-weight: 500;
+          line-height: 21px;
           &:hover {
             background-color: ${themeVars.github.control.transparent.bgColor.hover};
             box-shadow: inset 0 0 0 1px ${themeVars.github.control.transparent.borderColor.active};
@@ -98,6 +102,15 @@ const repoToolbarDetails = css`
       height: 32px;
       min-height: 32px;
       padding: 5px 12px !important;
+    }
+
+    /* Beside "Add file", GitHub's Code button is just its icon and caret, 49px wide. */
+    & .repo-button-row-right:has(.repo-add-file) .repo-code-dropdown > summary.ui.primary.button {
+      gap: 2px;
+      padding: 5px 6px 5px 7px !important;
+      & > span {
+        display: none;
+      }
     }
 
     & .repo-code-dropdown > summary.ui.primary.button:hover {
