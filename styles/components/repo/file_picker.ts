@@ -107,7 +107,8 @@ export default css`
     overflow: hidden;
     clip-path: inset(50%);
   }
-  @media (max-width: 767.98px) {
+  /* GitHub keeps Go to file down to 544px; below that it moves into the "…" menu. */
+  @media (max-width: 543.98px) {
     .repo-file-picker {
       display: none;
     }

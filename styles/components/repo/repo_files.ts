@@ -81,6 +81,13 @@ const repoFiles = css`
         }
       }
     }
+    /* Below 544px GitHub lets the README box reach the screen edges; the file list keeps its gutter. */
+    @media (max-width: 543.98px) {
+      #readme {
+        margin-left: -16px;
+        margin-right: -16px;
+      }
+    }
     #readme {
       .file-header {
         background: ${themeVars.color.body};
@@ -90,29 +97,54 @@ const repoFiles = css`
         svg {
           color: ${themeVars.color.text.light.num1};
         }
+        /* GitHub's README box header: underline tabs for the README and the community files. */
         .file-header-left {
-          padding: 6px 8px !important;
-          line-height: 1.45;
-          /* 伪元素宽度等于按钮宽度而不是父元素宽度 */
-          position: relative;
-          &:hover {
-            background: ${themeVars.github.control.transparent.bgColor.hover};
+          padding: 0 !important;
+        }
+        .repo-readme-tabs {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          & > a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            height: 32px;
+            padding: 6px 8px;
             border-radius: ${otherThemeVars.border.radius};
+            color: ${themeVars.color.text.self};
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 21px;
+            &:hover {
+              background: ${themeVars.github.control.transparent.bgColor.hover};
+              text-decoration-line: none;
+            }
+            &.active {
+              font-weight: 600;
+              &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -8px;
+                width: 100%;
+                height: 2px;
+                border-radius: ${otherThemeVars.border.radius};
+                background: ${themeVars.github.underlineNav.borderColor.active};
+              }
+            }
           }
-          &:after {
-            content: "";
-            background: ${themeVars.github.underlineNav.borderColor.active};
-            border-radius: ${otherThemeVars.border.radius};
-            bottom: -8px;
-            left: 0;
-            height: 2px;
-            position: absolute;
-            width: 100%;
-          }
-          a.muted:hover {
-            color: inherit;
-            text-decoration-line: none;
-          }
+        }
+        /* The README outline indents each heading level by 16px. */
+        .theme-dropdown-action[data-level="2"] {
+          padding-left: 24px;
+        }
+        .theme-dropdown-action[data-level="3"] {
+          padding-left: 40px;
+        }
+        .theme-dropdown-action:is([data-level="4"], [data-level="5"], [data-level="6"]) {
+          padding-left: 56px;
         }
         .file-header-right {
           .btn-octicon {

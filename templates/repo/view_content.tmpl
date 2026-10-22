@@ -47,7 +47,8 @@
 
 		{{if and .CanWriteCode .IsViewBranch (not .Repository.IsMirror) (not .Repository.IsArchived) (not .IsViewFile)}}
 			<button class="ui dropdown basic compact jump button repo-add-file"{{if not .Repository.CanEnableEditor}} disabled{{end}}>
-				{{ctx.Locale.Tr "file_editor.add_file"}}
+				{{svg "octicon-plus" 16 "repo-add-file-icon"}}
+				<span class="repo-add-file-label">{{ctx.Locale.Tr "file_editor.add_file"}}</span>
 				{{svg "octicon-triangle-down" 16 "dropdown icon"}}
 				<div class="menu">
 					<a class="item" href="{{.RepoLink}}/_new/{{.BranchName | PathEscapeSegments}}/{{.TreePath | PathEscapeSegments}}">
@@ -87,7 +88,7 @@
 				<summary class="ui primary compact button" aria-label="Code">
 					{{svg "octicon-code" 16}}
 					<span>{{ctx.Locale.Tr "repo.code"}}</span>
-					{{svg "octicon-triangle-down" 14 "dropdown icon"}}
+					{{svg "octicon-triangle-down" 16 "dropdown icon"}}
 				</summary>
 				<div class="content">
 					<nav class="repo-code-navigation" aria-label="{{ctx.Locale.Tr "repo.code"}}">
@@ -196,3 +197,4 @@
 <script src="{{AssetUrlPrefix}}/js/details-menu.js" defer></script>
 
 <script src="{{AssetUrlPrefix}}/js/repo-file-picker.js" defer></script>
+<script src="{{AssetUrlPrefix}}/js/readme-outline.js" defer></script>
