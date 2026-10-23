@@ -35,13 +35,31 @@
 			</div>
 			{{end}}
 		{{else if $isOrganization}}
-			<a class="item profile-navbar-name not-mobile" href="{{.Org.HomeLink}}">{{.Org.Name}}</a>
+			<a class="item navbar-context-title not-mobile" href="{{.Org.HomeLink}}">{{.Org.Name}}</a>
 		{{else if $isUserProfile}}
-			<a class="item profile-navbar-name not-mobile" href="{{.ContextUser.HomeLink}}">{{.ContextUser.Name}}</a>
+			<a class="item navbar-context-title not-mobile" href="{{.ContextUser.HomeLink}}">{{.ContextUser.Name}}</a>
 		{{else if and .IsSigned .HideNavbarLinks}}
 			{{/* No links */}}
 		{{else if .IsSigned}}
-			<a class="item{{if .PageIsExplore}} active{{end}}" href="{{AppSubUrl}}/explore/repos">{{ctx.Locale.Tr "explore"}}</a>
+			{{/* GitHub names the page here; Explore stays in the navigation drawer. */}}
+			{{if .PageIsDashboard}}
+				<a class="item navbar-context-title not-mobile" href="{{AppSubUrl}}/">{{ctx.Locale.Tr "dashboard"}}</a>
+			{{else if .PageIsIssues}}
+				<a class="item navbar-context-title not-mobile" href="{{AppSubUrl}}/issues">{{ctx.Locale.Tr "issues"}}</a>
+			{{else if .PageIsPulls}}
+				<a class="item navbar-context-title not-mobile" href="{{AppSubUrl}}/pulls">{{ctx.Locale.Tr "pull_requests"}}</a>
+			{{else if .PageIsMilestonesDashboard}}
+				<a class="item navbar-context-title not-mobile" href="{{AppSubUrl}}/milestones">{{ctx.Locale.Tr "milestones"}}</a>
+			{{else if .PageIsUserSettings}}
+				<a class="item navbar-context-title not-mobile" href="{{AppSubUrl}}/user/settings">{{ctx.Locale.Tr "settings"}}</a>
+			{{else if .PageIsAdmin}}
+				<a class="item navbar-context-title not-mobile" href="{{AppSubUrl}}/admin">{{ctx.Locale.Tr "admin_panel"}}</a>
+			{{else if .PageIsExplore}}
+				<a class="item navbar-context-title not-mobile" href="{{AppSubUrl}}/explore/repos">{{ctx.Locale.Tr "explore"}}</a>
+			{{else if .Title}}
+				{{/* Notifications and the create pages set no page flag; their title is the page's name. */}}
+				<span class="item navbar-context-title not-mobile">{{.Title}}</span>
+			{{end}}
 		{{else if .IsLandingPageOrganizations}}
 			<a class="item{{if .PageIsExplore}} active{{end}}" href="{{AppSubUrl}}/explore/organizations">{{ctx.Locale.Tr "explore"}}</a>
 		{{else}}

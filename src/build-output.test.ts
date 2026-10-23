@@ -426,6 +426,25 @@ describe("Forgejo 15 native integration", () => {
     }
   });
 
+  it("names the current page after the logo as GitHub does, keeping Explore in the drawer", () => {
+    const navbar = fs.readFileSync(path.join(ROOT_DIR, "templates", "base", "head_navbar.tmpl"), "utf-8");
+    const drawer = fs.readFileSync(path.join(ROOT_DIR, "templates", "base", "navbar_drawer.tmpl"), "utf-8");
+    for (const [flag, label] of [
+      ["PageIsDashboard", "dashboard"],
+      ["PageIsIssues", "issues"],
+      ["PageIsPulls", "pull_requests"],
+      ["PageIsUserSettings", "settings"],
+      ["PageIsAdmin", "admin_panel"],
+      ["PageIsExplore", "explore"],
+    ])
+      expect(navbar).toMatch(
+        new RegExp(`\\.${flag}\\}\\}\\s*<a class="item navbar-context-title[^>]*>{{ctx\\.Locale\\.Tr "${label}"}}`)
+      );
+    expect(navbar).toContain('<span class="item navbar-context-title not-mobile">{{.Title}}</span>');
+    expect(navbar).not.toContain("profile-navbar-name");
+    expect(drawer).toContain('{{ctx.Locale.Tr "explore"}}');
+  });
+
   it("does not emit selector families from the newer Gitea markup", () => {
     const css = fs.readFileSync(path.join(DIST_DIR, `${PREFIX}light.css`), "utf-8");
 

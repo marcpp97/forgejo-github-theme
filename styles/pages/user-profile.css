@@ -373,16 +373,6 @@
   }
 }
 
-#navbar .profile-navbar-name {
-  /* Like the repository breadcrumb: the name starts 6px into its link. */
-  padding-inline: 6px;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: 600;
-}
-
 .github-profile .profile-readme-heading {
   margin-bottom: 16px;
   font-family: var(--fonts-monospace);
