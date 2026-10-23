@@ -115,4 +115,12 @@ const titleCode = css`
   }
 `;
 
-export default cssCombine(text, listHeader, svg, avatar, toggle, titleCode);
+// Forgejo puts an empty div after each issue reference (#7) for its hover card and moves it into the card once Vue has
+// loaded; until then the block broke a commit title onto two lines for a frame, jumping everything below it.
+const refIssuePopup = css`
+  .ref-issue + div:empty {
+    display: none;
+  }
+`;
+
+export default cssCombine(text, listHeader, svg, avatar, toggle, titleCode, refIssuePopup);

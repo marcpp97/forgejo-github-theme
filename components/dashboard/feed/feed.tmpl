@@ -130,3 +130,5 @@ Forgejo's own, so every event type and language reads as on the profile. Data is
 	{{end}}
 	<template data-theme-feed-text data-today="Today" data-yesterday="Yesterday" data-week="This week" data-last-week="Last week" data-earlier="Earlier" data-error="Older activity could not be loaded. Try again."></template>
 </div>
+{{/* Not deferred: the day headings are in place before the page's first paint instead of pushing the rows down. */}}
+<script src="{{AssetUrlPrefix}}/js/components/dashboard/feed/feed.js"></script>

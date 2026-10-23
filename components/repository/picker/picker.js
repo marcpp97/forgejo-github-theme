@@ -76,6 +76,8 @@
         const repos = (body?.data ?? []).map(result => result.repository).filter(Boolean);
         if (!append) list.replaceChildren();
         list.append(...repos.map(row));
+        // The first answer fades in; later filtering and Show more change the list in place.
+        if (!state.loaded) list.classList.add("theme-fade-in");
         const total = Number(response.headers.get("X-Total-Count"));
         if (more) more.hidden = !(total > state.page * limit);
         if (!list.children.length) {

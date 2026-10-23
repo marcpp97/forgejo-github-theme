@@ -42,6 +42,7 @@ function panel(kind: string, query?: string) {
     rows,
     count,
     hidden: true,
+    classList: new Set<string>(),
     dataset: { themeWorkPanel: kind, ...(query ? { query } : {}) },
     querySelector: (selector: string) =>
       ({ "[data-theme-work-rows]": rows, "[data-theme-work-count]": count })[selector],
@@ -52,13 +53,19 @@ function fixture(responses: Record<string, unknown[]>, owner?: string) {
   const assigned = panel("search", "type=issues&assigned=true");
   const reviews = panel("search", "type=pulls&review_requested=true");
   const releases = panel("releases");
+  const storage = new Map<string, string>();
   const rail = {
-    hidden: true,
-    dataset: { search: "/issues/search", ...(owner ? { owner } : {}) },
+    hidden: false,
+    busy: true,
+    removeAttribute: () => (rail.busy = false),
+    dataset: { key: "theme-work-rail:7", search: "/issues/search", ...(owner ? { owner } : {}) },
     querySelector: () => ({ content: { querySelector: () => element("svg") } }),
     querySelectorAll: () => [assigned, reviews, releases],
   };
+  let resolveFetch = () => {};
+  const gate = new Promise<void>(resolve => (resolveFetch = resolve));
   const fetch = vi.fn(async (url: string) => {
+    await gate;
     const params = new URL(url, "http://forgejo").searchParams;
     const key = params.has("assigned") ? "assigned" : "reviews";
     const body = responses[key] ?? [];
@@ -73,6 +80,10 @@ function fixture(responses: Record<string, unknown[]>, owner?: string) {
     document,
     fetch,
     location: { origin: "http://forgejo" },
+    localStorage: {
+      getItem: (key: string) => storage.get(key) ?? null,
+      setItem: (key: string, value: string) => storage.set(key, value),
+    },
     Intl,
     URL,
     URLSearchParams,
@@ -83,7 +94,11 @@ function fixture(responses: Record<string, unknown[]>, owner?: string) {
     Set,
     Promise,
   });
-  return { rail, assigned, reviews, releases, fetch, settle: () => new Promise(resolve => setTimeout(resolve, 0)) };
+  const settle = async () => {
+    resolveFetch();
+    for (let i = 0; i < 10; i++) await new Promise(resolve => setTimeout(resolve, 0));
+  };
+  return { rail, assigned, reviews, releases, fetch, storage, resolveFetch, settle };
 }
 
 const issue = {
@@ -108,19 +123,27 @@ describe("Home's work rail", () => {
     });
   });
 
-  it("shows only the boxes with something in them, and stays hidden when all are empty", async () => {
-    const empty = fixture({});
-    await empty.settle();
-    expect(empty.rail.hidden).toBe(true);
-    expect(empty.assigned.hidden).toBe(true);
-
+  it("keeps its column while loading, then shows the boxes with something in them together, fading in", async () => {
     const f = fixture({ assigned: [issue] });
-    await f.settle();
+    await new Promise(resolve => setTimeout(resolve, 0));
     expect(f.rail.hidden).toBe(false);
+    expect(f.assigned.hidden).toBe(true);
+    await f.settle();
+    expect(f.rail.busy).toBe(false);
     expect(f.assigned.hidden).toBe(false);
+    expect(f.assigned.classList.has("theme-fade-in")).toBe(true);
     expect(f.reviews.hidden).toBe(true);
     expect(f.releases.hidden).toBe(true);
     expect(f.assigned.count.textContent).toBe("1");
+    expect(f.storage.get("theme-work-rail:7")).toBe("full");
+  });
+
+  it("gives its column to the feed when every box is empty, and remembers that for the next visit", async () => {
+    const f = fixture({});
+    await f.settle();
+    expect(f.rail.hidden).toBe(true);
+    expect(f.assigned.hidden).toBe(true);
+    expect(f.storage.get("theme-work-rail:7")).toBe("empty");
   });
 
   it("renders a title's inline code and links only within the site", async () => {
