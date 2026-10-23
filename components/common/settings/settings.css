@@ -499,12 +499,6 @@
     align-items: start;
   }
   & .theme-settings-aside {
-    & > h3 {
-      margin: 0 0 8px;
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 21px;
-    }
     /* Forgejo caps avatar images in forms; the picture here is GitHub's 200px circle, with Edit on its lower left
        opening a menu below it. */
     & .theme-avatar-edit {
@@ -549,13 +543,27 @@
       gap: 8px;
     }
   }
-  /* Forgejo's form groups ("About you", "Privacy") read as small section titles. */
-  & .ui.form fieldset > legend {
+  /* Forgejo's form groups ("About you", "Privacy") read as small section titles. A legend is drawn across its
+     fieldset's top border, which put "Privacy" on the divider above it; floated, it sits inside the fieldset like any
+     heading, 16px below the divider. The profile picture's title in the aside matches it. */
+  & .ui.form fieldset {
+    margin-top: 0;
+  }
+  & .ui.form fieldset > legend,
+  & .theme-settings-aside > h3 {
     margin: 0 0 8px;
     padding: 0;
     font-size: 16px;
     font-weight: 600;
     line-height: 24px;
+  }
+  & .ui.form fieldset > legend {
+    float: left;
+    width: 100%;
+    border: 0;
+    & + * {
+      clear: both;
+    }
   }
   & .ui.form fieldset + fieldset {
     margin-top: 24px;

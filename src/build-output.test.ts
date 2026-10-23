@@ -665,6 +665,10 @@ describe("Forgejo 15 native integration", () => {
     expect(menu).toContain('<label class="theme-dropdown-action" for="new-avatar">Upload a photo…</label>');
     expect(menu).toContain('form="avatar-gravatar-form"');
     expect(menu).toContain("Remove photo");
+    // Section titles sit inside their fieldset, not on its border, and the picture's title matches them.
+    const settingsCss = read("components", "common", "settings", "settings.css");
+    expect(settingsCss).toMatch(/fieldset > legend \{\s*float: left;\s*width: 100%;\s*border: 0;/);
+    expect(settingsCss).toContain("& .theme-settings-aside > h3 {");
     expect(read("components", "common", "dropdown", "dropdown.tmpl")).toContain("{{if not .NoCaret}}");
     const orgs = read("templates", "user", "settings", "organization.tmpl");
     expect(orgs).toContain("{{if .IsOwnedBy ctx $.SignedUser.ID}}");
