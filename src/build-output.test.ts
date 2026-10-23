@@ -562,6 +562,23 @@ describe("Forgejo 15 native integration", () => {
     expect(read("templates", "base", "component_assets.tmpl")).toContain("/css/components/pages/commits.css");
   });
 
+  it("lists branches in GitHub's branch tables with Forgejo's branch actions", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
+    const page = read("templates", "repo", "branch", "list.tmpl");
+    expect(page).not.toContain('template "repo/sub_menu"');
+    expect(page).toContain('"Default" .DefaultBranchBranch');
+    expect(page).toContain('id="create-branch-modal"');
+    expect(page).toContain('id="rename-branch-modal"');
+    const row = read("components", "repository", "branch", "row.tmpl");
+    expect(row).toContain("delete-button delete-branch-button");
+    expect(row).toContain("restore-branch-button");
+    expect(row).toContain('class="theme-branch-name"');
+    const actions = read("components", "repository", "branch", "actions.tmpl");
+    expect(actions).toContain("show-create-branch-modal");
+    expect(actions).toContain("show-rename-branch-modal");
+    expect(read("styles", "components", "issues", "issue.ts")).toContain(".theme-branch-name {");
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");
