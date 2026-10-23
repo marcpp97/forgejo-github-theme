@@ -25,13 +25,7 @@ const attached = css`
   .repo-setting-content,
   .user-setting-content,
   .org-setting-content,
-  .admin-setting-content,
-  /* 仓库动态页面 */
-  /* 新建页面内容 */
-  .page-content.repository.new-repo,
-  .page-content.repository.new.migrate,
-  .page-content.repository.new.fork,
-  .page-content.organization.new.org {
+  .admin-setting-content {
     .ui.top.attached.header {
       border: 0;
       font-size: 20px;

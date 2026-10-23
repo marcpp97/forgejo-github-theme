@@ -22,7 +22,7 @@ import { activeItemAfterStyle } from "@lutinglt/gitea-github-theme/styles/common
 
 // 新建仓库页面下拉菜单
 const newRepo = css`
-  .page-content.repository.new-repo {
+  .page-content.repository.new.repo {
     .ui.dropdown .menu {
       .item:hover:after {
         ${activeItemAfterStyle}
