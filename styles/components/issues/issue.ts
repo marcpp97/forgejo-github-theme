@@ -96,6 +96,27 @@ const prBranch = css`
   }
 `;
 
+// GitHub's Development section in the issue sidebar: the linked branch or tag under the heading.
+const issueDevelopment = css`
+  .issue-content-right .ui.dropdown.theme-issue-development {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .issue-content-right .theme-issue-development-ref {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    color: ${themeVars.color.text.light.num1};
+    font-size: 12px;
+    line-height: 18px;
+    > svg {
+      flex: none;
+    }
+  }
+`;
+
 const dropdown = css`
   .repository {
     /* Issue/PR 列表下的所有筛选菜单 */
@@ -148,4 +169,4 @@ const reactions = css`
   }
 `;
 
-export default cssCombine(button, babel, prBranch, dropdown, issueTitle, reactions);
+export default cssCombine(button, babel, prBranch, issueDevelopment, dropdown, issueTitle, reactions);
