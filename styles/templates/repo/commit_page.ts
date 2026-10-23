@@ -21,10 +21,6 @@ import { css, cssCombine, otherThemeVars, themeVars } from "@lutinglt/gitea-gith
 
 const commitPage = css`
   .page-content.repository.diff.commit-page {
-    > .repository-content-header {
-      display: none;
-    }
-
     > .commit-page-container.ui.container.fluid.padded {
       margin: 0;
       max-width: none;

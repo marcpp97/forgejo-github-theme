@@ -165,6 +165,12 @@ const repositoryHeader = css`
     margin: -1px 0 0;
   }
 
+  /* GitHub starts a repository page 24px below the tabs. Same specificity as Forgejo's 16px rule, so page layouts such
+     as the sidebar still set their own. */
+  .page-content.repository > :first-child:where(:not(.secondary-nav)) {
+    margin-top: 24px;
+  }
+
   .page-content.repository > .repository-content-header {
     border-bottom: 0;
     margin-bottom: 24px;

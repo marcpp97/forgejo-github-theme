@@ -95,7 +95,7 @@ describe("mirror badge disclosure", () => {
 
   it("keeps native mirror address sanitization, visibility precedence and relative sync time", () => {
     const template = readFileSync(new URL("../templates/repo/mirror_badge.tmpl", import.meta.url), "utf8");
-    const header = readFileSync(new URL("../templates/repo/header.tmpl", import.meta.url), "utf8");
+    const header = readFileSync(new URL("../templates/repo/home_header.tmpl", import.meta.url), "utf8");
     expect(header).toContain('{{if $.PullMirror}}\n\t\t\t\t\t\t{{template "repo/mirror_badge" $}}');
     expect(header).not.toContain('ctx.Locale.Tr "repo.mirror_from"');
     expect(template).toContain("MirrorRemoteAddress .Context .PullMirror");

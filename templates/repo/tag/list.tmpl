@@ -1,6 +1,5 @@
 {{template "base/head" .}}
 <div role="main" aria-label="{{.Title}}" class="page-content repository tags github-tags">
-	{{template "repo/header" .}}
 	<div class="ui container">
 		{{template "base/alert" .}}
 		{{$canReadReleases := $.Permission.CanRead $.UnitTypeReleases}}
