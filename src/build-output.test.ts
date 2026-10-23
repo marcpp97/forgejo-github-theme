@@ -418,6 +418,24 @@ describe("Forgejo 15 native integration", () => {
     expect(css).toContain("code.inline-code-block{border-radius:6px;padding:2px 4px;font-size:.9em;line-height:1}");
   });
 
+  it("offers GitHub's repository switcher beside the repository name", () => {
+    const navbar = fs.readFileSync(path.join(ROOT_DIR, "templates", "base", "head_navbar.tmpl"), "utf-8");
+    const items = fs.readFileSync(path.join(ROOT_DIR, "templates", "base", "navbar_repository_switcher.tmpl"), "utf-8");
+    const header = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
+
+    // The caret follows the name and opens the owner's repositories, loaded only when the menu opens.
+    expect(navbar.indexOf('class="repository-navbar-switcher"')).toBeGreaterThan(
+      navbar.indexOf("repository-navbar-name")
+    );
+    expect(navbar).toContain('"Items" "base/navbar_repository_switcher"');
+    expect(items).toContain('"components/repository/picker/picker"');
+    expect(items).toContain('"Exclusive" true');
+    expect(items).toContain('"Current" .Repository.ID');
+    expect(items).toContain('"Lazy" true');
+    expect(header).toContain("#navbar .repository-navbar-switcher");
+    expect(header).toContain("width: 320px;");
+  });
+
   it("ships the mobile drawer assets and keeps its toggle independent of Forgejo's inline menu", () => {
     const navbar = fs.readFileSync(path.join(ROOT_DIR, "templates", "base", "head_navbar.tmpl"), "utf-8");
     expect(navbar).toContain('id="navbar-drawer-toggle" aria-controls="navbar-drawer" aria-haspopup="dialog"');

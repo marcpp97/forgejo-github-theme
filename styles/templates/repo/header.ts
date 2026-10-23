@@ -76,6 +76,28 @@ const repositoryHeader = css`
     padding: 4px;
   }
 
+  /* GitHub's repository switcher: a caret beside the name opening the owner's repositories with a search field. */
+  #navbar .repository-navbar-switcher {
+    display: flex;
+    flex: none;
+    margin-left: 2px;
+    > .theme-dropdown > summary.theme-control {
+      color: ${themeVars.color.text.light.num1};
+    }
+    .theme-dropdown-panel {
+      inset: calc(100% + 8px) auto auto 0;
+      width: 320px;
+      padding: 0 8px 8px;
+    }
+    .theme-repo-picker-search {
+      padding-top: 8px;
+    }
+    .theme-repo-picker-list {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+  }
+
   /* The owner menu only replaces the owner on narrow screens. */
   #navbar .repository-navbar-breadcrumb > .theme-dropdown {
     display: none;
