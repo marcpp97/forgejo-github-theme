@@ -202,9 +202,9 @@
     const body = box.querySelector(":scope > .diff-file-body");
     if (!body || box.hasAttribute("data-deleted-diff-hidden") || matchMedia("(prefers-reduced-motion: reduce)").matches)
       return;
-    // Resizing a very long file each frame walks all its rows and stutters, while only its first screen moves.
-    // Long files fold at once, as on GitHub.
-    if (body.getElementsByTagName("tr").length > 500) return;
+    // Each frame of the slide restyles the loaded diff lines, so it stutters once there are many of them, in one long
+    // file or across several. Past that, files fold at once, as on GitHub.
+    if (boxes.getElementsByTagName("tr").length > 500) return;
     for (const animation of body.getAnimations()) animation.cancel();
     box.setAttribute("data-folding", "");
     const height = `${Math.min(body.scrollHeight, window.innerHeight)}px`;
