@@ -1,0 +1,45 @@
+name: Suggestion
+description: Suggest a page or behavior the theme should match, or a change to the existing look.
+labels:
+  - feature
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What looks or works differently from GitHub today, and where.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How the theme could solve it. A link to or screenshot of the GitHub page helps.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Workarounds or other solutions you considered.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Actions
+        - Code
+        - Dashboard
+        - Issues
+        - Navigation
+        - Organizations
+        - Profile
+        - Projects
+        - Pull requests
+        - Releases
+        - Settings
+        - Themes
+        - Other

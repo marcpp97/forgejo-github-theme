@@ -1,4 +1,4 @@
-name: Release Drafter
+name: Release drafter
 
 on:
   push:
@@ -10,17 +10,31 @@ permissions:
   contents: write
   pull-requests: read
 
-concurrency:
-  group: release-drafter-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  update-release-draft:
+  # A newer push makes an older draft update pointless, so it cancels it.
+  draft:
+    name: Update draft
     runs-on: ubuntu-latest
+    concurrency:
+      group: release-drafter-${{ github.ref }}
+      cancel-in-progress: true
     steps:
-      - name: Update release draft
+      - uses: actions/checkout@v7
+        with:
+          ref: dev
+          persist-credentials: false
+
+      - id: drafter
         uses: release-drafter/release-drafter@v7
         with:
           commitish: dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Group changes and add the release notes
+        uses: whereareiam/devops/primitive/release/draft/regroup@v3
+        with:
+          release-id: ${{ steps.drafter.outputs.id }}
+          release-body: ${{ steps.drafter.outputs.body }}
+          notes-file: .github/release-notes.md
+          version: ${{ steps.drafter.outputs.resolved_version }}

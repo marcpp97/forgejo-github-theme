@@ -41,19 +41,48 @@ If you believe you have a better approach, feel free to submit an Issue.
 
 ### Pull Requests and Release Notes
 
-Submit changes through a pull request targeting `dev`. Use a specific, release-note-friendly title in the form
-`Area: Description`, for example `Templates: Fix commit status badge rendering`.
+Submit changes through a pull request targeting `dev`, or stacked on another pull request; checks run for both. A merged
+pull request lands in the release draft as `* <title> ([#<number>](<url>))`, under the category of its label. The draft
+is written for the people who install the theme, so the title and the label decide what they read.
 
-Apply exactly one primary release label:
+#### Titles
 
-- `feature` for new user-facing capabilities or themes
-- `change` for intentional style, template, or compatibility improvements
-- `bug` for regressions and incorrect rendering
-- `dependencies` for dependency and build-tool updates
-- `skip-changelog` for internal changes that should not appear in release notes
+- Use the strict format `Area: Description`, with a past-tense description of what changed for the reader: `Introduced`,
+  `Changed`, `Fixed`, `Removed`.
+- Describe the effect, not the implementation: `Branches: Fixed the pull request column on phones`, not
+  `Branches: Changed branch.css`.
+- The draft sorts by the exact area, so spell an area exactly as listed below.
 
-Add `major` when the change requires a major version bump. It modifies version resolution but does not create a separate
-release-notes section.
+Areas: `Actions`, `Auth`, `Branches`, `Code`, `Commits`, `Dashboard`, `Editor`, `Explore`, `Forks`, `Forms`, `Insights`,
+`Issues`, `Labels`, `Milestones`, `Navbar`, `Notifications`, `Organizations`, `Packages`, `Profile`, `Projects`,
+`Pull requests`, `Releases`, `Repository`, `Settings`, `Teams`, `Themes`.
+
+Reuse an existing area whenever one fits; add a new area only for a page people recognise by that name, and add it to
+this list in the same pull request. Never use file, component or style names as an area.
+
+#### Labels
+
+| Label            | Use for                                           | Draft section |
+| ---------------- | ------------------------------------------------- | ------------- |
+| `feature`        | a page, control or theme that is new to users     | What’s new    |
+| `change`         | a changed look, template or compatibility         | Enhancements  |
+| `bug`            | a fix for a bug that shipped in a release         | Fixes         |
+| `dependencies`   | a dependency or build-tool update                 | Dependencies  |
+| `skip-changelog` | anything a reader of the release would not notice | not listed    |
+
+Apply exactly one of them; the pull request metadata check enforces it with the title format. A fix for a bug that only
+existed on `dev` is `skip-changelog`. Add `major` when admins must act on upgrade, for example a new minimum Forgejo
+version; it raises the major version and does not add a section. `suggestion` marks an idea that has not been decided on
+yet.
+
+#### Release notes and screenshots
+
+The summary and the compatibility section at the top of the draft come from `.github/release-notes.md` when its front
+matter names the version the draft resolves to. Update it in the pull request that needs upgrade steps or warnings,
+instead of editing the draft.
+
+A pull request that changes how a page looks shows it in a Before and after table in its description: the same page,
+viewport and state, captured in the dev preview.
 
 ## Development Environment
 
