@@ -669,6 +669,9 @@ describe("Forgejo 15 native integration", () => {
     const settingsCss = read("components", "common", "settings", "settings.css");
     expect(settingsCss).toMatch(/fieldset > legend \{\s*float: left;\s*width: 100%;\s*border: 0;/);
     expect(settingsCss).toContain("& .theme-settings-aside > h3 {");
+    expect(read("components", "common", "nav-list", "nav-list.css")).toMatch(
+      /& summary > \.svg:first-child \{\s*flex: none;\s*margin: 0;/
+    );
     expect(read("components", "common", "dropdown", "dropdown.tmpl")).toContain("{{if not .NoCaret}}");
     const orgs = read("templates", "user", "settings", "organization.tmpl");
     expect(orgs).toContain("{{if .IsOwnedBy ctx $.SignedUser.ID}}");
