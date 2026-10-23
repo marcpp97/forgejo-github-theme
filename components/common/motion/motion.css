@@ -5,11 +5,18 @@
   navigation: auto;
 }
 
+/* A view-transition name makes its element a stacking context, so its menus could not rise above positioned content
+   later on the page (Home's sticky rail covered the user menu). Each gets its own level: above the page's popovers (up
+   to 100) and below toasts (500), dimmers and modals (1000 and up), the navbar above the repository's tabs. */
 #navbar {
+  position: relative;
+  z-index: 200;
   view-transition-name: github-navbar;
 }
 
 .repository-tab-nav {
+  position: relative;
+  z-index: 199;
   view-transition-name: github-repository-tabs;
 }
 
