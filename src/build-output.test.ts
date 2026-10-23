@@ -680,6 +680,15 @@ describe("Forgejo 15 native integration", () => {
     expect(read("navbar.tmpl")).toContain('<span class="theme-counter theme-counter-tab">{{.Team.NumMembers}}</span>');
   });
 
+  it("lays out password recovery and activation like sign-in", () => {
+    for (const page of ["forgot_passwd.tmpl", "reset_passwd.tmpl", "activate.tmpl"]) {
+      const template = fs.readFileSync(path.join(ROOT_DIR, "templates", "user", "auth", page), "utf-8");
+      expect(template, page).toContain('<div class="registration-panel">');
+      expect(template, page).toContain('<img class="signin-logo"');
+      expect(template, page).not.toContain("ui middle very relaxed page grid");
+    }
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");

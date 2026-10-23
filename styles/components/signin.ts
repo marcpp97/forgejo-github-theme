@@ -143,6 +143,11 @@ const registration = css`
     .signin-footer {
       text-align: center;
     }
+    /* Recovery and activation forms submit with a full-width button, as sign-in does. */
+    .ui.attached.segment > .inline.field > .ui.primary.button {
+      width: 100%;
+      margin: 0;
+    }
   }
 `;
 
