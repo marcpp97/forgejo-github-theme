@@ -3,7 +3,7 @@
 <div role="main" aria-label="{{.Title}}" class="page-content dashboard milestones theme-sidebar-layout" data-theme-sidebar="dashboard_milestone_sidebar_collapsed">
 	<aside class="theme-sidebar" aria-label="{{.Title}}">
 		<div class="theme-sidebar-content">
-			<div class="dashboard-list-context">{{template "user/dashboard/navbar" .}}</div>
+			{{template "components/dashboard/context/context" dict "Data" . "Page" "milestones"}}
 			<nav aria-label="{{ctx.Locale.Tr "home.issues.in_your_repos"}}">
 				<a class="{{if not .RepoIDs}}active{{end}}" href="?sort={{$.SortType}}&state={{$.State}}&q={{$.Keyword}}">{{svg "octicon-milestone" 16}}<span>{{ctx.Locale.Tr "home.issues.in_your_repos"}}</span><span class="theme-counter">{{.Total}}</span></a>
 					{{range .Repos}}
@@ -27,6 +27,8 @@
 						{{end}}
 					{{end}}
 			</nav>
+			<hr>
+			{{template "components/dashboard/context/pages" dict "Data" . "Current" "milestones"}}
 		</div>
 		{{template "components/common/sidebar/toggle" .}}
 	</aside>

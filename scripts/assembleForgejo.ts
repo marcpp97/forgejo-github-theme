@@ -46,6 +46,7 @@ for (const directory of readdirSync(join(root, "components"))) {
 for (const file of [
   "commits.css",
   "create.css",
+  "dashboard-home.css",
   "dashboard-lists.css",
   "insights.css",
   "organization.css",

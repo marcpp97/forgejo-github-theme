@@ -2,7 +2,7 @@
 its header, and a row per milestone with its due date and description on the left and its progress on the right.
 Data is the page context. Query starts every state and sort link ("?q=..." plus any page filter). ShowRepo names each
 milestone's repository, as the dashboard lists several. RepoLink and CanWrite add Edit, Close and Delete for a
-repository's writers. */ -}}
+repository's writers. Rows carry their progress and an open milestone's due date for Home's work rail. */ -}}
 {{$data := .Data}}
 {{$query := .Query}}
 <div class="theme-box-list">
@@ -14,7 +14,7 @@ repository's writers. */ -}}
 		{{range $data.Milestones}}
 			{{$link := print $.RepoLink "/milestone/" .ID}}
 			{{if $.ShowRepo}}{{$link = print .Repo.Link "/milestone/" .ID}}{{end}}
-			<li class="theme-box-list-row theme-milestone-row">
+			<li class="theme-box-list-row theme-milestone-row" data-theme-milestone data-progress="{{.Completeness}}"{{if and (not .IsClosed) .DeadlineString}} data-due="{{.DeadlineString}}"{{end}}>
 				<div class="theme-box-list-main">
 					<h3>{{if $.ShowRepo}}<span class="theme-milestone-repo">{{.Repo.FullName}}</span>{{end}}<a href="{{$link}}">{{.Name}}</a></h3>
 					<p class="theme-box-list-meta">
