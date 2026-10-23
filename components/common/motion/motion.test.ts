@@ -19,6 +19,12 @@ describe("page motion", () => {
     expect(css).toMatch(/::view-transition-new\(root\)\s*{\s*animation: 200ms [^;]* 90ms both theme-fade-rise;/);
   });
 
+  it("keeps navbar and tab menus above the page although their view-transition names make them stacking contexts", () => {
+    const css = read("./motion.css");
+    expect(css).toMatch(/#navbar \{\s*position: relative;\s*z-index: 200;\s*view-transition-name: github-navbar;/);
+    expect(css).toMatch(/\.repository-tab-nav \{\s*position: relative;\s*z-index: 199;/);
+  });
+
   it("drops page and content motion for visitors who ask for less", () => {
     const css = read("./motion.css");
     const reduced = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
