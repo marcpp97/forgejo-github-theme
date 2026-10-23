@@ -13,6 +13,12 @@ const templates = ["templates", "components"].flatMap(directory =>
 );
 
 describe("shared search field", () => {
+  it("leaves the focus ring to the field, so no inset border shows inside it", () => {
+    const css = readFileSync(join(root, "components/common/search/search.css"), "utf-8");
+    expect(css).toContain(':is(.ui.form, body) .theme-search-field input[type="search"]:is(:focus, :focus-visible) {');
+    expect(css).toMatch(/:focus-visible\) \{[^}]*box-shadow: none;/);
+  });
+
   it("is the only template that writes a search input", () => {
     const own = templates.filter(file => /type="search"/.test(readFileSync(join(root, file), "utf8")));
     expect(own).toEqual([component]);
