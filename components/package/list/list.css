@@ -14,9 +14,33 @@
   flex: 1;
 }
 
+/* GitHub's box header over the rows: the package icon and the count. */
+.theme-package-list-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--color-secondary);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  background: var(--color-box-header);
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.theme-package-list-header > .svg {
+  color: var(--color-text-light-1);
+}
+
 .theme-package-row {
   border: 1px solid var(--color-secondary);
   border-bottom: 0;
+}
+
+.theme-package-list-header + .theme-package-row {
+  border-radius: 0;
 }
 
 .theme-package-row:first-child {
@@ -39,6 +63,7 @@
 
 .theme-package-icon {
   flex: none;
+  margin-top: 4px;
   color: var(--color-text-light-1);
 }
 
@@ -49,8 +74,15 @@
   line-height: 24px;
 }
 
+/* As GitHub's list: the name in bold body text, blue only on hover. */
 .theme-package-row .flex-item-title > a {
-  color: var(--color-primary);
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.theme-package-row .flex-item-title > a:hover {
+  color: var(--github-fgColor-accent);
 }
 
 .theme-package-row .flex-item-body {

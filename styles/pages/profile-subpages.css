@@ -1,10 +1,11 @@
 /* Shared profile and organization subpage primitives. */
+/* GitHub's section heading on these tabs ("Starred repositories", "Contribution activity"): 16px, regular weight. */
 :is(.github-profile, .github-org) .profile-subpage-title {
   margin: 0 0 16px;
   color: var(--color-text);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
-  line-height: 28px;
+  line-height: 24px;
 }
 
 :is(.github-profile, .github-org) .profile-activity #visibility-hint {
