@@ -7,10 +7,9 @@
 	without the site navigation, and names the issue's repository for organization and user projects. The frame name
 	survives navigation inside the panel.
 
-	The expect link holds the first paint until the page's content is parsed (the marker opens the footer), so a page
-	appears whole instead of row by row while the HTML arrives. Browsers without render blocking ignore it.
+	No render-blocking expect link: holding the first paint until the whole page was parsed left large pages, such as
+	a big pull request's files, blank for over half a second longer.
 */}}
-<link rel="expect" href="#github-content-end" blocking="render">
 <script>if (window.name.startsWith("github-project-panel") && window.parent !== window) document.documentElement.classList.add("github-embedded", ...(window.name.endsWith("-owner") ? ["github-embedded-owner"] : []));</script>
 <link rel="stylesheet" href="{{AssetUrlPrefix}}/css/index.css?v={{AssetVersion}}">
 <link rel="stylesheet" href="{{AssetUrlPrefix}}/css/theme-{{ThemeName .SignedUser | PathEscape}}.css?v={{AssetVersion}}">
