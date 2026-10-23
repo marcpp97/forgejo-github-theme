@@ -72,12 +72,26 @@
       return item;
     };
 
+    const filled = new Set();
     const fill = (panel, rows, total) => {
       if (!rows.length) return;
       panel.querySelector("[data-theme-work-rows]").replaceChildren(...rows.slice(0, LIMIT).map(row));
       panel.querySelector("[data-theme-work-count]").textContent = String(total);
-      panel.hidden = false;
-      rail.hidden = false;
+      filled.add(panel);
+    };
+
+    // Every box appears at once, in its place, when all have answered; an empty rail gives its column to the feed.
+    // The outcome is remembered, so the next visit starts with the rail open or closed.
+    const reveal = () => {
+      rail.removeAttribute("aria-busy");
+      for (const panel of filled) {
+        panel.hidden = false;
+        panel.classList?.add("theme-fade-in");
+      }
+      rail.hidden = !filled.size;
+      try {
+        localStorage.setItem(rail.dataset.key, filled.size ? "full" : "empty");
+      } catch {}
     };
 
     const search = async panel => {
@@ -140,11 +154,14 @@
       fill(panel, rows, rows.length);
     };
 
-    for (const panel of rail.querySelectorAll("[data-theme-work-panel]")) {
+    const loads = [...rail.querySelectorAll("[data-theme-work-panel]")].map(panel => {
       const kind = panel.dataset.themeWorkPanel;
       const load = kind === "search" ? search : kind === "milestones" ? milestones : releases;
-      Promise.resolve(load(panel)).catch(() => {});
-    }
+      return Promise.resolve()
+        .then(() => load(panel))
+        .catch(() => {});
+    });
+    Promise.all(loads).then(reveal);
   };
 
   for (const rail of document.querySelectorAll("[data-theme-work]")) setup(rail);

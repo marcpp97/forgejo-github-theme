@@ -725,7 +725,9 @@ describe("Forgejo 15 native integration", () => {
     expect(home).toContain('{{template "components/dashboard/work/work" .}}');
     expect(home).not.toContain('template "user/dashboard/feeds"');
     const work = read("components", "dashboard", "work", "work.tmpl");
-    expect(work).toContain("hidden>");
+    // The rail keeps its column while it loads, unless it was empty last time.
+    expect(work).toContain('aria-busy="true">');
+    expect(work).toContain('localStorage.getItem(rail.dataset.key) === "empty"');
     expect(read("components", "dashboard", "work", "panel.tmpl")).toContain(" hidden>");
     expect(read("components", "repository", "milestone", "list.tmpl")).toContain('data-due="{{.DeadlineString}}"');
     for (const page of ["issues.tmpl", "milestones.tmpl"]) {

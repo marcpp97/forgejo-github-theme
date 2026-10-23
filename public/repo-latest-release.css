@@ -37,8 +37,10 @@
   font-weight: 500;
   line-height: 18px;
 }
+/* The date arrives with the release; its line is kept from the start, so Packages and Languages do not move down. */
 .page-content.repository.file.list .repo-latest-release-date {
   display: block;
+  min-height: 18px;
   margin-left: 24px;
   color: var(--color-text-light-1);
   font-size: 12px;
@@ -67,6 +69,11 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* While the owner's package list loads, the list keeps the height of the rows it will show (up to five). */
+.repo-home-packages[aria-busy="true"] {
+  min-height: calc(var(--repo-home-packages) * 29px - 8px);
 }
 
 .repo-home-packages a {

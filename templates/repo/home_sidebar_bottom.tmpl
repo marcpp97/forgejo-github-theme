@@ -26,6 +26,7 @@
 						.then(release => {
 							card.querySelector('[data-release-title]').textContent = release.name || release.tag_name;
 							if (release.published_at) card.querySelector('[data-release-date] relative-time').setAttribute('datetime', release.published_at);
+							card.classList.add('theme-fade-in');
 						})
 						.catch(() => {
 							card.querySelector('[data-release-title]').textContent = 'View all releases';
@@ -52,7 +53,7 @@
 		</div>
 		{{if .NumPackages}}
 			{{/* The home page only knows the count; the owner's package API says which ones belong to this repository. */}}
-			<ul class="repo-home-packages" data-repo-packages data-api-url="{{AppSubUrl}}/api/v1/packages/{{.Repository.OwnerName}}?limit=50" data-repo-name="{{.Repository.Name}}" data-owner-link="{{.Repository.Owner.HomeLink}}"></ul>
+			<ul class="repo-home-packages" style="--repo-home-packages: {{if gt .NumPackages 5}}5{{else}}{{.NumPackages}}{{end}}" aria-busy="true" data-repo-packages data-api-url="{{AppSubUrl}}/api/v1/packages/{{.Repository.OwnerName}}?limit=50" data-repo-name="{{.Repository.Name}}" data-owner-link="{{.Repository.Owner.HomeLink}}"></ul>
 			<template id="repo-home-package-icon">{{svg "octicon-package" 16}}</template>
 			{{if gt .NumPackages 5}}<a class="repo-home-packages-all" href="{{.RepoLink}}/packages">{{ctx.Locale.Tr "packages.title"}}: {{CountFmt .NumPackages}}</a>{{end}}
 			<script>
@@ -74,7 +75,9 @@
 								item.append(link);
 								list.append(item);
 							}
-							if (!seen.size) list.remove();
+							if (!seen.size) return list.remove();
+							list.removeAttribute('aria-busy');
+							list.classList.add('theme-fade-in');
 						})
 						.catch(() => list.remove());
 				})();
