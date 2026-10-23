@@ -55,7 +55,7 @@ is written for the people who install the theme, so the title and the label deci
 
 Areas: `Actions`, `Auth`, `Branches`, `Code`, `Commits`, `Dashboard`, `Editor`, `Explore`, `Forks`, `Forms`, `Insights`,
 `Issues`, `Labels`, `Milestones`, `Navbar`, `Notifications`, `Organizations`, `Packages`, `Profile`, `Projects`,
-`Pull requests`, `Releases`, `Repository`, `Settings`, `Teams`, `Themes`.
+`Pull requests`, `Releases`, `Repository`, `Settings`, `Teams`, `Templates`, `Themes`.
 
 Reuse an existing area whenever one fits; add a new area only for a page people recognise by that name, and add it to
 this list in the same pull request. Never use file, component or style names as an area.
