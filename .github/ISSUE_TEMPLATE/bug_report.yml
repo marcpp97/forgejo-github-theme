@@ -1,0 +1,64 @@
+name: Bug report
+description: A page looks or behaves differently from GitHub, or breaks, with the theme installed.
+labels:
+  - bug
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Theme version
+      description:
+        For example `0.5.0`, or `dev` for a build from source. A built stylesheet names it in `--theme-version`.
+    validations:
+      required: true
+
+  - type: input
+    id: forgejo-version
+    attributes:
+      label: Forgejo version
+      placeholder: "17.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: installation
+    attributes:
+      label: Installation
+      options:
+        - Stylesheets and template overrides
+        - Stylesheets only
+    validations:
+      required: true
+
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: The page and its address, for example the issue list at `/owner/repo/issues`.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the issue list
+        2. Narrow the window to phone width
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: media
+    attributes:
+      label: Screenshots
+      description: >-
+        The page with the theme and, if you can, the same page on GitHub and in Forgejo's default theme. Hide names or
+        tokens you do not want to share.
