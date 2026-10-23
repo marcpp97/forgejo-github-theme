@@ -1,0 +1,6 @@
+{{/* GitHub's empty state in settings: a bordered box with a centred semibold title and an optional muted line. Title
+	is text; Description may be rendered HTML. */}}
+<div class="theme-settings-blankslate">
+	<h3>{{.Title}}</h3>
+	{{if .Description}}<p>{{.Description}}</p>{{end}}
+</div>
