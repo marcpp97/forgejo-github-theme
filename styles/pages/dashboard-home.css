@@ -1,0 +1,78 @@
+/* Home, GitHub's signed-in dashboard: the sidebar's top repositories, and the greeting over the activity feed with the
+   work rail beside it; the feed takes the width when the rail has nothing to show, and the rail moves above the feed
+   on narrow screens. Kept as a page stylesheet, outside the size-limited theme files. */
+.github-home-repositories {
+  padding: 0 8px;
+}
+
+.github-home-repositories-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 32px;
+  margin-bottom: 4px;
+}
+
+.github-home-repositories-heading > h2 {
+  margin: 0;
+  color: var(--color-text-light-1);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.github-home-repositories-heading > .theme-icon-button {
+  color: var(--color-text-light-1);
+}
+
+.page-content.theme-sidebar-layout[data-theme-sidebar] > .ui.container.theme-sidebar-main.github-home-main {
+  max-width: 1280px !important;
+}
+
+.github-home-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.github-home-columns:has(> .theme-work:not([hidden])) {
+  grid-template-columns: minmax(0, 1fr) 320px;
+}
+
+/* Narrow screens stack the rail above the feed: what waits on the visitor comes first. */
+@media (max-width: 1011.98px) {
+  .github-home-columns:has(> .theme-work:not([hidden])) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .github-home-columns > .theme-work {
+    position: static;
+    order: -1;
+  }
+}
+
+.github-home-main > .theme-list-heading {
+  margin-bottom: 24px;
+}
+
+.github-home-main > .theme-list-heading h1 {
+  font-size: 20px;
+}
+
+.github-home-feed > .theme-box-list > .theme-box-list-header {
+  min-height: 40px;
+  padding: 0 16px;
+}
+
+.github-home-section-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+}
+
+.theme-box-list-header > .github-home-section-title {
+  margin: 0;
+}

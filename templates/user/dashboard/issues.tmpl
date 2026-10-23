@@ -8,7 +8,8 @@
 <div role="main" aria-label="{{.Title}}" class="page-content repository issue-list dashboard-issue-list theme-sidebar-layout{{if .PageIsPulls}} github-pull-list{{else}} github-issues{{end}}" data-theme-sidebar="{{if .PageIsPulls}}dashboard_pull_sidebar_collapsed{{else}}dashboard_issue_sidebar_collapsed{{end}}">
 	<aside class="theme-sidebar" aria-label="{{.Title}}">
 		<div class="theme-sidebar-content">
-			<div class="dashboard-list-context">{{template "user/dashboard/navbar" .}}</div>
+			{{$page := "issues"}}{{if .PageIsPulls}}{{$page = "pulls"}}{{end}}
+			{{template "components/dashboard/context/context" dict "Data" . "Page" $page}}
 			<nav aria-label="{{ctx.Locale.Tr "repo.issues.filter_type"}}">
 				<a class="{{if eq .ViewType "your_repositories"}}active{{end}}" href="?type=your_repositories&sort={{$.SortType}}&project={{$.ProjectID}}&state={{.State}}&q={{$.Keyword}}">{{svg "octicon-repo" 16}}<span>{{ctx.Locale.Tr "home.issues.in_your_repos"}}</span><span class="theme-counter">{{CountFmt .IssueStats.YourRepositoriesCount}}</span></a>
 				<a class="{{if eq .ViewType "assigned"}}active{{end}}" href="?type=assigned&sort={{$.SortType}}&project={{$.ProjectID}}&state={{.State}}&q={{$.Keyword}}">{{svg "octicon-people" 16}}<span>{{ctx.Locale.Tr "repo.issues.filter_type.assigned_to_you"}}</span><span class="theme-counter">{{CountFmt .IssueStats.AssignCount}}</span></a>
@@ -19,6 +20,8 @@
 					<a class="{{if eq .ViewType "reviewed_by"}}active{{end}}" href="?type=reviewed_by&sort={{$.SortType}}&project={{$.ProjectID}}&state={{.State}}&q={{$.Keyword}}">{{svg "octicon-check-circle" 16}}<span>{{ctx.Locale.Tr "repo.issues.filter_type.reviewed_by_you"}}</span><span class="theme-counter">{{CountFmt .IssueStats.ReviewedCount}}</span></a>
 				{{end}}
 			</nav>
+			<hr>
+			{{template "components/dashboard/context/pages" dict "Data" . "Current" $page}}
 		</div>
 		{{template "components/common/sidebar/toggle" .}}
 	</aside>

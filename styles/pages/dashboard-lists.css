@@ -1,25 +1,5 @@
 /* The dashboard's own lists: issues, pull requests, notifications and subscriptions. */
 
-/* The context switcher sits at the top of the sidebar instead of in a bar across the page. */
-.dashboard-list-context .secondary-nav {
-  padding: 0;
-  border: 0 !important;
-  background: transparent;
-}
-
-.dashboard-list-context .ui.secondary.menu {
-  flex-direction: column;
-  align-items: stretch;
-  min-height: 0;
-  margin: 0;
-  padding: 0 8px;
-}
-
-.dashboard-list-context .ui.secondary.menu > .item {
-  margin: 0;
-  padding: 6px 8px;
-}
-
 /* Notifications */
 .github-notifications .theme-list-heading {
   margin-bottom: 16px;
@@ -79,10 +59,6 @@
   padding: 0;
   border-radius: var(--border-radius);
   color: var(--color-text-light-1);
-}
-
-.dashboard-list-context .ui.secondary.menu > .item {
-  align-self: flex-start;
 }
 
 /* Subscriptions: the issue list sits in the box under its header instead of drawing its own border. As specific as

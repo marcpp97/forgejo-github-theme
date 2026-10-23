@@ -324,7 +324,7 @@ describe("Forgejo 15 native integration", () => {
     "repo/home_sidebar_top.tmpl",
     "repo/view_content.tmpl",
     "repo/view_list.tmpl",
-    "user/dashboard/navbar.tmpl",
+    "user/dashboard/dashboard.tmpl",
     "user/heatmap.tmpl",
     "user/auth/signup.tmpl",
     "user/auth/signup_inner.tmpl",
@@ -694,6 +694,32 @@ describe("Forgejo 15 native integration", () => {
     }
   });
 
+  it("lays out Home as GitHub's dashboard and shares its context with the dashboard lists", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
+    const home = read("templates", "user", "dashboard", "dashboard.tmpl");
+    expect(home).toContain('{{template "components/dashboard/context/context" dict "Data" . "Page" ""}}');
+    expect(home).toContain('{{template "components/dashboard/context/pages" dict "Data" . "Current" "home"}}');
+    expect(home).toContain('template "components/repository/picker/picker"');
+    expect(home).not.toContain('template "user/heatmap"');
+    expect(home).not.toContain('template "user/dashboard/repolist"');
+    // The feed in day groups beside the work rail; the profile keeps Forgejo's own feed.
+    expect(home).toContain('{{template "components/dashboard/feed/feed" .}}');
+    expect(home).toContain('{{template "components/dashboard/work/work" .}}');
+    expect(home).not.toContain('template "user/dashboard/feeds"');
+    const work = read("components", "dashboard", "work", "work.tmpl");
+    expect(work).toContain("hidden>");
+    expect(read("components", "dashboard", "work", "panel.tmpl")).toContain(" hidden>");
+    expect(read("components", "repository", "milestone", "list.tmpl")).toContain('data-due="{{.DeadlineString}}"');
+    for (const page of ["issues.tmpl", "milestones.tmpl"]) {
+      const list = read("templates", "user", "dashboard", page);
+      expect(list, page).toContain('template "components/dashboard/context/context"');
+      expect(list, page).toContain('template "components/dashboard/context/pages"');
+    }
+    // The switch menu needs the template context: the page's Context has no avatar helper.
+    expect(read("components", "dashboard", "context", "context.tmpl")).toContain('"Data" (dict "Context" ctx ');
+    expect(fs.existsSync(path.join(ROOT_DIR, "templates", "user", "dashboard", "navbar.tmpl"))).toBe(false);
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");
@@ -861,35 +887,6 @@ describe("Forgejo 15 native integration", () => {
     for (const template of requiredTemplates) {
       expect(fs.existsSync(path.join(ROOT_DIR, "templates", template)), `missing template: ${template}`).toBe(true);
     }
-  });
-
-  it("keeps the dashboard context switcher markup scoped for GitHub styling", () => {
-    const dashboardNavbar = fs.readFileSync(
-      path.join(ROOT_DIR, "templates", "user", "dashboard", "navbar.tmpl"),
-      "utf-8"
-    );
-    const dashboardStyles = fs.readFileSync(path.join(ROOT_DIR, "styles", "components", "dashboard.ts"), "utf-8");
-
-    expect(dashboardNavbar).toContain("context-switcher");
-    expect(dashboardNavbar).toContain("context-switcher-item");
-    expect(dashboardNavbar).toContain('svg "octicon-check" 14');
-    expect(dashboardStyles).toContain(".context-switcher-menu");
-    expect(dashboardStyles).toContain("width: 320px;");
-    expect(dashboardStyles).toContain(".context-switcher-check");
-    expect(dashboardStyles).toContain("left: 54px;");
-    expect(dashboardStyles).toContain("font-weight: 400;");
-    expect(dashboardStyles).toContain("line-height: 21px;");
-    expect(dashboardStyles).toContain("flex: 0 0 14px;");
-    expect(dashboardStyles).toContain("border-radius: 9999px;");
-    expect(dashboardStyles).toContain("&.context-switcher-selected");
-    expect(dashboardStyles).toContain("right: 8px;");
-    expect(dashboardStyles).toContain("left: -8px;");
-    expect(dashboardStyles).toContain(".context-switcher-marker");
-    expect(dashboardStyles).toContain("width: 4px;");
-    expect(dashboardStyles).toContain("bottom: 3px;");
-    expect(dashboardStyles).toContain("top: 3px;");
-    expect(dashboardNavbar).toContain("Avatar .SignedUser 14");
-    expect(dashboardNavbar).toContain("Avatar . 14");
   });
 
   it("keeps the native dated fallback for zero-contribution heatmap tooltips", () => {
