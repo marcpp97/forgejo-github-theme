@@ -46,6 +46,7 @@ for (const directory of ["common", "project", "repository"]) {
 for (const file of [
   "commits.css",
   "dashboard-lists.css",
+  "insights.css",
   "organization.css",
   "profile-subpages.css",
   "projects.css",

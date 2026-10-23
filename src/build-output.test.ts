@@ -579,6 +579,21 @@ describe("Forgejo 15 native integration", () => {
     expect(read("styles", "components", "issues", "issue.ts")).toContain(".theme-branch-name {");
   });
 
+  it("shares GitHub's nav list between settings and Insights", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
+    for (const navbar of [
+      ["templates", "repo", "navbar.tmpl"],
+      ["templates", "repo", "settings", "navbar.tmpl"],
+      ["templates", "user", "settings", "navbar.tmpl"],
+      ["templates", "org", "settings", "navbar.tmpl"],
+      ["templates", "admin", "navbar.tmpl"],
+    ])
+      expect(read(...navbar)).toContain('class="ui fluid vertical menu theme-nav-list"');
+    expect(read("components", "common", "nav-list", "nav-list.css")).toContain(".ui.vertical.menu.theme-nav-list {");
+    expect(read("components", "common", "settings", "settings.css")).not.toContain("& > .item.active");
+    expect(read("templates", "repo", "activity.tmpl")).toContain("flex-container github-insights");
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");
