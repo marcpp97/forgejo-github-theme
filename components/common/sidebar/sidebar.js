@@ -31,6 +31,25 @@
       update();
     });
     update();
+
+    // The sidebar sticks to the top of the window but starts below the navbar, so a full window's height would put its
+    // bottom, with the collapse toggle, out of view until the page scrolls. It takes the height left beneath its top.
+    const aside = page.querySelector(":scope > .theme-sidebar");
+    if (!aside?.style || !aside.getBoundingClientRect) return;
+    let frame = 0;
+    const fit = () => {
+      frame = 0;
+      aside.style.setProperty(
+        "--theme-sidebar-offset",
+        `${Math.max(0, Math.round(aside.getBoundingClientRect().top))}px`
+      );
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(fit);
+    };
+    document.addEventListener("scroll", schedule, { passive: true });
+    globalThis.addEventListener?.("resize", schedule);
+    fit();
   };
   for (const page of document.querySelectorAll("[data-theme-sidebar]")) init(page);
   // Forgejo replaces the whole notifications page element after an action; set the new one up too.
