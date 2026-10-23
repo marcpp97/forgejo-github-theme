@@ -649,6 +649,12 @@ describe("Forgejo 15 native integration", () => {
     expect(style).toContain("background: ${themeVars.color.box.header};");
   });
 
+  it("lists forks in a box and shows GitHub's empty state without them", () => {
+    const forks = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "forks.tmpl"), "utf-8");
+    expect(forks).toContain('<li class="theme-box-list-row theme-fork-row">');
+    expect(forks).toContain("No one has forked this repository yet");
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");
