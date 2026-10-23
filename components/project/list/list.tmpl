@@ -40,7 +40,7 @@ the search; without it, New project sits beside the search as on GitHub's profil
 			{{else}}
 				<li class="theme-empty theme-empty-compact">
 					{{svg "octicon-project" 24}}
-					<h3>{{ctx.Locale.Tr "search.no_results"}}</h3>
+					<h3>{{if and (not $data.Keyword) (eq $data.OpenCount 0) (eq $data.ClosedCount 0)}}There aren't any projects yet{{else}}{{ctx.Locale.Tr "search.no_results"}}{{end}}</h3>
 				</li>
 			{{end}}
 		</ul>

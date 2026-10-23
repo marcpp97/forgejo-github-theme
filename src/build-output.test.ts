@@ -617,6 +617,25 @@ describe("Forgejo 15 native integration", () => {
     expect(read("templates", "repo", "activity.tmpl")).toContain("flex-container github-insights");
   });
 
+  it("names and orders a person's profile tabs as GitHub does, with GitHub's search and empty-state copy", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
+    const tabs = read("templates", "user", "overview", "header.tmpl");
+    // Overview, Repositories, Projects, Packages, Stars; Forgejo's own tabs after them.
+    const order = ["?tab=repositories", "/-/projects", "/-/packages", "?tab=stars", "/-/code", "?tab=activity"].map(t =>
+      tabs.indexOf(t)
+    );
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+    expect(tabs).toContain('{{svg "octicon-star"}} Stars');
+    const search = read("templates", "user", "profile_repository_search.tmpl");
+    expect(search).toContain('"Find a repository…"');
+    expect(search).toContain('"Search starred repositories"');
+    expect(search).toContain(">Search</button>");
+    const packages = read("components", "package", "list", "list.tmpl");
+    expect(packages).toContain('class="theme-package-list-header"');
+    expect(packages.indexOf('name="type"')).toBeLessThan(packages.indexOf('"components/common/search/search"'));
+    expect(read("components", "project", "list", "list.tmpl")).toContain("There aren't any projects yet");
+  });
+
   it("lists a repository's packages like a user's or an organization's", () => {
     const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
     expect(read("templates", "repo", "packages.tmpl")).toContain('{{template "components/package/list/list" .}}');

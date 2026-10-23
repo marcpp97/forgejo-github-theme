@@ -1,9 +1,8 @@
-{{- /* GitHub's package list for a user, an organization or a repository: the search with the type filter, then a box
-with a row per package, or the empty state. Called with the page context. */ -}}
+{{- /* GitHub's package list for a user, an organization or a repository: the type filter and the search, then a box
+headed by the package count with a row per package, or the empty state. Called with the page context. */ -}}
 {{if .HasPackages}}
 <form class="ui form ignore-dirty theme-package-search">
 	<div class="theme-package-search-controls">
-		{{template "components/common/search/search" dict "Kind" "plain" "Value" .Query "Placeholder" (ctx.Locale.Tr "search.package_kind")}}
 		<span class="theme-select-wrap"><select class="theme-select" name="type" aria-label="{{ctx.Locale.Tr "packages.filter.type"}}">
 			<option value="">{{ctx.Locale.Tr "packages.filter.type"}}</option>
 			<option value="all">{{ctx.Locale.Tr "packages.filter.type.all"}}</option>
@@ -11,15 +10,17 @@ with a row per package, or the empty state. Called with the page context. */ -}}
 			<option{{if eq $.PackageType $type}} selected="selected"{{end}} value="{{$type}}">{{$type.Name}}</option>
 			{{end}}
 		</select></span>
-		<button class="secondary button theme-control theme-control-wide" type="submit">{{ctx.Locale.Tr "search.search"}}</button>
+		{{template "components/common/search/search" dict "Kind" "plain" "Value" .Query "Placeholder" (ctx.Locale.Tr "search.package_kind")}}
+		<button class="secondary button theme-control theme-control-wide" type="submit">Search</button>
 	</div>
 </form>
 {{end}}
 <div class="theme-package-list">
+	{{if .PackageDescriptors}}<div class="theme-package-list-header">{{svg "octicon-package" 16}}{{.Total}} {{if eq .Total 1}}package{{else}}packages{{end}}</div>{{end}}
 	{{range .PackageDescriptors}}
 	<div class="theme-package-row">
 		<div class="flex-item">
-			<div class="theme-package-icon">{{svg .Package.Type.SVGName 24}}</div>
+			<div class="theme-package-icon">{{svg .Package.Type.SVGName 16}}</div>
 			<div class="flex-item-main">
 				<div class="flex-item-title">
 					<a href="{{.VersionWebLink}}">{{.Package.Name}}</a>
