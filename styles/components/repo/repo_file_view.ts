@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-import { css, cssCombine, themeVars } from "@lutinglt/gitea-github-theme/core";
+import { css, cssCombine, otherThemeVars, themeVars } from "@lutinglt/gitea-github-theme/core";
 
 const codeEditor = css`
   .codemirror-container {
@@ -93,6 +93,29 @@ const fileEditor = css`
     }
     #editor-bar .switch .item svg {
       display: none;
+    }
+    /* GitHub's editor box: the Edit/Preview tabs and the find button in a header bar joined to the editor. */
+    #editor-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 0;
+      padding: 8px;
+      border: 1px solid ${themeVars.color.light.border};
+      border-bottom: 0;
+      border-radius: ${otherThemeVars.border.radius} ${otherThemeVars.border.radius} 0 0;
+      background: ${themeVars.color.box.header};
+      > .button {
+        height: 32px;
+        min-height: 32px;
+        margin: 0;
+      }
+    }
+    #editor-bar ~ .ui.bottom.tab.segment {
+      margin-top: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
     }
   }
 `;

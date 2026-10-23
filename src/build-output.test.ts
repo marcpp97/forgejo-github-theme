@@ -643,6 +643,12 @@ describe("Forgejo 15 native integration", () => {
     expect([...order].sort((a, b) => a - b)).toEqual(order);
   });
 
+  it("joins the file editor's tabs and find button to the editor as GitHub's box header", () => {
+    const style = fs.readFileSync(path.join(ROOT_DIR, "styles", "components", "repo", "repo_file_view.ts"), "utf-8");
+    expect(style).toContain("#editor-bar ~ .ui.bottom.tab.segment {");
+    expect(style).toContain("background: ${themeVars.color.box.header};");
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");
