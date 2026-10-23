@@ -1,0 +1,58 @@
+{{/* Forgejo 17's milestone form inside the issue sidebar layout, where GitHub shows it; Milestones in the sidebar
+replaces the Labels and Milestones switch. */}}
+{{template "base/head" .}}
+<div role="main" aria-label="{{.Title}}" class="page-content repository new milestone theme-sidebar-layout" data-theme-sidebar="issue_sidebar_collapsed">
+	{{template "repo/issue/sidebar" .}}
+	<div class="ui container theme-sidebar-main">
+		<h2 class="ui dividing header">
+			{{if .PageIsEditMilestone}}
+				{{ctx.Locale.Tr "repo.milestones.edit"}}
+				<div class="sub header">{{ctx.Locale.Tr "repo.milestones.edit_subheader"}}</div>
+			{{else}}
+				{{ctx.Locale.Tr "repo.milestones.new"}}
+				<div class="sub header">{{ctx.Locale.Tr "repo.milestones.new_subheader"}}</div>
+			{{end}}
+		</h2>
+		{{template "base/alert" .}}
+		<form class="ui form" action="{{.Link}}" method="post">
+				<div class="field {{if .Err_Title}}error{{end}}">
+					<label>{{ctx.Locale.Tr "repo.milestones.title"}}</label>
+					<input name="title" placeholder="{{ctx.Locale.Tr "repo.milestones.title"}}" value="{{.title}}" autofocus required maxlength="50">
+				</div>
+				<div class="field {{if .Err_Deadline}}error{{end}}">
+					<label>
+						{{ctx.Locale.Tr "repo.milestones.due_date"}}
+						<a id="clear-date">{{ctx.Locale.Tr "repo.milestones.clear"}}</a>
+					</label>
+					<input type="date" id="deadline" name="deadline" value="{{.deadline}}" placeholder="{{ctx.Locale.Tr "repo.issues.due_date_form"}}">
+				</div>
+				<div class="field">
+					{{template "shared/combomarkdowneditor" (dict
+						"MarkdownPreviewUrl" (print .Repository.Link "/markup")
+						"MarkdownPreviewContext" .RepoLink
+						"TextareaName" "content"
+						"TextareaPlaceholder" (ctx.Locale.Tr "repo.milestones.desc")
+						"TextareaAriaLabel" (ctx.Locale.Tr "repo.milestones.desc")
+						"TextareaContent" .content
+						"EasyMDE" true
+					)}}
+				</div>
+				<div class="divider"></div>
+				<div class="tw-text-right">
+					{{if .PageIsEditMilestone}}
+						<a class="ui primary basic button" href="{{.RepoLink}}/milestones">
+							{{ctx.Locale.Tr "repo.milestones.cancel"}}
+						</a>
+						<button class="ui primary button">
+							{{ctx.Locale.Tr "repo.milestones.modify"}}
+						</button>
+					{{else}}
+						<button class="ui primary button">
+							{{ctx.Locale.Tr "repo.milestones.create"}}
+						</button>
+					{{end}}
+			</div>
+		</form>
+	</div>
+</div>
+{{template "base/footer" .}}

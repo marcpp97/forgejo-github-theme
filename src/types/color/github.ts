@@ -73,6 +73,7 @@ export const github = {
       /** 成功的背景颜色
        * @issue `babel` 重新开启图标背景颜色
        * @issue `prMerge` 合并提交的图标背景色
+       * @components `common/progress` GitHub 进度条的填充色
        */
       emphasis: null,
     },
@@ -383,6 +384,7 @@ export const github = {
     track: {
       /** 进度条轨道背景色, 默认为 #0000, 高对比度专属颜色
        * @repo_sidebar `repoSidebarBottom` 语言统计条的背景色
+       * @components `common/progress` GitHub 进度条的轨道色
        */
       bgColor: null,
       /** 进度条轨道边框色, 默认为 #0000, 高对比度专属颜色

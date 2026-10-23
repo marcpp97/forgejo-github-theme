@@ -11,14 +11,19 @@
     dropdown.open = false;
     if (restoreFocus) dropdown.querySelector("summary")?.focus();
   };
-  document.addEventListener("click", event => {
-    const close = event.target.closest("[data-theme-dropdown-close]");
-    if (close) closeDropdown(close.closest(".theme-dropdown"), true);
-    const action = event.target.closest('[data-theme-dropdown="actions"] .theme-dropdown-action');
-    if (action && !action.disabled) closeDropdown(action.closest(".theme-dropdown"), false);
-    for (const dropdown of document.querySelectorAll(".theme-dropdown[open]"))
-      if (!dropdown.contains(event.target)) closeDropdown(dropdown, false);
-  });
+  // Capture: Forgejo's own handlers on menu actions (Edit label, for one) stop the click from bubbling.
+  document.addEventListener(
+    "click",
+    event => {
+      const close = event.target.closest("[data-theme-dropdown-close]");
+      if (close) closeDropdown(close.closest(".theme-dropdown"), true);
+      const action = event.target.closest('[data-theme-dropdown="actions"] .theme-dropdown-action');
+      if (action && !action.disabled) closeDropdown(action.closest(".theme-dropdown"), false);
+      for (const dropdown of document.querySelectorAll(".theme-dropdown[open]"))
+        if (!dropdown.contains(event.target)) closeDropdown(dropdown, false);
+    },
+    true
+  );
   document.addEventListener(
     "change",
     event => {

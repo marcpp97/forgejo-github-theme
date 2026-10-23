@@ -23,7 +23,6 @@ import diff from "./diff";
 import fileTree from "../file_tree";
 import sourceBrowser from "./source_browser";
 import filePicker from "./file_picker";
-import milestones from "./milestones";
 import packages from "./packages";
 import release from "./release";
 import repo from "./repo";
@@ -37,7 +36,6 @@ export default cssCombine(
   filePicker,
   fileTree,
   sourceBrowser,
-  milestones,
   packages,
   release,
   repo,
