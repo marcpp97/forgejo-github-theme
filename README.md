@@ -103,11 +103,11 @@ THEMES = github-auto, github-light, github-dark, github-soft-dark
 <details>
 <summary>Default</summary>
 <h4>theme-github-light.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/light.png"/>
+<img src=".github/assets/screenshots/light.png"/>
 <h4>theme-github-dark.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/dark.png"/>
+<img src=".github/assets/screenshots/dark.png"/>
 <h4>theme-github-soft-dark.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/soft-dark.png"/>
+<img src=".github/assets/screenshots/soft-dark.png"/>
 </details>
 
 ### Colorblind Themes (Beta)
@@ -120,9 +120,9 @@ THEMES = github-tritanopia-auto, github-tritanopia-light, github-tritanopia-dark
 <details>
 <summary>Colorblind & Tritanopia</summary>
 <h4>theme-github-colorblind-light.css & theme-github-tritanopia-light.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/colorblind/colorblind-light.png"/>
+<img src=".github/assets/screenshots/colorblind-light.png"/>
 <h4>theme-github-colorblind-dark.css & theme-github-tritanopia-dark.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/colorblind/colorblind-dark.png"/>
+<img src=".github/assets/screenshots/colorblind-dark.png"/>
 </details>
 
 ### HighContrast Themes
@@ -134,11 +134,11 @@ THEMES = github-high-contrast-auto, github-high-contrast-light, github-high-cont
 <details>
 <summary>HighContrast</summary>
 <h4>theme-github-high-contrast-light.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/high-contrast/high-contrast-light.png"/>
+<img src=".github/assets/screenshots/high-contrast-light.png"/>
 <h4>theme-github-high-contrast-dark.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/high-contrast/high-contrast-dark.png"/>
+<img src=".github/assets/screenshots/high-contrast-dark.png"/>
 <h4>theme-github-high-contrast-soft-dark.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/high-contrast/high-contrast-soft-dark.png"/>
+<img src=".github/assets/screenshots/high-contrast-soft-dark.png"/>
 </details>
 
 ### HighContrast Colorblind Themes ( Beta )
@@ -151,9 +151,9 @@ THEMES = github-high-contrast-tritanopia-auto, github-high-contrast-tritanopia-l
 <details>
 <summary>HighContrast Colorblind & Tritanopia</summary>
 <h4>theme-github-high-contrast-colorblind-light.css & theme-github-high-contrast-tritanopia-light.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/high-contrast-colorblind/high-contrast-colorblind-light.png"/>
+<img src=".github/assets/screenshots/high-contrast-colorblind-light.png"/>
 <h4>theme-github-high-contrast-colorblind-dark.css & theme-github-high-contrast-tritanopia-dark.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/high-contrast-colorblind/high-contrast-colorblind-dark.png"/>
+<img src=".github/assets/screenshots/high-contrast-colorblind-dark.png"/>
 </details>
 
 ### Pink Themes
@@ -165,11 +165,11 @@ THEMES = github-pink-auto, github-pink-light, github-pink-dark, github-pink-soft
 <details>
 <summary>Pink</summary>
 <h4>theme-github-pink-light.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/pink/pink-light.png"/>
+<img src=".github/assets/screenshots/pink-light.png"/>
 <h4>theme-github-pink-dark.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/pink/pink-dark.png"/>
+<img src=".github/assets/screenshots/pink-dark.png"/>
 <h4>theme-github-pink-soft-dark.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/pink/pink-soft-dark.png"/>
+<img src=".github/assets/screenshots/pink-soft-dark.png"/>
 </details>
 
 ### Gitea-Compatible Themes
@@ -181,9 +181,9 @@ THEMES = github-gitea-auto, github-gitea-light, github-gitea-dark
 <details>
 <summary>Gitea-compatible</summary>
 <h4>theme-github-gitea-light.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/gitea/gitea-light.png"/>
+<img src=".github/assets/screenshots/gitea-light.png"/>
 <h4>theme-github-gitea-dark.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/gitea/gitea-dark.png"/>
+<img src=".github/assets/screenshots/gitea-dark.png"/>
 </details>
 
 ### Catppuccin Themes
@@ -195,13 +195,13 @@ THEMES = github-catppuccin-auto, github-catppuccin-latte, github-catppuccin-frap
 <details>
 <summary>Catppuccin</summary>
 <h4>theme-github-catppuccin-latte.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/catppuccin/catppuccin-latte.png"/>
+<img src=".github/assets/screenshots/catppuccin-latte.png"/>
 <h4>theme-github-catppuccin-frappe.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/catppuccin/catppuccin-frappe.png"/>
+<img src=".github/assets/screenshots/catppuccin-frappe.png"/>
 <h4>theme-github-catppuccin-macchiato.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/catppuccin/catppuccin-macchiato.png"/>
+<img src=".github/assets/screenshots/catppuccin-macchiato.png"/>
 <h4>theme-github-catppuccin-mocha.css</h4>
-<img src="https://raw.githubusercontent.com/lutinglt/gitea-github-theme/assets/screenshots/catppuccin/catppuccin-mocha.png"/>
+<img src=".github/assets/screenshots/catppuccin-mocha.png"/>
 </details>
 
 ## Custom CSS Variables
