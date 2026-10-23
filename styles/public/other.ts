@@ -105,4 +105,14 @@ const toggle = css`
   }
 `;
 
-export default cssCombine(text, listHeader, svg, avatar, toggle);
+// GitHub's code in a rendered title (issue and pull request lists, commit messages): smaller and tight to the text.
+const titleCode = css`
+  code.inline-code-block {
+    padding: 2px 4px;
+    font-size: 0.9em;
+    line-height: 1;
+    border-radius: 6px;
+  }
+`;
+
+export default cssCombine(text, listHeader, svg, avatar, toggle, titleCode);

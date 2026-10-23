@@ -413,6 +413,11 @@ describe("Forgejo 15 native integration", () => {
     expect(navbarTemplate).toContain("{{svg $repoIcon 16}}");
   });
 
+  it("keeps code in rendered titles small and tight to the text, as GitHub does", () => {
+    const css = fs.readFileSync(path.join(DIST_DIR, `${PREFIX}light.css`), "utf-8");
+    expect(css).toContain("code.inline-code-block{border-radius:6px;padding:2px 4px;font-size:.9em;line-height:1}");
+  });
+
   it("ships the mobile drawer assets and keeps its toggle independent of Forgejo's inline menu", () => {
     const navbar = fs.readFileSync(path.join(ROOT_DIR, "templates", "base", "head_navbar.tmpl"), "utf-8");
     expect(navbar).toContain('id="navbar-drawer-toggle" aria-controls="navbar-drawer" aria-haspopup="dialog"');
