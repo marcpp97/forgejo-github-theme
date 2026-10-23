@@ -1,6 +1,11 @@
 {{/* GitHub's empty state in settings: a bordered box with a centred semibold title and an optional muted line. Title
-	is text; Description may be rendered HTML. */}}
+	is text; Description may be rendered HTML. Plain gives the plain line GitHub shows instead where a page lists
+	keys or blocked users. */}}
+{{if .Plain}}
+<p class="theme-settings-blankslate-plain">{{.Title}}</p>
+{{else}}
 <div class="theme-settings-blankslate">
 	<h3>{{.Title}}</h3>
 	{{if .Description}}<p>{{.Description}}</p>{{end}}
 </div>
+{{end}}

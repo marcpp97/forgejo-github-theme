@@ -49,9 +49,12 @@
       padding-left: 32px;
     }
   }
+  /* GitHub's 8px between icon and label comes from the gap alone; Fomantic's icon margin on menu items added 5px to
+     links but not to a group's summary, so Actions' label started further left than its neighbours'. */
   & .item > .svg,
   & summary > .svg:first-child {
     flex: none;
+    margin: 0;
     color: var(--color-text-light-1);
   }
   & > .item.active,

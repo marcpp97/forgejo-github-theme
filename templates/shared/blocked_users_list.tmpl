@@ -24,5 +24,5 @@
 	{{end}}
 </div>
 {{else}}
-	{{template "components/common/settings/blankslate" dict "Title" (ctx.Locale.Tr "settings.blocked_users_none")}}
+	{{template "components/common/settings/blankslate" dict "Title" (ctx.Locale.Tr "settings.blocked_users_none") "Plain" true}}
 {{end}}

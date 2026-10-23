@@ -27,6 +27,17 @@
   }
 }
 
+/* On a phone the button takes a row of its own under the name instead of squeezing it. */
+@media (max-width: 767.98px) {
+  .theme-settings-context {
+    flex-wrap: wrap;
+    & > .button {
+      flex-basis: 100%;
+      justify-content: center;
+    }
+  }
+}
+
 .theme-settings-context-title {
   flex: 1;
   min-width: 0;
@@ -56,6 +67,24 @@
 
 .theme-settings-context-container + .ui.container.flex-container.theme-settings {
   margin-top: 0;
+}
+
+/* Personal settings sit in GitHub's 1012px column, centred, as github.com/settings does; repository, organization and
+   site administration settings keep the page's width. */
+.page-content.user.settings > .ui.container:is(.theme-settings-context-container, .theme-settings) {
+  width: calc(100% - 32px) !important;
+  max-width: 980px !important;
+}
+
+/* GitHub's Add beside the new email address is a secondary button; the form's own button is the green primary. */
+.page-content.user.settings.account form:has(> .field > input[name="email"]) > .ui.primary.button {
+  border-color: var(--color-light-border);
+  background: var(--color-button);
+  color: var(--color-text);
+}
+
+.page-content.user.settings.account form:has(> .field > input[name="email"]) > .ui.primary.button:hover {
+  background: var(--color-hover);
 }
 
 /* Nav column: 256px, holding the shared nav list (components/common/nav-list). */
@@ -331,6 +360,13 @@
   }
 
   /* GitHub's empty state (components/common/settings/blankslate.tmpl). */
+  & .theme-settings-blankslate-plain {
+    margin: 0 0 16px;
+    color: var(--color-text-light-1);
+    font-size: 14px;
+    line-height: 21px;
+  }
+
   & .theme-settings-blankslate {
     margin: 0 0 16px;
     padding: 32px;
@@ -463,20 +499,35 @@
     align-items: start;
   }
   & .theme-settings-aside {
-    & > h3 {
-      margin: 0 0 8px;
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 21px;
+    /* Forgejo caps avatar images in forms; the picture here is GitHub's 200px circle, with Edit on its lower left
+       opening a menu below it. */
+    & .theme-avatar-edit {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      & > img.theme-settings-avatar {
+        display: block;
+        width: 200px !important;
+        height: 200px !important;
+        margin: 0;
+        border-radius: 50%;
+        box-shadow: 0 0 0 1px var(--color-light-border);
+      }
+      & > .theme-dropdown {
+        position: absolute;
+        bottom: 12px;
+        left: 8px;
+      }
+      & > .theme-dropdown > .theme-dropdown-panel {
+        inset: calc(100% + 4px) auto auto 0;
+        width: 200px;
+      }
     }
-    /* Forgejo caps avatar images in forms; the picture here is GitHub's 200px circle. */
-    & > img.theme-settings-avatar {
-      display: block;
-      width: 200px !important;
-      height: 200px !important;
-      margin: 0 0 16px;
-      border-radius: 50%;
-      box-shadow: 0 0 0 1px var(--color-light-border);
+    & > .help {
+      margin: 12px 0 0;
+      color: var(--color-text-light-1);
+      font-size: 12px;
+      line-height: 18px;
     }
     & .field.tw-pl-4 {
       padding-left: 20px !important;
@@ -492,13 +543,27 @@
       gap: 8px;
     }
   }
-  /* Forgejo's form groups ("About you", "Privacy") read as small section titles. */
-  & .ui.form fieldset > legend {
+  /* Forgejo's form groups ("About you", "Privacy") read as small section titles. A legend is drawn across its
+     fieldset's top border, which put "Privacy" on the divider above it; floated, it sits inside the fieldset like any
+     heading, 16px below the divider. The profile picture's title in the aside matches it. */
+  & .ui.form fieldset {
+    margin-top: 0;
+  }
+  & .ui.form fieldset > legend,
+  & .theme-settings-aside > h3 {
     margin: 0 0 8px;
     padding: 0;
     font-size: 16px;
     font-weight: 600;
     line-height: 24px;
+  }
+  & .ui.form fieldset > legend {
+    float: left;
+    width: 100%;
+    border: 0;
+    & + * {
+      clear: both;
+    }
   }
   & .ui.form fieldset + fieldset {
     margin-top: 24px;

@@ -636,6 +636,48 @@ describe("Forgejo 15 native integration", () => {
     expect(read("components", "project", "list", "list.tmpl")).toContain("There aren't any projects yet");
   });
 
+  it("matches GitHub's personal settings: the centred column, the header, key buttons, plain empty lines and org settings", () => {
+    const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
+    const head = read("templates", "user", "settings", "layout_head.tmpl");
+    expect(head).toContain('"Subtitle" "Your personal account"');
+    expect(head).toContain('"LinkLabel" "Go to your personal profile"');
+    const css = read("components", "common", "settings", "settings.css");
+    expect(css).toContain(
+      ".page-content.user.settings > .ui.container:is(.theme-settings-context-container, .theme-settings) {"
+    );
+    expect(css).toContain("max-width: 980px !important;");
+    expect(read("templates", "user", "settings", "keys_ssh.tmpl")).toContain("New SSH key");
+    expect(read("templates", "user", "settings", "keys_gpg.tmpl")).toContain("New GPG key");
+    for (const file of [
+      ["templates", "user", "settings", "keys_ssh.tmpl"],
+      ["templates", "shared", "blocked_users_list.tmpl"],
+    ])
+      expect(read(...file), file.join("/")).toContain('"Plain" true');
+    expect(read("components", "common", "settings", "blankslate.tmpl")).toContain(
+      'class="theme-settings-blankslate-plain"'
+    );
+    // GitHub's Edit on the picture: Upload a photo opens the hidden file field, which sends itself as the custom picture.
+    const profile = read("templates", "user", "settings", "profile.tmpl");
+    expect(profile).toContain('"Label" "Edit" "Small" true "NoCaret" true "Items" "user/settings/avatar_menu"');
+    expect(profile).toContain('<input type="hidden" name="source" value="local">');
+    expect(profile).toContain("event.target.form.requestSubmit()");
+    const menu = read("templates", "user", "settings", "avatar_menu.tmpl");
+    expect(menu).toContain('<label class="theme-dropdown-action" for="new-avatar">Upload a photo…</label>');
+    expect(menu).toContain('form="avatar-gravatar-form"');
+    expect(menu).toContain("Remove photo");
+    // Section titles sit inside their fieldset, not on its border, and the picture's title matches them.
+    const settingsCss = read("components", "common", "settings", "settings.css");
+    expect(settingsCss).toMatch(/fieldset > legend \{\s*float: left;\s*width: 100%;\s*border: 0;/);
+    expect(settingsCss).toContain("& .theme-settings-aside > h3 {");
+    expect(read("components", "common", "nav-list", "nav-list.css")).toMatch(
+      /& summary > \.svg:first-child \{\s*flex: none;\s*margin: 0;/
+    );
+    expect(read("components", "common", "dropdown", "dropdown.tmpl")).toContain("{{if not .NoCaret}}");
+    const orgs = read("templates", "user", "settings", "organization.tmpl");
+    expect(orgs).toContain("{{if .IsOwnedBy ctx $.SignedUser.ID}}");
+    expect(orgs).toContain('href="{{.OrganisationLink}}/settings"');
+  });
+
   it("lists a repository's packages like a user's or an organization's", () => {
     const read = (...parts: string[]) => fs.readFileSync(path.join(ROOT_DIR, ...parts), "utf-8");
     expect(read("templates", "repo", "packages.tmpl")).toContain('{{template "components/package/list/list" .}}');
