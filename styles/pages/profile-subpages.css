@@ -266,53 +266,6 @@
   line-height: 20px;
 }
 
-:is(.github-profile, .github-org) .profile-package-row {
-  border: 1px solid var(--color-secondary);
-  border-bottom: 0;
-}
-
-:is(.github-profile, .github-org) .profile-package-row:first-child {
-  border-radius: 6px 6px 0 0;
-}
-
-:is(.github-profile, .github-org) .profile-package-row:last-of-type {
-  border-bottom: 1px solid var(--color-secondary);
-  border-radius: 0 0 6px 6px;
-}
-
-:is(.github-profile, .github-org) .profile-package-row:only-of-type {
-  border-radius: var(--border-radius);
-}
-
-:is(.github-profile, .github-org) .profile-package-row > .flex-item {
-  gap: 16px;
-  padding: 16px;
-}
-
-:is(.github-profile, .github-org) .profile-package-icon {
-  flex: none;
-  color: var(--color-text-light-1);
-}
-
-:is(.github-profile, .github-org) .profile-packages .flex-item-title {
-  flex-wrap: wrap;
-  gap: 8px;
-  font-size: 16px;
-  line-height: 24px;
-}
-
-:is(.github-profile, .github-org) .profile-packages .flex-item-body {
-  display: block;
-  margin-top: 4px;
-  color: var(--color-text-light-1);
-  font-size: 12px;
-  line-height: 18px;
-}
-
-:is(.github-profile, .github-org) .profile-package-version {
-  margin-right: 12px;
-}
-
 :is(.github-profile, .github-org) .profile-package-breadcrumb {
   margin: 0 0 16px;
   font-size: 14px;
@@ -361,10 +314,6 @@
 
 :is(.github-profile, .github-org) .profile-code input[type="search"]:focus {
   border-color: var(--github-borderColor-accent-emphasis);
-}
-
-:is(.github-profile, .github-org) .profile-packages .flex-item-title > a {
-  color: var(--color-primary);
 }
 
 :is(.github-profile, .github-org) .profile-subpage-title {
