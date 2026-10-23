@@ -1,16 +1,16 @@
 ---
-version: 1.0.0
+version: 1.1.0
 ---
 
-# Forgejo GitHub Theme 1.0.0 - Forgejo 17, page by page
+# Forgejo GitHub Theme 1.1.0 - Home, switcher and motion
 
-The theme now targets Forgejo 17, and most pages Forgejo has were compared against GitHub and brought in line: Actions,
-project boards, settings, commits, branches, labels and milestones, notifications, the create pages and more. GitHub's
-layouts are rendered by the templates instead of being patched in the browser, so pages no longer shift after they load.
+The signed-in dashboard now follows GitHub's home, with the account in context, top repositories, an activity feed
+grouped by day and a rail of the work that waits on you. A repository switcher sits beside the repository name, and
+pages appear whole and change with a short fade instead of building up and jumping while they load.
 
 # Compatibility
 
 This release targets Forgejo `17`. It was tested against Forgejo `17.0.0`, including the bundled template overrides.
 
-The templates are bound to Forgejo 17's template data. On Forgejo 16 keep using 0.4.0; install this release together
-with the upgrade to Forgejo 17, stylesheets and templates at the same time.
+Install the stylesheets and templates together, as with 1.0.0. Page transitions use cross-document view transitions,
+which current Chromium-based browsers and Safari animate; other browsers change pages as before.
