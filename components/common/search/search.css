@@ -33,6 +33,13 @@
   outline: none;
 }
 
+/* The field draws the focus ring, so the input drops the theme's inset focus border, which showed as a blue line
+   beside the icon. */
+:is(.ui.form, body) .theme-search-field input[type="search"]:is(:focus, :focus-visible) {
+  background: transparent;
+  box-shadow: none;
+}
+
 :is(.ui.form, body) .theme-search-field input[type="search"]::placeholder {
   color: var(--color-text-light-1);
   opacity: 1;
