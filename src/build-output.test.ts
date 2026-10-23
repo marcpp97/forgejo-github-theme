@@ -671,6 +671,15 @@ describe("Forgejo 15 native integration", () => {
     expect(read("sidebar.tmpl")).toContain('href="{{AppSubUrl}}/notifications/watching"');
   });
 
+  it("gives a team GitHub's sidebar and underline tabs without Forgejo's teal button", () => {
+    const read = (...parts: string[]) =>
+      fs.readFileSync(path.join(ROOT_DIR, "templates", "org", "team", ...parts), "utf-8");
+    const sidebar = read("sidebar.tmpl");
+    expect(sidebar).not.toContain("teal");
+    expect(sidebar).toContain('class="ui button theme-control theme-team-settings"');
+    expect(read("navbar.tmpl")).toContain('<span class="theme-counter theme-counter-tab">{{.Team.NumMembers}}</span>');
+  });
+
   it("matches GitHub's repository About, visibility, and code-search details", () => {
     const headerStyle = fs.readFileSync(path.join(ROOT_DIR, "styles", "templates", "repo", "header.ts"), "utf-8");
     const headerTemplate = fs.readFileSync(path.join(ROOT_DIR, "templates", "repo", "home_header.tmpl"), "utf-8");

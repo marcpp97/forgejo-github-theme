@@ -290,8 +290,91 @@
   height: 24px;
 }
 
-.organization.teams .org-team-navbar {
-  background: var(--color-box-header);
+/* A team: GitHub's sidebar (the name with Leave or Join, the summary, Settings) beside underline tabs over a box. */
+.theme-team-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.theme-team-header > h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 30px;
+  overflow-wrap: anywhere;
+}
+
+.theme-team-detail > .item {
+  padding: 8px 0;
+  color: var(--color-text-light-1);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.theme-team-detail > .item + .item {
+  border-top: 1px solid var(--color-light-border);
+}
+
+.theme-team-detail h3 {
+  margin: 0 0 4px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.theme-team-detail ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.theme-team-settings {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.theme-team-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-light-border);
+}
+
+.theme-team-tabs > a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 8px;
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 30px;
+  text-decoration: none;
+}
+
+.theme-team-tabs > a > .svg {
+  color: var(--color-text-light-1);
+}
+
+.theme-team-tabs > a[aria-current]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 2px;
+  border-radius: var(--border-radius);
+  background: var(--github-underlineNav-borderColor-active);
+}
+
+.theme-team-tabs > a[aria-current] {
+  font-weight: 600;
+}
+
+/* Under the tabs the add form and the list are one box instead of Forgejo's attached segments. */
+.organization.teams .ten.wide.column > .theme-team-tabs + .ui.attached.segment {
+  border-top-width: 1px;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
 /* Inner team pages retain the permission summary beside members/repositories. */
