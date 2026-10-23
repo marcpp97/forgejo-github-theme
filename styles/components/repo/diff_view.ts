@@ -346,6 +346,34 @@ export default css`
   .repository #diff-file-boxes .diff-file-body {
     border-color: ${themeVars.color.light.border};
   }
+  /* Replaces Forgejo's "Show more" bar while the next files load on their own. */
+  .repository #diff-content-container .diff-loading-more {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 0;
+    color: ${themeVars.color.text.light.num1};
+    font-size: 14px;
+  }
+  .diff-loading-more > .diff-loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid ${themeVars.color.light.border};
+    border-top-color: ${themeVars.color.text.light.num1};
+    border-radius: 50%;
+    animation: github-diff-loading-spin 0.8s linear infinite;
+  }
+  @keyframes github-diff-loading-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .diff-loading-more > .diff-loading-spinner {
+      animation-duration: 2.4s;
+    }
+  }
   .repository #diff-file-boxes .code-diff :is(.lines-num, .lines-code, .code-inner, .lines-type-marker) {
     font-family: var(--fonts-monospace);
     font-size: 12px;

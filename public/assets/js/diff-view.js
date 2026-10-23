@@ -241,6 +241,29 @@
       attributeFilter: ["data-folded", "data-tree-filtered"],
     });
   updateFoldLabels();
+  // GitHub loads the next files while scrolling. Press Forgejo's hidden "Show more" link before the end comes into
+  // view; its handler swaps in a new #diff-incomplete for each page. A loader still there after a while failed or is
+  // slow, so it is watched again and retried once in view.
+  const content = document.getElementById("diff-content-container");
+  if (content && "IntersectionObserver" in window) {
+    const loader = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          loader.unobserve(entry.target);
+          entry.target.querySelector("#diff-show-more-files:not(.disabled)")?.click();
+          setTimeout(() => entry.target.isConnected && loader.observe(entry.target), 5000);
+        }
+      },
+      { rootMargin: "0px 0px 2000px 0px" }
+    );
+    const watchIncomplete = () => {
+      const incomplete = document.getElementById("diff-incomplete");
+      if (incomplete) loader.observe(incomplete);
+    };
+    new MutationObserver(watchIncomplete).observe(content, { childList: true });
+    watchIncomplete();
+  }
   // Forgejo writes the viewed count into a hidden <progress>; draw it as GitHub's progress ring.
   const viewedProgress = document.getElementById("viewed-files-summary");
   const viewedRing = document.querySelector(".diff-viewed-ring");
